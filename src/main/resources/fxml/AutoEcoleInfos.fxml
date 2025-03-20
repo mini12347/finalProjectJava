@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="10" alignment="CENTER" xmlns="http://javafx.com/javafx/8.0.111"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="Controllers.AutoEcoleInfoController">
+    <VBox spacing="15" styleClass="card" prefWidth="200">
+        <Label text="" fx:id="indication"/>
+        <Label text="Nom:"/>
+        <TextField fx:id="nomField" promptText="Enter Name"/>
+
+        <Label text="Téléphone:"/>
+        <TextField fx:id="numtelField" promptText="Enter Phone Number"/>
+
+        <Label text="Email:"/>
+        <TextField fx:id="emailField" promptText="Enter Email"/>
+
+        <Label text="Adresse:"/>
+        <TextField fx:id="adresseField" promptText="Enter Address"/>
+
+        <Label text="Disponibilité (ex: MONDAY:8-17;TUESDAY:9-18)"/>
+        <TextField fx:id="horaireField" promptText="Enter Availability"/>
+    </VBox>
+    <HBox spacing="10">
+        <Button text="Modifier" onAction="#handleUpdate"/>
+        <Button text="sauvegarder" onAction="#saveChanges"/>
+    </HBox>
+</VBox>
