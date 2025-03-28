@@ -17,6 +17,7 @@ public class Personne {
         this.adresse = adresse;
         this.mail = mail;
         this.numTelephone = numTelephone;
+        this.dateNaissance = dateNaissance;
     }
     public int getCIN() {
         return CIN;

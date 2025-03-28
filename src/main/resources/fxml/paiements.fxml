@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="Controllers.PaiementController"
+      spacing="10"
+      alignment="CENTER"
+      styleClass="paiement-container">
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <HBox spacing="10" alignment="CENTER">
+        <Label text="Recherche par CIN Candidat:" styleClass="label-search"/>
+        <TextField fx:id="cinSearchField" promptText="Entrez CIN" styleClass="search-field"/>
+        <Button text="Rechercher" onAction="#rechercherPaiements" styleClass="btn-search"/>
+    </HBox>
+
+    <TableView fx:id="paiementTableView" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn text="ID Paiement" fx:id="idPaiementColumn" />
+            <TableColumn text="Date" fx:id="dateColumn" />
+            <TableColumn text="Heure" fx:id="heureColumn" />
+            <TableColumn text="ID Client" fx:id="idClientColumn" />
+            <TableColumn text="Description" fx:id="descriptionColumn" />
+            <TableColumn text="Montant" fx:id="montantColumn" />
+            <TableColumn text="État" fx:id="etatColumn" />
+
+            <!-- Par Facilité Columns -->
+            <TableColumn text="Acompte" fx:id="accompteColumn" />
+            <TableColumn text="Montants" fx:id="montantsColumn" />
+
+            <!-- Action Column -->
+            <TableColumn text="Action" fx:id="choixColumn"/>
+        </columns>
+    </TableView>
+
+    <HBox spacing="10" alignment="CENTER">
+        <Button text="Payer" onAction="#effectuerPaiement" styleClass="btn-payer"/>
+        <Button text="Réinitialiser" onAction="#reinitialiserSelection" styleClass="btn-reset"/>
+    </HBox>
+</VBox>

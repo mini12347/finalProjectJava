@@ -1,0 +1,109 @@
+/* Styles généraux */
+.root-pane {
+    -fx-background-color: #f4f4f4;
+    -fx-padding: 20px;
+}
+
+/* Conteneur principal */
+.main-container {
+    -fx-background-color: #ffffff;
+    -fx-padding: 15px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 2);
+}
+
+/* Titre principal */
+.title-label {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333;
+}
+
+/* Formulaire */
+.form-container {
+    -fx-background-color: #f9f9f9;
+    -fx-padding: 15px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+}
+
+.form-label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #555555;
+}
+
+.text-input {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 5px;
+    -fx-padding: 5px;
+}
+
+/* Boutons */
+.button-container {
+    -fx-alignment: center;
+}
+
+.action-button {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-border-radius: 5px;
+    -fx-padding: 8px 15px;
+}
+
+.delete-button {
+    -fx-background-color: #f44336;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-border-radius: 5px;
+    -fx-padding: 8px 15px;
+}
+
+.search-button {
+    -fx-background-color: #2196F3;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-border-radius: 5px;
+    -fx-padding: 8px 15px;
+}
+
+.display-button {
+    -fx-background-color: #FF9800;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-border-radius: 5px;
+    -fx-padding: 8px 15px;
+}
+
+/* Séparateur */
+.separator {
+    -fx-background-color: #d3d3d3;
+}
+
+/* Tableau */
+.table-container {
+    -fx-background-color: #ffffff;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-padding: 10px;
+}
+
+.moniteur-table {
+    -fx-background-color: white;
+    -fx-border-color: #dddddd;
+    -fx-border-radius: 5px;
+}
+
+.table-column {
+    -fx-alignment: CENTER-LEFT;
+    -fx-font-size: 14px;
+    -fx-text-fill: #444444;
+}
+
+.counter-label {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333;
+}

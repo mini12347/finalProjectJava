@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="Controllers.MoniteurController">
+    <children>
+        <VBox spacing="10" AnchorPane.topAnchor="10" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10" AnchorPane.bottomAnchor="10">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </padding>
+
+            <!-- Titre principal -->
+            <Label text="Gestion des Moniteurs" styleClass="title-label"/>
+
+            <!-- Formulaire pour Moniteur -->
+            <VBox spacing="10" styleClass="form-container" maxHeight="300">
+                <GridPane hgap="15" vgap="5">
+                    <columnConstraints>
+                        <ColumnConstraints halignment="RIGHT" minWidth="120"/>
+                        <ColumnConstraints hgrow="ALWAYS"/>
+                    </columnConstraints>
+
+                    <Label text="CIN :" GridPane.rowIndex="0" GridPane.columnIndex="0" styleClass="form-label"/>
+                    <TextField fx:id="cinField" promptText="CIN" GridPane.rowIndex="0" GridPane.columnIndex="1" styleClass="text-input"/>
+
+                    <Label text="Nom :" GridPane.rowIndex="1" GridPane.columnIndex="0" styleClass="form-label"/>
+                    <TextField fx:id="nomField" promptText="Nom" GridPane.rowIndex="1" GridPane.columnIndex="1" styleClass="text-input"/>
+
+                    <Label text="Prénom :" GridPane.rowIndex="2" GridPane.columnIndex="0" styleClass="form-label"/>
+                    <TextField fx:id="prenomField" promptText="Prénom" GridPane.rowIndex="2" GridPane.columnIndex="1" styleClass="text-input"/>
+
+                    <Label text="Adresse :" GridPane.rowIndex="3" GridPane.columnIndex="0" styleClass="form-label"/>
+                    <TextField fx:id="adresseField" promptText="Adresse" GridPane.rowIndex="3" GridPane.columnIndex="1" styleClass="text-input"/>
+
+                    <Label text="Email :" GridPane.rowIndex="4" GridPane.columnIndex="0" styleClass="form-label"/>
+                    <TextField fx:id="mailField" promptText="Email" GridPane.rowIndex="4" GridPane.columnIndex="1" styleClass="text-input"/>
+
+                    <Label text="Téléphone :" GridPane.rowIndex="5" GridPane.columnIndex="0" styleClass="form-label"/>
+                    <TextField fx:id="numTelephoneField" promptText="Numéro" GridPane.rowIndex="5" GridPane.columnIndex="1" styleClass="text-input"/>
+
+                    <Label text="Date de naissance :" GridPane.rowIndex="6" GridPane.columnIndex="0" styleClass="form-label"/>
+                    <DatePicker fx:id="dateNaissanceField" GridPane.rowIndex="6" GridPane.columnIndex="1" styleClass="date-input"/>
+
+                    <Label text="Véhicule (ID) :" GridPane.rowIndex="7" GridPane.columnIndex="0" styleClass="form-label"/>
+                    <ComboBox fx:id="vehiculeComboBox" promptText="Sélectionner un ID" GridPane.rowIndex="7" GridPane.columnIndex="1" styleClass="combo-input"/>
+
+                    <Label text="Disponibilité :" GridPane.rowIndex="8" GridPane.columnIndex="0" styleClass="form-label"/>
+                    <ComboBox fx:id="dispoComboBox" promptText="Sélectionner" GridPane.rowIndex="8" GridPane.columnIndex="1" styleClass="combo-input"/>
+                </GridPane>
+
+                <!-- Boutons -->
+                <HBox spacing="10" alignment="CENTER" styleClass="button-container">
+                    <Button text="Ajouter" onMouseClicked="#ajouterMoniteur" styleClass="action-button"/>
+                    <Button text="Supprimer" onMouseClicked="#supprimerMoniteur" styleClass="delete-button"/>
+                    <Button text="Rechercher" onMouseClicked="#rechercherMoniteurParId" styleClass="search-button"/>
+                    <Button text="Afficher tout" onAction="#afficherMoniteurs" styleClass="display-button"/>
+                </HBox>
+
+                <!-- Compteur -->
+                <Label fx:id="nbMoniteursLabel" text="Nombre de moniteurs : 0" styleClass="counter-label"/>
+            </VBox>
+
+            <!-- Séparateur -->
+            <Separator styleClass="separator"/>
+
+            <!-- TableView -->
+            <VBox VBox.vgrow="ALWAYS">
+                <TableView fx:id="moniteurTableView" minHeight="300" VBox.vgrow="ALWAYS" styleClass="paiement-table">
+                    <columns>
+                        <TableColumn fx:id="cinColumn" text="CIN" prefWidth="80">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="cin"/>
+                            </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn fx:id="nomColumn" text="Nom" prefWidth="120">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="nom"/>
+                            </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn fx:id="prenomColumn" text="Prénom" prefWidth="120">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="prenom"/>
+                            </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn fx:id="adresseColumn" text="Adresse" prefWidth="150">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="adresse"/>
+                            </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn fx:id="mailColumn" text="Email" prefWidth="120">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="mail"/>
+                            </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn fx:id="numTelephoneColumn" text="Téléphone" prefWidth="120">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="numTelephone"/>
+                            </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn fx:id="dateNaissanceColumn" text="Date de naissance" prefWidth="120">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="dateNaissance"/>
+                            </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn fx:id="vehiculeColumn" text="Véhicule (ID)" prefWidth="100">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="vehicule"/>
+                            </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn fx:id="dispoColumn" text="Disponibilité" prefWidth="100">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="disponibilite"/>
+                            </cellValueFactory>
+                        </TableColumn>
+                    </columns>
+                </TableView>
+            </VBox>
+        </VBox>
+    </children>
+</AnchorPane>

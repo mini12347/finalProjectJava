@@ -1,0 +1,67 @@
+.paiement-container {
+    -fx-background-color: #f4f4f4;
+}
+
+.label-search {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.search-field {
+    -fx-pref-width: 200px;
+    -fx-padding: 5px;
+}
+
+.btn-search {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+
+.btn-search:hover {
+    -fx-background-color: #45a049;
+}
+
+.table-view {
+    -fx-background-color: white;
+    -fx-border-color: #ddd;
+}
+
+.table-column {
+    -fx-alignment: CENTER;
+    -fx-font-weight: bold;
+}
+
+.btn-payer {
+    -fx-background-color: #008CBA;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+
+.btn-payer:hover {
+    -fx-background-color: #007399;
+}
+
+.btn-reset {
+    -fx-background-color: #f44336;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+
+.btn-reset:hover {
+    -fx-background-color: #d32f2f;
+}
+
+.par-facilite-button {
+    -fx-background-color: #FFC107;
+    -fx-text-fill: black;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+
+.par-facilite-button:hover {
+    -fx-background-color: #FFA000;
+}

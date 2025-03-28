@@ -22,6 +22,9 @@ public class Moniteur extends Personne {
     public void setHoraire(Disponibility horaire) {
         this.horaire = horaire;
     }
+    public Disponibility getDisponibilite() {
+        return horaire;  // Retourne l'objet horaire
+    }
 
     @Override
     public String toString() {
