@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.geometry.Insets?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="Controllers.VehiculeAdvancedInfoController"
+            prefHeight="400.0" prefWidth="600.0">
+    <center>
+        <VBox>
+            <Label text="Details de la vehicule"/>
+            <VBox styleClass="card-details">
+                <Label fx:id="indication"/>
+                <Label text="Matricule:" />
+                <TextField styleClass="text-field" fx:id="matricule" disable="true" text="matricule de la voiture" />
+                <Label text="Date de mise en service:" />
+                <TextField styleClass="text-field"  fx:id="datem" disable="true" text="dd-mm-yyyy" />
+                <Label text="Kilométrage:" />
+                <TextField styleClass="text-field"  fx:id="kilo" disable="true" text="***** kilomètres" />
+                <Label text="Type:" />
+                <TextField styleClass="text-field"  fx:id="type" disable="true" text="MOTO/VOITURE/CAMION" />
+                <Label text="Kilometrage restant pour le prochain entretien"/>
+                <Label  fx:id="kilor" />
+                <Label text="date limite de paiement de vignette :"/>
+                <Label fx:id="datelv"/>
+                <Label text="date de la prochaine visite technique :"/>
+                <Label fx:id="datev"/>
+                <Label text="date limite de paiement de l'assurance "/>
+                <Label fx:id="datea"/>
+                <VBox spacing="30">
+                    <Button styleClass="animated-button" text="📝 Modifier" onAction="#update" />
+                    <Button styleClass="animated-button2" text="💾 Sauvegarder" onAction="#save"/>
+                    <Button styleClass="animated-button3" text="❌ Annuler" onAction="#cancel"/>
+                    <Button styleClass="animated-button" text="retour" onAction="#retour"/>
+                    <VBox.margin>
+                        <Insets left="60" top="30"/>
+                    </VBox.margin>
+                </VBox>
+            </VBox>
+        </VBox>
+    </center>
+</BorderPane>
