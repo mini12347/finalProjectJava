@@ -42,152 +42,76 @@
                 </VBox.margin>
             </Button>
             <HBox maxWidth="Infinity" prefHeight="31.0" styleClass="menu-item">
-                <children>
-                    <ImageView fitHeight="24.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                        <image>
-                            <Image url="@../images/h.png" />
-                        </image>
-                    </ImageView>
-                    <Button fx:id="btnHome" onAction="#handleNavigation" styleClass="menu-button" text="Page d'acceuil" />
-                </children>
+                <ImageView fitHeight="24.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                    <Image url="@../images/h.png" />
+                </ImageView>
+                <Button fx:id="btnHome" onAction="#showLandingP" styleClass="menu-button" text="Page d'acceuil" />
             </HBox>
             <HBox alignment="CENTER" maxWidth="Infinity" styleClass="menu-item">
                 <ImageView fitHeight="27.0" fitWidth="29.0" preserveRatio="true">
-                    <image>
-                        <Image url="@../images/info.png" />
-                    </image>
+                    <Image url="@../images/info.png" />
                 </ImageView>
                 <Button fx:id="btnAutoEcole" onAction="#showAutoInfo" styleClass="menu-button" text=" Infos Auto-école" />
             </HBox>
             <HBox alignment="CENTER" maxWidth="Infinity" styleClass="menu-item">
                 <ImageView fitHeight="27.0" fitWidth="28.0" preserveRatio="true">
-                    <image>
-                        <Image url="@../images/candidat.png" />
-                    </image>
+                    <Image url="@../images/candidat.png" />
                 </ImageView>
                 <Button fx:id="btnCandidats" onAction="#handleNavigation" styleClass="menu-button" text=" Candidats" />
             </HBox>
             <HBox alignment="CENTER" maxWidth="Infinity" styleClass="menu-item">
                 <ImageView fitHeight="25.0" fitWidth="26.0" preserveRatio="true">
-                    <image>
-                        <Image url="@../images/v.png" />
-                    </image>
+                    <Image url="@../images/v.png" />
                 </ImageView>
-                <Button fx:id="btnVehicules" onAction="#handleNavigation" styleClass="menu-button" text=" Véhicules" />
+                <Button fx:id="btnVehicules" onAction="#ShowVehicules" styleClass="menu-button" text=" Véhicules" />
             </HBox>
             <HBox alignment="CENTER" maxWidth="Infinity" styleClass="menu-item">
                 <ImageView fitHeight="25.0" fitWidth="25.0" preserveRatio="true">
-                    <image>
-                        <Image url="@../images/moniteur.png" />
-                    </image>
+                    <Image url="@../images/moniteur.png" />
                 </ImageView>
                 <Button fx:id="btnMoniteurs" onAction="#handleNavigation" styleClass="menu-button" text=" Moniteurs" />
             </HBox>
             <HBox alignment="CENTER" maxWidth="Infinity" styleClass="menu-item">
                 <ImageView fitHeight="28.0" fitWidth="25.0" preserveRatio="true">
-                    <image>
-                        <Image url="@../images/s.png" />
-                    </image>
+                    <Image url="@../images/s.png" />
                 </ImageView>
                 <Button fx:id="btnSeances" onAction="#handleNavigation" styleClass="menu-button" text=" Séances" />
             </HBox>
             <HBox alignment="CENTER" maxWidth="Infinity" styleClass="menu-item">
                 <ImageView fitHeight="26.0" fitWidth="26.0" preserveRatio="true">
-                    <image>
-                        <Image url="@../images/e.png" />
-                    </image>
+                    <Image url="@../images/e.png" />
                 </ImageView>
                 <Button fx:id="btnExamens" onAction="#handleNavigation" styleClass="menu-button" text=" Examens" />
             </HBox>
             <HBox alignment="CENTER" maxWidth="Infinity" styleClass="menu-item">
                 <ImageView fitHeight="24.0" fitWidth="26.0" preserveRatio="true">
-                    <image>
-                        <Image url="@../images/p.png" />
-                    </image>
+                    <Image url="@../images/p.png" />
                 </ImageView>
                 <Button fx:id="btnPaiements" onAction="#handleNavigation" styleClass="menu-button" text=" Paiements" />
             </HBox>
             <HBox alignment="CENTER" maxWidth="Infinity" prefHeight="42.0" prefWidth="250.0" styleClass="menu-item">
                 <ImageView fitHeight="28.0" fitWidth="27.0" preserveRatio="true">
-                    <image>
-                        <Image url="@../images/stat.png" />
-                    </image>
+                    <Image url="@../images/stat.png" />
                 </ImageView>
                 <Button fx:id="btnDashboard" onAction="#handleNavigation" styleClass="menu-button" text=" Tableau de bord" />
             </HBox>
         </VBox>
     </left>
     <center>
-        <VBox prefHeight="1033.0" prefWidth="942.0" spacing="10">
+        <VBox prefHeight="600.0" prefWidth="1200.0" spacing="10">
             <Label fx:id="currentDateTime" prefHeight="19.0" prefWidth="200.0" style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-fill: #666666;" text="Date et Heure">
                 <VBox.margin>
                     <Insets left="20.0" top="20.0" />
                 </VBox.margin></Label>
-            <StackPane fx:id="contentArea" prefHeight="298.0" prefWidth="654.0">
-                <VBox alignment="TOP_CENTER" prefHeight="345.0" prefWidth="903.0" spacing="20">
-                    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="666.0" spacing="20">
-                  <VBox.margin>
-                     <Insets left="700.0" top="40.0" />
-                  </VBox.margin>
-                  <children>
-                     <VBox prefHeight="200.0" prefWidth="100.0" />
-                  </children>
-                    </HBox>
-                    <HBox spacing="20" />
-                    <HBox prefHeight="143.0" prefWidth="698.0">
-                        <children>
-                            <VBox prefHeight="239.0" prefWidth="582.0" spacing="20.0" styleClass="card">
-                                <Label styleClass="title" text="Planning" />
-                                <Button styleClass="animated-button" text="Ajouter" />
-                                <Label prefHeight="19.0" prefWidth="585.0" styleClass="planning-item" text="samir ksir - lesson code - 08:00" />
-                                <Label prefHeight="19.0" prefWidth="594.0" styleClass="planning-item" text="ahmed dallali - lesson code - 08:00">
-                           <VBox.margin>
-                              <Insets />
-                           </VBox.margin>
-                        </Label>
-                                <Label prefHeight="19.0" prefWidth="586.0" styleClass="planning-item" text="khlouloud hsin - lesson code - 08:00" />
-                        <HBox.margin>
-                           <Insets left="20.0" top="-50.0" />
-                        </HBox.margin>
-                            </VBox>
-                     <VBox prefHeight="66.0" prefWidth="300.0" styleClass="card ">
-                        <children>
-                           <Label styleClass="card-details" text="Résultats Aujourd'hui" />
-                           <VBox prefHeight="200.0" prefWidth="100.0">
-                              <children>
-                                 <Label styleClass="card-details" text="Examen Code" />
-                                 <Label styleClass="planning-item" text="passé à 12:30 resultat : ?/30" />
-                                 <Label styleClass="planning-item" text="passé à 14:30 resultat : ?/30" />
-                                 <Label styleClass="card-details" text="Examen Conduite" />
-                                 <Label styleClass="planning-item" text="passé à 12:30 resultat : ✅" />
-                                 <Label styleClass="planning-item" text="passé à 12:30 resultat : ❌" />
-                              </children>
-                           </VBox>
-                        </children>
-                        <HBox.margin>
-                           <Insets left="50.0" top="200.0" />
-                        </HBox.margin>
-                     </VBox>
-                        </children>
-                    </HBox>
-                    <StackPane.margin>
-                        <Insets top="10.0" />
-                    </StackPane.margin>
-                </VBox>
+            <StackPane fx:id="contentArea" prefHeight="600.0" prefWidth="1200.0">
+                <!--content-->
             </StackPane>
-               <VBox prefHeight="66.0" prefWidth="300.0" styleClass="card ">
-                   <Button fx:id="btnadd" styleClass="animated-button" text="+👤" />
-                   <Label styleClass="card-details" text="Nouveau Candidat" />
-                   <Label styleClass="amount" text="8" />
-            <VBox.margin>
-               <Insets left="630.0" top="-500.0" />
-            </VBox.margin>
-               </VBox>
-                <Button fx:id="btnmenu" mnemonicParsing="false" text="cliquer sur l'un des item du menu pour commencer ">
-            <VBox.margin>
-               <Insets left="300.0" top="400.0" />
-            </VBox.margin>
-                </Button>
+
+            <Button fx:id="btnmenu" mnemonicParsing="false" text="cliquer sur l'un des item du menu pour commencer ">
+                <VBox.margin>
+                   <Insets left="300.0" top="30.0" />
+                </VBox.margin>
+            </Button>
             <BorderPane.margin>
                 <Insets left="40.0" top="-100.0" />
             </BorderPane.margin>
@@ -219,9 +143,9 @@
                     <Insets left="-40.0" top="20.0" />
                 </VBox.margin>
             </VBox>
-         <BorderPane.margin>
-            <Insets right="400.0" />
-         </BorderPane.margin>
+            <BorderPane.margin>
+                <Insets right="400.0" />
+            </BorderPane.margin>
         </VBox>
     </right>
 </BorderPane>

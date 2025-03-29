@@ -9,7 +9,7 @@ import java.util.Objects;
 
 public class App extends Application {
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public  void start(Stage primaryStage) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/landingPage.fxml"));
         Parent root = loader.load();
         Scene scene = new Scene(root, 1000, 600);

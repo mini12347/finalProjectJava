@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane prefHeight="1000.0" prefWidth="1200.0" stylesheets="@../css/Vehicule.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.VehiculesController">
+       <left>
+           <VBox prefHeight="300.0" prefWidth="306.0" spacing="20" styleClass="card">
+           <Label styleClass="title" text="Détails de la véhicule" />
+           <VBox styleClass="card-details">
+               <Label fx:id="indication"/>
+               <Label text="Matricule:" />
+               <VBox spacing="10">
+                   <Label style="-fx-font-size: 10px;-fx-fill:#3e4854;" text="Matricule est sous cette forme nummatricule "/>
+                   <Label style="-fx-font-size: 10px;-fx-fill:#3e4854;" text="  تونس année matricule exp:2023->23"/>
+                   <HBox spacing="10">
+                       <TextField styleClass="text-field"  style="-fx-pref-width: 100px;" fx:id="matricule" disable="true" text="matricule " />
+                       <Label text="تونس"/>
+                       <TextField styleClass="text-field" style="-fx-pref-width: 50px;" fx:id="amatricule" disable="true" text="AN" />
+                   </HBox>
+               </VBox>
+               <Label text="Date de mise en service:" />
+               <TextField styleClass="text-field"  fx:id="datem" disable="true" text="dd-mm-yyyy" />
+
+               <Label text="Kilométrage:" />
+               <TextField styleClass="text-field"  fx:id="kilo" disable="true" text="***** kilomètres" />
+
+               <Label text="Type:" />
+               <TextField styleClass="text-field"  fx:id="type" disable="true" text="MOTO/VOITURE/CAMION" />
+               <VBox spacing="30">
+                   <Button styleClass="animated-button" text="📝 Modifier" onAction="#update" />
+                   <Button styleClass="animated-button2" text="💾 Sauvegarder" onAction="#save"/>
+                   <Button styleClass="animated-button3" text="❌ Annuler" onAction="#cancel"/>
+                   <VBox.margin>
+                       <Insets left="60" top="30"/>
+                   </VBox.margin>
+               </VBox>
+
+           </VBox>
+           </VBox>
+       </left>
+       <center>
+           <VBox prefHeight="300.0" prefWidth="551.0" spacing="20" styleClass="card">
+           <HBox spacing="10">
+               <TextField styleClass="text-field" fx:id="searchField" onKeyReleased="#filterVehicles" prefHeight="30.0" prefWidth="200.0" promptText="Rechercher des véhicules ..." />
+               <Button onAction="#sortByMatricule" styleClass="menu-button" text="Ord. par Matricule" />
+               <Button onAction="#sortByDate" styleClass="menu-button" text="Ord. par Date" />
+           </HBox>
+         <HBox prefHeight="100.0" prefWidth="200.0">
+            <children>
+                  <Button onAction="#sortByType" styleClass="menu-button" text="Ord par Type" />
+                  <Button onAction="#sortByKilometrage" styleClass="menu-button" text="Ord par Kilométrage">
+                  <HBox.margin>
+                     <Insets left="20.0" />
+                  </HBox.margin>
+               </Button>
+               <Button onAction="#addvehicule" styleClass="menu-button" text="ajouter vehicule ">
+                  <HBox.margin>
+                     <Insets left="20.0" />
+                  </HBox.margin>
+               </Button>
+            </children>
+         </HBox>
+
+               <TableView fx:id="vehiculesTable" prefHeight="350" prefWidth="750.0" styleClass="table-view">
+                   <columns>
+                       <TableColumn fx:id="matriculeColumn" prefWidth="140.0" text="Matricule" />
+                       <TableColumn fx:id="datemColumn" prefWidth="200.0" text="Date de mise en service" />
+                       <TableColumn fx:id="kilometrageColumn" prefWidth="150.0" text="Kilométrage" />
+                       <TableColumn fx:id="typeColumn" prefWidth="120.0" text="Type" />
+                       <TableColumn fx:id="actionsColumn" prefWidth="160.0" text="Actions" />
+                   </columns>
+               </TableView>
+             <BorderPane.margin>
+                <Insets left="30.0" />
+             </BorderPane.margin>
+           </VBox>
+       </center>
+</BorderPane>

@@ -13,6 +13,9 @@ public class Vehicule {
         this.kilometrage = kilometrage;
         this.type = type;
     }
+
+    public Vehicule() {}
+
     public String getMatricule() {
         return matricule;
     }

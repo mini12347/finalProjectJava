@@ -5,26 +5,77 @@
 
 <VBox spacing="10" alignment="CENTER" xmlns="http://javafx.com/javafx/8.0.111"
       xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="Controllers.AutoEcoleInfoController">
+      fx:controller="Controllers.AutoEcoleInfoController" stylesheets="@../css/AutoEcoleInfos.css">
     <VBox spacing="15" styleClass="card" prefWidth="200">
-        <Label text="" fx:id="indication"/>
-        <Label text="Nom:"/>
-        <TextField fx:id="nomField" promptText="Enter Name"/>
+        <Label fx:id="indication" />
+        <Label text="Nom:" styleClass="title2"/>
+        <TextField fx:id="nomField" promptText="Enter Name" disable="true"/>
 
-        <Label text="Téléphone:"/>
-        <TextField fx:id="numtelField" promptText="Enter Phone Number"/>
+        <Label text="Téléphone:" styleClass="title2"/>
+        <TextField fx:id="numtelField" promptText="Enter Phone Number" disable="true"/>
 
-        <Label text="Email:"/>
-        <TextField fx:id="emailField" promptText="Enter Email"/>
+        <Label text="Email:" styleClass="title2"/>
+        <TextField fx:id="emailField" promptText="Enter Email" disable="true"/>
 
-        <Label text="Adresse:"/>
-        <TextField fx:id="adresseField" promptText="Enter Address"/>
+        <Label text="Adresse:" styleClass="title2"/>
+        <TextField fx:id="adresseField" promptText="Enter Address" disable="true"/>
 
-        <Label text="Disponibilité (ex: MONDAY:8-17;TUESDAY:9-18)"/>
-        <TextField fx:id="horaireField" promptText="Enter Availability"/>
+        <Label text="Disponibilité " styleClass="title2"/>
+        <VBox fx:id="disponibilityBox" spacing="5">
+            <HBox spacing="10">
+                <CheckBox fx:id="mondayCheck" text="Lundi" disable="true"/>
+                <Label text="De" />
+                <TextField fx:id="mondayStart" promptText="8" disable="true"/>
+                <Label text="à" />
+                <TextField fx:id="mondayEnd" promptText="17" disable="true"/>
+            </HBox>
+            <HBox spacing="10">
+                <CheckBox fx:id="tuesdayCheck" text="Mardi" disable="true"/>
+                <Label text="De" />
+                <TextField fx:id="tuesdayStart" promptText="8" disable="true"/>
+                <Label text="à" />
+                <TextField fx:id="tuesdayEnd" promptText="17" disable="true"/>
+            </HBox>
+            <HBox spacing="10">
+                <CheckBox fx:id="wedCheck" text="Mercredi" disable="true"/>
+                <Label text="De" />
+                <TextField fx:id="wedStart" promptText="8" disable="true"/>
+                <Label text="à" />
+                <TextField fx:id="wedEnd" promptText="17" disable="true"/>
+            </HBox>
+            <HBox spacing="10">
+                <CheckBox fx:id="thurCheck" text="Jeudi" disable="true"/>
+                <Label text="De" />
+                <TextField fx:id="thurStart" promptText="8" disable="true"/>
+                <Label text="à" />
+                <TextField fx:id="thurEnd" promptText="17" disable="true"/>
+            </HBox>
+            <HBox spacing="10">
+                <CheckBox fx:id="FriCheck" text="Vendredi" disable="true"/>
+                <Label text="De" />
+                <TextField fx:id="FriStart" promptText="8" disable="true"/>
+                <Label text="à" />
+                <TextField fx:id="FriEnd" promptText="17" disable="true"/>
+            </HBox>
+            <HBox spacing="10">
+                <CheckBox fx:id="SatCheck" text="Samedi" disable="true"/>
+                <Label text="De" />
+                <TextField fx:id="SatStart" promptText="8" disable="true"/>
+                <Label text="à" />
+                <TextField fx:id="SatEnd" promptText="17" disable="true"/>
+            </HBox>
+            <HBox spacing="10">
+                <CheckBox fx:id="SunCheck" text="Dimanche" disable="true"/>
+                <Label text="De" />
+                <TextField fx:id="SunStart" promptText="8" disable="true"/>
+                <Label text="à" />
+                <TextField fx:id="SunEnd" promptText="17" disable="true"/>
+            </HBox>
+        </VBox>
     </VBox>
     <HBox spacing="10">
-        <Button text="Modifier" onAction="#handleUpdate"/>
-        <Button text="sauvegarder" onAction="#saveChanges"/>
+        <Button text="Modifier" onAction="#handleUpdate" styleClass="animated-button2"/>
+        <Button text="sauvegarder" onAction="#saveChanges" styleClass="animated-button2"/>
+        <Button text="annuler" onAction="#load" styleClass="animated-button3"/>
     </HBox>
 </VBox>

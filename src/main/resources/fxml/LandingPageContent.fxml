@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.geometry.Insets?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            prefHeight="400.0" prefWidth="1200.0" stylesheets="@../css/landingPage.css">
+    <center>
+        <VBox  alignment="CENTER"  prefHeight="298.0" prefWidth="1200.0" spacing="20">
+            <HBox alignment="CENTER"  prefHeight="298.0" prefWidth="1200.0" spacing="20">
+                <VBox.margin>
+                    <Insets left="700.0" top="40.0" />
+                </VBox.margin>
+                <children>
+                    <VBox prefHeight="66.0" prefWidth="300.0" styleClass="card ">
+                        <Button fx:id="btnadd" styleClass="animated-button" text="+👤" />
+                        <Label styleClass="card-details" text="Nouveau Candidat" />
+                        <Label styleClass="amount" text="8" />
+                        <VBox.margin>
+                            <Insets left="630.0" top="-500.0" />
+                        </VBox.margin>
+                        <HBox.margin>
+                            <Insets left="-80.0" top="30.0" />
+                        </HBox.margin>
+                    </VBox>
+                </children>
+            </HBox>
+            <HBox spacing="20" />
+            <HBox prefHeight="143.0" prefWidth="698.0">
+                <children>
+                    <VBox prefHeight="239.0" prefWidth="582.0" spacing="20.0" styleClass="card">
+                        <Label styleClass="title" text="Planning" />
+                        <Button styleClass="animated-button" text="Ajouter" />
+                        <Label prefHeight="19.0" prefWidth="585.0" styleClass="planning-item" text="samir ksir - lesson code - 08:00" />
+                        <Label prefHeight="19.0" prefWidth="594.0" styleClass="planning-item" text="ahmed dallali - lesson code - 08:00" />
+                        <Label prefHeight="19.0" prefWidth="586.0" styleClass="planning-item" text="khlouloud hsin - lesson code - 08:00" />
+                        <HBox.margin>
+                            <Insets left="20.0" top="-180.0" />
+                        </HBox.margin>
+                    </VBox>
+                    <VBox prefHeight="66.0" prefWidth="300.0" styleClass="card ">
+                        <children>
+                            <Label styleClass="card-details" text="Résultats Aujourd'hui" />
+                            <VBox prefHeight="200.0" prefWidth="100.0">
+                                <children>
+                                    <Label styleClass="card-details" text="Examen Code" />
+                                    <Label styleClass="planning-item" text="passé à 12:30 resultat : ?/30" />
+                                    <Label styleClass="planning-item" text="passé à 14:30 resultat : ?/30" />
+                                    <Label styleClass="card-details" text="Examen Conduite" />
+                                    <Label styleClass="planning-item" text="passé à 12:30 resultat : ✅" />
+                                    <Label styleClass="planning-item" text="passé à 12:30 resultat : ❌" />
+                                </children>
+                            </VBox>
+                        </children>
+                        <HBox.margin>
+                            <Insets left="50.0" top="70.0" />
+                        </HBox.margin>
+                    </VBox>
+                </children>
+            </HBox>
+            <StackPane.margin>
+                <Insets top="10.0" />
+            </StackPane.margin>
+        </VBox>
+    </center>
+
+</BorderPane>

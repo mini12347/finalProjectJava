@@ -2,13 +2,10 @@ package DAO;
 import Entities.AutoEcole;
 import Entities.Disponibility;
 import Entities.Hours;
-
 import java.sql.*;
 import java.time.DayOfWeek;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.ArrayList;
 import Connection.ConxDB;
 public class AutoEcoleDAO {
     private Connection connection;
@@ -28,23 +25,24 @@ public class AutoEcoleDAO {
         stmt.executeUpdate();
     }
 
-    public List<AutoEcole> getAllAutoEcoles() throws SQLException {
-        List<AutoEcole> list = new ArrayList<>();
-        String query = "SELECT * FROM auto_ecole LIMIT 1";
+    public AutoEcole getLastModifiedAutoEcole() throws SQLException {
+        String query = "SELECT * FROM auto_ecole ORDER BY updated_at DESC LIMIT 1";
         Statement stmt = connection.createStatement();
         ResultSet rs = stmt.executeQuery(query);
 
-        while (rs.next()) {
-            list.add(new AutoEcole(
+        if (rs.next()) {
+            return new AutoEcole(
                     rs.getString("nom"),
                     rs.getInt("numtel"),
                     rs.getString("email"),
                     rs.getString("adresse"),
                     deserializeDisponibility(rs.getString("horaire"))
-            ));
+            );
+        } else {
+            return null;
         }
-        return list;
     }
+
     private String serializeDisponibility(Disponibility disponibility) {
         StringBuilder sb = new StringBuilder();
         for (Map.Entry<DayOfWeek, Hours> entry : disponibility.getDaysOfWeek().entrySet()) {

@@ -1,9 +1,7 @@
 package Controllers;
-
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -12,13 +10,11 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
-
 import java.io.IOException;
+import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-
 public class LandingPController {
-
     @FXML private Button btnDashboard;
     @FXML private Button btnAutoEcole;
     @FXML private Button btnCandidats;
@@ -33,28 +29,20 @@ public class LandingPController {
     private boolean menuVisible = false;
     private boolean notificationVisible = false;
     private Button selectedButton = null;
-
     @FXML
     public void initialize() {
         selectedButton = btnDashboard;
         updateButtonStyles();
         updateDateTime();
+        showLandingP();
     }
-
     @FXML
     private void toggleMenu() {
         TranslateTransition transition = new TranslateTransition(Duration.millis(300), sideMenu);
-
-        if (menuVisible) {
-            transition.setToX(-250);
-        } else {
-            transition.setToX(0);
-        }
-
+        transition.setToX(menuVisible ? -250 : 0);
         transition.play();
         menuVisible = !menuVisible;
     }
-
     @FXML
     private void handleNavigation(javafx.event.ActionEvent event) {
         Button clickedButton = (Button) event.getSource();
@@ -72,10 +60,8 @@ public class LandingPController {
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
     }
-
     private void updateButtonStyles() {
-        Button[] buttons = {btnDashboard, btnAutoEcole, btnCandidats, btnVehicules, btnMoniteurs, btnSeances, btnExamens,btnPaiements};
-
+        Button[] buttons = {btnDashboard, btnAutoEcole, btnCandidats, btnVehicules, btnMoniteurs, btnSeances, btnExamens, btnPaiements};
         for (Button button : buttons) {
             button.getStyleClass().remove("selected");
         }
@@ -86,23 +72,31 @@ public class LandingPController {
     @FXML
     private void showNotifications() {
         TranslateTransition transition = new TranslateTransition(Duration.millis(300), notificationPanel);
-
-        if (notificationVisible) {
-            transition.setToX(420);
-        } else {
-            transition.setToX(0);
-        }
-
+        transition.setToX(notificationVisible ? 420 : 0);
         transition.play();
         notificationVisible = !notificationVisible;
     }
-
     @FXML
     private void showAutoInfo() {
+        loadFXML("/fxml/AutoEcoleInfos.fxml");
+    }
+    @FXML
+    public void showLandingP() {
+        loadFXML("/fxml/LandingPageContent.fxml" );
+    }
+    @FXML
+    public void ShowVehicules() {
+        loadFXML("/fxml/Vehicules.fxml");
+    }
+    public  void loadFXML(String fxmlPath) {
         try {
-            Parent autoEcoleView = FXMLLoader.load(getClass().getResource("/fxml/AutoEcoleInfos.fxml"));
-            contentArea.getChildren().clear();
-            contentArea.getChildren().add(autoEcoleView);
+            URL resource = getClass().getResource(fxmlPath);
+            if (resource == null) {
+                System.err.println("FXML file not found: " + fxmlPath);
+                return;
+            }
+            Parent view = FXMLLoader.load(resource);
+            contentArea.getChildren().setAll(view);
         } catch (IOException e) {
             e.printStackTrace();
         }
