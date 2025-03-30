@@ -7,7 +7,7 @@
       fx:controller="Controllers.PaiementController"
       spacing="10"
       alignment="CENTER"
-      styleClass="paiement-container">
+      styleClass="paiement-container" stylesheets="@../css/paiements.css">
     <padding>
         <Insets top="20" right="20" bottom="20" left="20"/>
     </padding>
