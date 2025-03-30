@@ -6,6 +6,6 @@ module org.openjfx.finalproject {
     opens Entities to javafx.base;
     opens Controllers to javafx.fxml;
     opens org.openjfx.finalproject to javafx.fxml;
-    opens Entities to javafx.base;  // Ajoutez cette ligne
+   // Ajoutez cette ligne
     exports org.openjfx.finalproject;
 }
