@@ -1,4 +1,5 @@
 package Controllers;
+
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
@@ -14,6 +15,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+
 public class LandingPController {
     @FXML private Button btnDashboard;
     @FXML private Button btnAutoEcole;
@@ -29,13 +31,34 @@ public class LandingPController {
     private boolean menuVisible = false;
     private boolean notificationVisible = false;
     private Button selectedButton = null;
+
     @FXML
     public void initialize() {
         selectedButton = btnDashboard;
         updateButtonStyles();
         updateDateTime();
         showLandingP();
+
+        // Configuration des gestionnaires d'événements pour les boutons spécifiques
+        btnMoniteurs.setOnAction(event -> {
+            if (selectedButton != null) {
+                selectedButton.getStyleClass().remove("selected");
+            }
+            selectedButton = btnMoniteurs;
+            updateButtonStyles();
+            showMoniteurInterface();
+        });
+
+        btnPaiements.setOnAction(event -> {
+            if (selectedButton != null) {
+                selectedButton.getStyleClass().remove("selected");
+            }
+            selectedButton = btnPaiements;
+            updateButtonStyles();
+            showPaiementInterface();
+        });
     }
+
     @FXML
     private void toggleMenu() {
         TranslateTransition transition = new TranslateTransition(Duration.millis(300), sideMenu);
@@ -43,6 +66,7 @@ public class LandingPController {
         transition.play();
         menuVisible = !menuVisible;
     }
+
     @FXML
     private void handleNavigation(javafx.event.ActionEvent event) {
         Button clickedButton = (Button) event.getSource();
@@ -51,7 +75,63 @@ public class LandingPController {
         }
         selectedButton = clickedButton;
         updateButtonStyles();
+
+        // Determine which interface to show based on the clicked button
+        if (clickedButton == btnDashboard) {
+            showDashboard();
+        } else if (clickedButton == btnCandidats) {
+            showCandidatInterface();
+        } else if (clickedButton == btnSeances) {
+            showSeanceInterface();
+        } else if (clickedButton == btnExamens) {
+            showExamenInterface();
+        }
     }
+
+    /**
+     * Affiche l'interface des moniteurs
+     */
+    @FXML
+    public void showMoniteurInterface() {
+        loadFXML("/fxml/Moniteur.fxml");
+    }
+
+    /**
+     * Affiche l'interface des paiements
+     */
+    @FXML
+    public void showPaiementInterface() {
+        loadFXML("/fxml/Paiements.fxml");
+    }
+
+    /**
+     * Affiche l'interface du tableau de bord
+     */
+    private void showDashboard() {
+        loadFXML("/fxml/Dashboard.fxml");
+    }
+
+    /**
+     * Affiche l'interface des candidats
+     */
+    private void showCandidatInterface() {
+        loadFXML("/fxml/Candidats.fxml");
+    }
+
+    /**
+     * Affiche l'interface des séances
+     */
+    private void showSeanceInterface() {
+        loadFXML("/fxml/Seances.fxml");
+    }
+
+    /**
+     * Affiche l'interface des examens
+     */
+    private void showExamenInterface() {
+        loadFXML("/fxml/Examens.fxml");
+    }
+
     private void updateDateTime() {
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
@@ -60,6 +140,7 @@ public class LandingPController {
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
     }
+
     private void updateButtonStyles() {
         Button[] buttons = {btnDashboard, btnAutoEcole, btnCandidats, btnVehicules, btnMoniteurs, btnSeances, btnExamens, btnPaiements};
         for (Button button : buttons) {
@@ -69,6 +150,7 @@ public class LandingPController {
             selectedButton.getStyleClass().add("selected");
         }
     }
+
     @FXML
     private void showNotifications() {
         TranslateTransition transition = new TranslateTransition(Duration.millis(300), notificationPanel);
@@ -76,19 +158,23 @@ public class LandingPController {
         transition.play();
         notificationVisible = !notificationVisible;
     }
+
     @FXML
     private void showAutoInfo() {
         loadFXML("/fxml/AutoEcoleInfos.fxml");
     }
+
     @FXML
     public void showLandingP() {
-        loadFXML("/fxml/LandingPageContent.fxml" );
+        loadFXML("/fxml/LandingPageContent.fxml");
     }
+
     @FXML
     public void ShowVehicules() {
         loadFXML("/fxml/Vehicules.fxml");
     }
-    public  void loadFXML(String fxmlPath) {
+
+    public void loadFXML(String fxmlPath) {
         try {
             URL resource = getClass().getResource(fxmlPath);
             if (resource == null) {
