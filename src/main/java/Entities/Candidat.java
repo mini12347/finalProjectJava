@@ -1,23 +1,34 @@
 package Entities;
 
-import java.util.Date;
-import java.util.Map;
+import java.time.LocalDate;
+import java.util.Arrays;
 
-public class Candidat extends Personne{
-    private Map<String,String> dossier;
-    public Candidat(int cin, String nom, String prenom, String email, String adresse, int nume, Date date, Map<String,String> dossier){
-        super(cin,nom,prenom,adresse,email,nume,date);
-        this.dossier = dossier;
+
+
+public class Candidat extends Personne {
+    private byte[] cinImage;
+
+
+    public Candidat(int id, int CIN, String nom, String prenom, String mail, int numTelephone, LocalDate dateNaissance, byte[] cinImage) {
+
+        super(id, CIN, nom, prenom,  mail, numTelephone,dateNaissance);
+        this.cinImage = cinImage;
     }
-    public Map<String,String> getDossier(){
-        return dossier;
+    public Candidat() {
+        // Constructeur vide
     }
-    public void setDossier(Map<String,String> dossier){
-        this.dossier = dossier;
+
+
+    public byte[] getCinImage() {
+        return cinImage;
+    }
+
+    public void setCinImage(byte[] cinImage) {
+        this.cinImage = cinImage;
     }
 
     @Override
     public String toString() {
-        return "candidat{" +super.toString() +"dossier=" + dossier + '}';
+        return "Candidat{" + super.toString() + ", cinImage=" + (cinImage != null ? Arrays.toString(cinImage) : "no image") + "}";
     }
 }

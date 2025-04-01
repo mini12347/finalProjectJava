@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="Controllers.CandidateController">
+    <VBox prefWidth="200" spacing="10" style="-fx-background-color: #2C3E50;" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0">
+        <Label text="Dashboard" style="-fx-text-fill: white; -fx-font-size: 18px;"/>
+        <Button text="Candidates" />
+        <Button text="Settings" />
+    </VBox>
+    <top>
+        <ToolBar>
+            <Button text="Add" onAction="#handleAddCandidate"/>
+            <TextField fx:id="searchField" promptText="Search..."/>
+            <Button text="Search" onAction="#handleSearch"/>
+        </ToolBar>
+    </top>
+
+    <center>
+        <TableView fx:id="candidatesTable">
+            <columns>
+                <TableColumn text="Nom" fx:id="nomColumn"/>
+                <TableColumn text="Prenom" fx:id="prenomColumn"/>
+                <TableColumn text="CIN" fx:id="cinColumn"/>
+                <TableColumn text="Telephone" fx:id="telephoneColumn"/>
+                <TableColumn text="Email" fx:id="emailColumn"/>
+                <TableColumn fx:id="colActions" text="Actions" prefWidth="200"/>
+
+            </columns>
+        </TableView>
+    </center>
+</BorderPane>

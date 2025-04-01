@@ -1,24 +1,29 @@
 package Entities;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class Personne {
+    protected int id;
     protected int CIN ;
     protected String nom ;
     protected String prenom ;
-    protected String adresse ;
+
     protected String mail ;
     protected int numTelephone ;
-    protected Date dateNaissance ;
-    public Personne(int cin,String nom,String prenom,String adresse,String mail,int numTelephone,Date dateNaissance) {
+    protected LocalDate dateNaissance ;
+    public Personne( int id,int cin,String nom,String prenom,String mail,int numTelephone,LocalDate dateNaissance) {
+        this.id = id;
         this.CIN = cin;
         this.nom = nom;
         this.prenom = prenom;
-        this.adresse = adresse;
         this.mail = mail;
         this.numTelephone = numTelephone;
-        this.dateNaissance = dateNaissance;
+        this.dateNaissance = null;
     }
+    public Personne() {};
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
     public int getCIN() {
         return CIN;
     }
@@ -37,12 +42,6 @@ public class Personne {
     public void setPrenom(String prenom) {
         this.prenom = prenom;
     }
-    public String getAdresse() {
-        return adresse;
-    }
-    public void setAdresse(String adresse) {
-        this.adresse = adresse;
-    }
     public String getMail() {
         return mail;
     }
@@ -55,19 +54,19 @@ public class Personne {
     public void setNumTelephone(int numTelephone) {
         this.numTelephone = numTelephone;
     }
-    public Date getDateNaissance() {
+    public LocalDate getDateNaissance() {
         return dateNaissance;
     }
-    public void setDateNaissance(Date dateNaissance) {
+    public void setDateNaissance(LocalDate dateNaissance) {
         this.dateNaissance = dateNaissance;
     }
 
     @Override
     public String   toString() {
-        return "CIN=" + CIN +
+        return " id" + id+
+                ",CIN=" + CIN +
                 ", nom='" + nom + '\'' +
                 ", prenom='" + prenom + '\'' +
-                ", adresse='" + adresse + '\'' +
                 ", mail='" + mail + '\'' +
                 ", numTelephone=" + numTelephone +
                 ", dateNaissance=" + dateNaissance +

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.DisplayCandidateController">
+    <children>
+        <Pane layoutX="-52.0" layoutY="-81.0" prefHeight="500.0" prefWidth="500.0">
+            <children>
+                <Label layoutX="155.0" layoutY="98.0" prefHeight="18.0" prefWidth="226.0" text="Details :">
+                    <font>
+                        <Font name="System Bold Italic" size="19.0" />
+                    </font>
+                </Label>
+
+                <!-- Increased vertical spacing between labels -->
+                <Label layoutX="106.0" layoutY="137.0" text="Nom" />
+                <Label fx:id="nom" layoutX="244.0" layoutY="137.0" prefHeight="18.0" prefWidth="84.0" />
+
+                <Label layoutX="106.0" layoutY="170.0" text="Prenom" />
+                <Label fx:id="prenom" layoutX="244.0" layoutY="170.0" prefHeight="18.0" prefWidth="84.0" />
+
+                <Label layoutX="106.0" layoutY="210.0" text="CIN" />
+                <Label fx:id="cin" layoutX="244.0" layoutY="210.0" prefHeight="18.0" prefWidth="84.0" />
+
+                <Label layoutX="106.0" layoutY="250.0" text="Tel" />
+                <Label fx:id="tel" layoutX="244.0" layoutY="250.0" prefHeight="18.0" prefWidth="84.0" />
+
+                <Label layoutX="106.0" layoutY="290.0" text="Email" />
+                <Label fx:id="email" layoutX="244.0" layoutY="290.0" prefHeight="18.0" prefWidth="84.0" />
+
+                <Label layoutX="106.0" layoutY="330.0" text="Date de naissance" />
+                <Label fx:id="dateNaissance" layoutX="244.0" layoutY="330.0" prefHeight="18.0" prefWidth="120.0" />
+
+                <Label layoutX="106.0" layoutY="410.0" text="Photo" />
+                <ImageView fx:id="cinImage" fitHeight="118.0" fitWidth="410.0" layoutX="176.0" layoutY="400.0" pickOnBounds="true" preserveRatio="true" />
+            </children>
+        </Pane>
+    </children>
+</AnchorPane>
