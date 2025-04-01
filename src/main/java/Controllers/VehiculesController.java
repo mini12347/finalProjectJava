@@ -1,5 +1,6 @@
 package Controllers;
 import DAO.VehiculesDAO;
+import Entities.TypeP;
 import Entities.Vehicule;
 import Service.VehiculesS;
 import javafx.application.Platform;
@@ -8,11 +9,13 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -20,6 +23,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -56,7 +61,7 @@ public class VehiculesController {
             actionsColumn.setCellFactory(col -> new TableCell<>() {
                 private final Button viewButton = new Button("🔍");
                 private final Button deleteButton = new Button("❌");
-                private final Button advancedButton = new Button("⚙️");
+                private final Button advancedButton = new Button("🔧");
                 private final HBox container = new HBox(10, viewButton, deleteButton, advancedButton);
 
                 {
@@ -64,7 +69,8 @@ public class VehiculesController {
                         int index = getIndex();
                         if (index >= 0 && index < getTableView().getItems().size()) {
                             Vehicule vehicule = getTableView().getItems().get(index);
-                            matricule.setText(vehicule.getMatricule());
+                            matricule.setText(vehicule.getMatricule().substring(0,vehicule.getMatricule().indexOf("ت")));
+                            amatricule.setText(vehicule.getMatricule().substring(vehicule.getMatricule().indexOf("س")+1,vehicule.getMatricule().length()));
                             datem.setText(new SimpleDateFormat("dd-MM-yyyy").format(vehicule.getDatem()));
                             kilo.setText(String.valueOf(vehicule.getKilometrage()));
                             type.setText(vehicule.getType() != null ? vehicule.getType().toString() : "N/A");
@@ -73,21 +79,27 @@ public class VehiculesController {
                     });
 
                     advancedButton.setOnAction(event -> {
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/VehiculesAdvancedInfo.fxml"));
                         try {
+                            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/VehiculesAdvancedInfo.fxml"));
                             Parent root = loader.load();
                             VehiculeAdvancedInfoController controller = loader.getController();
-                            controller.initialize(vehicules.get(getIndex()));
+                            controller.initialize(getTableView().getItems().get(getIndex()));
+                            Stage stage = new Stage();
+                            stage.setScene(new Scene(root));
+                            stage.setTitle("Advanced Vehicle Info");
+                            stage.show();
                         } catch (IOException e) {
                             e.printStackTrace();
+                            showError("Erreur lors du chargement de la fenêtre avancée.");
                         }
                     });
+
 
                     deleteButton.setOnAction(event -> {
                         int index = getIndex();
                         if (index >= 0 && index < getTableView().getItems().size()) {
                             Vehicule vehicule = getTableView().getItems().get(index);
-                            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Supprimer ce véhicule ?", ButtonType.YES, ButtonType.NO);
+                            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Supprimer cette véhicule ?", ButtonType.YES, ButtonType.NO);
                             alert.showAndWait().ifPresent(response -> {
                                 if (response == ButtonType.YES) {
                                     try {
@@ -150,7 +162,6 @@ public class VehiculesController {
     public void sortByDate() { sortVehicules("datem"); }
     public void sortByKilometrage() { sortVehicules("kilometrage"); }
     public void sortByType() { sortVehicules("type"); }
-
     private void sortVehicules(String column) {
         try {
             List<Vehicule> vehicules = vehiculesS.getVehiculeOrdered(column, "DESC");
@@ -160,7 +171,6 @@ public class VehiculesController {
             e.printStackTrace();
         }
     }
-
     public void addvehicule() {
         disableInputs(false);
         matricule.setText("");
@@ -170,52 +180,79 @@ public class VehiculesController {
         kilo.setText("");
         indication.setText("Entrer les nouvelles informations ");
     }
-
     public void update() {
         disableInputs(false);
     }
-
     public void save() throws SQLException {
-        if(!matricule.isDisable()) {
-            if(valid() && (type.getText().equalsIgnoreCase("moto") || type.getText().equalsIgnoreCase("camion") || type.getText().equalsIgnoreCase("voiture") ) && (!Objects.equals(kilo.getText(), "")) && (!Objects.equals(matricule.getText(), ""))&&(matricule.getText().matches("[0-9]{3,5}")) && (amatricule.getText().matches("[0-9]{2}")) && (Integer.parseInt(amatricule.getText())<LocalDate.now().getYear())){
-                Vehicule newVehicule = null;
+        if (!matricule.isDisable()) {
+            if (isValidInput()) {
                 try {
-                    newVehicule = new Vehicule(matricule.getText()+"تونس"+amatricule.getText(),new SimpleDateFormat("dd-MM-yyyy").parse(datem.getText()),Integer.parseInt(kilo.getText()), VehiculesDAO.typeOf(type.getText()));
+                    Vehicule newVehicule = createVehicule();
+
+                    if (vehiculesS.getVehicule(newVehicule.getMatricule()) != null) {
+                        vehiculesS.updateVehicule(newVehicule);
+                    } else {
+                        vehiculesS.addVehicule(newVehicule);
+                    }
+                    cancel();
                 } catch (ParseException e) {
-                    throw new RuntimeException(e);
-                }
-                if (vehiculesS.getVehicule(matricule.getText()) != null) {
-                    vehiculesS.updateVehicule(newVehicule);
-                } else {
-                    vehiculesS.addVehicule(newVehicule);
+                    showError("Format de date invalide. Veuillez utiliser dd-MM-yyyy.");
+                } catch (NumberFormatException e) {
+                    showError("Valeur numérique invalide. Veuillez entrer des nombres valides.");
                 }
             } else {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Erreur");
-                alert.setContentText("Données invalides ");
-                alert.showAndWait();
+                showError("Données invalides");
             }
         }
-
-        cancel();
     }
-
-    private boolean valid() {
-        try {
-            LocalDate parsedDate = LocalDate.parse(datem.getText(), DateTimeFormatter.ofPattern("dd-MM-yyyy"));
-            return LocalDate.now().isAfter(parsedDate);
-        } catch (Exception e) {
+    private boolean isValidInput() {
+        if (matricule.getText().isEmpty() || kilo.getText().isEmpty() || amatricule.getText().isEmpty()) {
             return false;
         }
+        if (!matricule.getText().strip().matches("[0-9]{3,5}") || !amatricule.getText().strip().matches("[0-9]{2}")) {
+            return false;
+        }
+        int year = Integer.parseInt(amatricule.getText().trim());
+        int currentYear = LocalDate.now().getYear() % 100;
+        if (year > currentYear) {
+            return false;
+        }
+        return isValidType(type.getText()) && LocalDate.parse(datem.getText(),DateTimeFormatter.ofPattern("dd-MM-yyyy")).isBefore(LocalDate.now()) && isValidDate(datem.getText());
     }
-
+    private boolean isValidType(String vehicleType) {
+        List<String> validTypes = Arrays.asList("moto", "camion", "voiture");
+        return validTypes.contains(vehicleType.toLowerCase());
+    }
+    private Vehicule createVehicule() throws ParseException {
+        String fullMatricule = matricule.getText() + "تونس" + amatricule.getText();
+        Date dateMiseEnService = new SimpleDateFormat("dd-MM-yyyy").parse(datem.getText());
+        int kilometrage = Integer.parseInt(kilo.getText());
+        TypeP typeVehicule = VehiculesDAO.typeOf(type.getText());
+        return new Vehicule(fullMatricule, dateMiseEnService, kilometrage, typeVehicule);
+    }
+    private void showError(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Erreur");
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
     public void cancel() {
         initialize();
         matricule.setText("matricule");
-        amatricule.setText("annee matricule");
+        amatricule.setText("AN");
         datem.setText("dd-mm-yyyy");
         kilo.setText("***** kilomètres");
         type.setText("MOTO/VOITURE/CAMION");
         disableInputs(true);
     }
+    private boolean isValidDate(String dateText) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        try {
+            LocalDate.parse(dateText, formatter);
+            return true;
+        } catch (DateTimeParseException e) {
+            return false;
+        }
+    }
+
 }

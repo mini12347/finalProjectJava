@@ -3,23 +3,29 @@ import Entities.TypeP;
 import Entities.Vehicule;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;
 
 public class VehiculeAdvancedInfoController {
     @FXML public Label indication;
-    @FXML public TextField matricule, datem, type, kilo;
+    @FXML public TextField matricule,amatricule, datem, type, kilo;
     @FXML public Label kilor, datev, datelv, datea;
-    public void initialize(Vehicule v) {
-        matricule.setText(v.getMatricule());
-        datem.setText(v.getDatem().toString());
-        type.setText(v.getType().toString());
-        kilo.setText(String.valueOf(v.getKilometrage()));
+    @FXML public TableView reparationsTable;
+    @FXML public TableColumn desColumn,datemColumn,MontantColumn,FactureColumn;
 
+    public void initialize(Vehicule v) {
+        matricule.setText(v.getMatricule().substring(0,v.getMatricule().indexOf("ت")));
+        amatricule.setText(v.getMatricule().substring(v.getMatricule().indexOf("س")+1,v.getMatricule().length()));
+        datem.setText(new SimpleDateFormat("dd-MM-yyyy").format(v.getDatem()));
+        kilo.setText(String.valueOf(v.getKilometrage()));
+        type.setText(v.getType() != null ? v.getType().toString() : "N/A");
         int currentYear = LocalDate.now().getYear();
         try {
-            int numMatricule = Integer.parseInt(v.getMatricule().substring(0, v.getMatricule().indexOf("س")));
+            int numMatricule = Integer.parseInt(v.getMatricule().substring(0, v.getMatricule().indexOf("ت")).trim());
             if (numMatricule % 2 == 0 && v.getType() != TypeP.MOTO) {
                 datelv.setText("5 mars " + currentYear);
             } else {
@@ -46,32 +52,18 @@ public class VehiculeAdvancedInfoController {
                 dateProchaineVisite = LocalDate.now().plusMonths(6);
             }
             datev.setText(dateProchaineVisite.toString());
-
-            LocalDate dateAssurance = dateMiseEnService.plusYears(1);
+            LocalDate dateAssurance =null;
+            if(LocalDate.of(LocalDate.now().getYear(), dateMiseEnService.getMonthValue(), dateMiseEnService.getDayOfMonth()).isAfter(LocalDate.now())){
+                dateAssurance =LocalDate.of(LocalDate.now().getYear(), dateMiseEnService.getMonthValue(), dateMiseEnService.getDayOfMonth());
+            }else{
+                dateAssurance=LocalDate.of(LocalDate.now().getYear()+1, dateMiseEnService.getMonthValue(), dateMiseEnService.getDayOfMonth());
+            }
             datea.setText(dateAssurance.toString());
-
             int prochaineVidange = 10000 - (v.getKilometrage() % 10000);
             kilor.setText(String.valueOf(prochaineVidange));
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-    public void update() {
-        new VehiculesController().update();
-    }
-
-    public void save() {
-        new VehiculesController().update();
-    }
-
-    public void cancel() {
-        new VehiculesController().cancel();
-    }
-
-    public void retour() {
-        LandingPController lc = new LandingPController();
-        lc.initialize();
-        lc.loadFXML("/fxml/Vehicules.fxml");
     }
 }

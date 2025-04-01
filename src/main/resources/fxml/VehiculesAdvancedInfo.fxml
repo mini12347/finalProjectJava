@@ -1,42 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-
-<?import javafx.geometry.Insets?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="Controllers.VehiculeAdvancedInfoController"
-            prefHeight="400.0" prefWidth="600.0">
+            prefHeight="400.0" prefWidth="1200.0" stylesheets="@../css/VAdvancedInfos.css">
     <center>
-        <VBox>
-            <Label text="Details de la vehicule"/>
+        <VBox styleClass="card">
+            <Label styleClass="title" text="Details de la vehicule"/>
             <VBox styleClass="card-details">
-                <Label fx:id="indication"/>
-                <Label text="Matricule:" />
-                <TextField styleClass="text-field" fx:id="matricule" disable="true" text="matricule de la voiture" />
-                <Label text="Date de mise en service:" />
-                <TextField styleClass="text-field"  fx:id="datem" disable="true" text="dd-mm-yyyy" />
-                <Label text="Kilométrage:" />
-                <TextField styleClass="text-field"  fx:id="kilo" disable="true" text="***** kilomètres" />
-                <Label text="Type:" />
-                <TextField styleClass="text-field"  fx:id="type" disable="true" text="MOTO/VOITURE/CAMION" />
-                <Label text="Kilometrage restant pour le prochain entretien"/>
-                <Label  fx:id="kilor" />
-                <Label text="date limite de paiement de vignette :"/>
-                <Label fx:id="datelv"/>
-                <Label text="date de la prochaine visite technique :"/>
-                <Label fx:id="datev"/>
-                <Label text="date limite de paiement de l'assurance "/>
-                <Label fx:id="datea"/>
-                <VBox spacing="30">
-                    <Button styleClass="animated-button" text="📝 Modifier" onAction="#update" />
-                    <Button styleClass="animated-button2" text="💾 Sauvegarder" onAction="#save"/>
-                    <Button styleClass="animated-button3" text="❌ Annuler" onAction="#cancel"/>
-                    <Button styleClass="animated-button" text="retour" onAction="#retour"/>
-                    <VBox.margin>
-                        <Insets left="60" top="30"/>
-                    </VBox.margin>
+                <Label styleClass="title1" text="Matricule:" />
+                <VBox spacing="10">
+                    <Label style="-fx-font-size: 12px;-fx-fill:#3e4854;-fx-font-weight: bold;" text="Matricule est sous cette forme nummatricule "/>
+                    <Label style="-fx-font-size: 12px;-fx-fill:#3e4854;-fx-font-weight: bold;" text="  تونس année matricule exp:2023->23"/>
+                    <HBox spacing="10">
+                        <TextField styleClass="text-field"  style="-fx-pref-width: 100px;" fx:id="matricule" disable="true" text="matricule " />
+                        <Label text="تونس"/>
+                        <TextField styleClass="text-field" style="-fx-pref-width: 50px;" fx:id="amatricule" disable="true" text="AN" />
+                    </HBox>
                 </VBox>
+                <Label styleClass="title1" text="Date de mise en service:" />
+                <TextField styleClass="text-field"  fx:id="datem" disable="true" text="dd-mm-yyyy" />
+                <Label  styleClass="title1" text="Kilométrage:" />
+                <TextField styleClass="text-field"  fx:id="kilo" disable="true" text="***** kilomètres" />
+                <Label styleClass="title1" text="Type:" />
+                <TextField styleClass="text-field"  fx:id="type" disable="true" text="MOTO/VOITURE/CAMION" />
+                <Label styleClass="title1" text="Kilometrage restant pour le prochain entretien"/>
+                <Label  fx:id="kilor" />
+                <Label styleClass="title1" text="date limite de paiement de vignette :"/>
+                <Label fx:id="datelv"/>
+                <Label styleClass="title1" text="date de la prochaine visite technique :"/>
+                <Label fx:id="datev"/>
+                <Label styleClass="title1" text="date limite de paiement de l'assurance "/>
+                <Label fx:id="datea"/>
+                <Label styleClass="title1" text="liste des reparations "/>
+                <TableView fx:id="reparationsTable" prefHeight="350" prefWidth="500.0" styleClass="table-view">
+                    <columns>
+                        <TableColumn fx:id="desColumn" prefWidth="150.0" text="Description" />
+                        <TableColumn fx:id="datemColumn" prefWidth="200.0" text="Date de reparation" />
+                        <TableColumn fx:id="MontantColumn" prefWidth="150.0" text="Montant" />
+                        <TableColumn fx:id="FactureColumn" prefWidth="150.0" text="Facture" />
+                    </columns>
+                </TableView>
             </VBox>
         </VBox>
     </center>

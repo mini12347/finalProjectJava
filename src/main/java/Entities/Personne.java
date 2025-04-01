@@ -4,26 +4,27 @@ import java.time.LocalDate;
 import java.util.Date;
 
 public class Personne {
-    protected int id;
     protected int CIN ;
     protected String nom ;
     protected String prenom ;
-
+    protected String adresse ;
     protected String mail ;
     protected int numTelephone ;
-    protected LocalDate dateNaissance ;
-    public Personne( int id,int cin,String nom,String prenom,String mail,int numTelephone,LocalDate dateNaissance) {
-        this.id = id;
+    protected Date dateNaissance ;
+    public Personne(int cin,String nom,String prenom,String adresse,String mail,int numTelephone,Date dateNaissance) {
         this.CIN = cin;
         this.nom = nom;
         this.prenom = prenom;
+        this.adresse = adresse;
         this.mail = mail;
         this.numTelephone = numTelephone;
-        this.dateNaissance = null;
+        this.dateNaissance = dateNaissance;
     }
-    public Personne() {};
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
+
+    public Personne() {
+
+    }
+
     public int getCIN() {
         return CIN;
     }
@@ -42,6 +43,12 @@ public class Personne {
     public void setPrenom(String prenom) {
         this.prenom = prenom;
     }
+    public String getAdresse() {
+        return adresse;
+    }
+    public void setAdresse(String adresse) {
+        this.adresse = adresse;
+    }
     public String getMail() {
         return mail;
     }
@@ -54,19 +61,19 @@ public class Personne {
     public void setNumTelephone(int numTelephone) {
         this.numTelephone = numTelephone;
     }
-    public LocalDate getDateNaissance() {
+    public Date getDateNaissance() {
         return dateNaissance;
     }
-    public void setDateNaissance(LocalDate dateNaissance) {
+    public void setDateNaissance(Date dateNaissance) {
         this.dateNaissance = dateNaissance;
     }
 
     @Override
     public String   toString() {
-        return " id" + id+
-                ",CIN=" + CIN +
+        return "CIN=" + CIN +
                 ", nom='" + nom + '\'' +
                 ", prenom='" + prenom + '\'' +
+                ", adresse='" + adresse + '\'' +
                 ", mail='" + mail + '\'' +
                 ", numTelephone=" + numTelephone +
                 ", dateNaissance=" + dateNaissance +

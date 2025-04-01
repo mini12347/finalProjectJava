@@ -57,6 +57,14 @@ public class LandingPController {
             updateButtonStyles();
             showPaiementInterface();
         });
+        btnCandidats.setOnAction(event -> {
+            if (selectedButton != null) {
+                selectedButton.getStyleClass().remove("selected");
+            }
+            selectedButton = btnCandidats;
+            updateButtonStyles();
+            showCandidatInterface();
+        });
     }
 
     @FXML

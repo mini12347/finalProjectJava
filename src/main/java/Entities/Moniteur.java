@@ -6,12 +6,11 @@ import java.util.Date;
 public class Moniteur extends Personne {
     private Vehicule vehicule;
     private Disponibility horaire;
-    public Moniteur(int id, int cin, String nom, String prenom, String adresse, String mail, int numTelephone, LocalDate dateNaissance, Vehicule vehicule, Disponibility horaire) {
-        super(id,cin, nom, prenom, mail, numTelephone, dateNaissance);
+    public Moniteur(int cin, String nom, String prenom, String adresse, String mail, int numTelephone, Date dateNaissance, Vehicule vehicule, Disponibility horaire) {
+        super(cin, nom, prenom, adresse, mail, numTelephone, dateNaissance);
         this.vehicule = vehicule;
         this.horaire = horaire;
     }
-    public Moniteur() {};
     public Vehicule getVehicule() {
         return vehicule;
     }
@@ -31,6 +30,6 @@ public class Moniteur extends Personne {
     @Override
     public String toString() {
         return "Moniteur{" +
-                  super.toString()+horaire.toString()+"vehicule=" + vehicule +"} ";
+                super.toString()+horaire.toString()+"vehicule=" + vehicule +"} ";
     }
 }

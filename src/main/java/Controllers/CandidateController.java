@@ -149,7 +149,7 @@ public class CandidateController {
             alert.showAndWait().ifPresent(response -> {
                 if (response == ButtonType.YES) {
                     try {
-                        service.deleteCandidate(candidate.getId());
+                        service.deleteCandidate(candidate.getCIN());
                         candidates.remove(candidate);
                         candidatesTable.getItems().setAll(candidates);
                     } catch (SQLException e) {
@@ -204,7 +204,7 @@ public class CandidateController {
                 dialogStage.showAndWait();
                 Candidat updatedCandidate = controller.getCandidat();
                 if (updatedCandidate != null) {
-                    updatedCandidate.setId(candidate.getId());
+                    updatedCandidate.setCIN(candidate.getCIN());
                     service.updateCandidate(updatedCandidate);
                     int index = candidates.indexOf(candidate);
                     if (index != -1) {
