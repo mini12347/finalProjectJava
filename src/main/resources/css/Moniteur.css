@@ -46,35 +46,39 @@
 }
 
 .action-button {
-    -fx-background-color: #4CAF50;
+    -fx-font-size: 12px;
+    -fx-background-color: #2C3E50;
     -fx-text-fill: white;
-    -fx-font-weight: bold;
+    -fx-padding: 10px;
     -fx-border-radius: 5px;
-    -fx-padding: 8px 15px;
+    -fx-cursor: hand;
 }
 
 .delete-button {
-    -fx-background-color: #f44336;
+    -fx-font-size: 12px;
+    -fx-background-color: #2C3E50;
     -fx-text-fill: white;
-    -fx-font-weight: bold;
+    -fx-padding: 10px;
     -fx-border-radius: 5px;
-    -fx-padding: 8px 15px;
+    -fx-cursor: hand;
 }
 
 .search-button {
-    -fx-background-color: #2196F3;
+    -fx-font-size: 12px;
+    -fx-background-color: #2C3E50;
     -fx-text-fill: white;
-    -fx-font-weight: bold;
+    -fx-padding: 10px;
     -fx-border-radius: 5px;
-    -fx-padding: 8px 15px;
+    -fx-cursor: hand;
 }
 
 .display-button {
-    -fx-background-color: #FF9800;
+    -fx-font-size: 12px;
+    -fx-background-color: #2C3E50;
     -fx-text-fill: white;
-    -fx-font-weight: bold;
+    -fx-padding: 10px;
     -fx-border-radius: 5px;
-    -fx-padding: 8px 15px;
+    -fx-cursor: hand;
 }
 
 /* Séparateur */

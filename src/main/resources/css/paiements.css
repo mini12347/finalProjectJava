@@ -13,9 +13,11 @@
 }
 
 .btn-search {
-    -fx-background-color: #4CAF50;
+    -fx-font-size: 12px;
+    -fx-background-color: #2C3E50;
     -fx-text-fill: white;
-    -fx-font-weight: bold;
+    -fx-padding: 10px;
+    -fx-border-radius: 5px;
     -fx-cursor: hand;
 }
 
@@ -34,9 +36,11 @@
 }
 
 .btn-payer {
-    -fx-background-color: #008CBA;
+    -fx-font-size: 12px;
+    -fx-background-color: #2C3E50;
     -fx-text-fill: white;
-    -fx-font-weight: bold;
+    -fx-padding: 10px;
+    -fx-border-radius: 5px;
     -fx-cursor: hand;
 }
 
@@ -45,9 +49,11 @@
 }
 
 .btn-reset {
-    -fx-background-color: #f44336;
+    -fx-font-size: 12px;
+    -fx-background-color: #2C3E50;
     -fx-text-fill: white;
-    -fx-font-weight: bold;
+    -fx-padding: 10px;
+    -fx-border-radius: 5px;
     -fx-cursor: hand;
 }
 
@@ -56,9 +62,11 @@
 }
 
 .par-facilite-button {
-    -fx-background-color: #FFC107;
-    -fx-text-fill: black;
-    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+    -fx-background-color: #2C3E50;
+    -fx-text-fill: white;
+    -fx-padding: 10px;
+    -fx-border-radius: 5px;
     -fx-cursor: hand;
 }
 

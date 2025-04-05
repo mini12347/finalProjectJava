@@ -123,7 +123,7 @@ public class LandingPController {
      * Affiche l'interface des candidats
      */
     private void showCandidatInterface() {
-        loadFXML("/fxml/Candidats.fxml");
+        loadFXML("/fxml/MainView.fxml");
     }
 
     /**

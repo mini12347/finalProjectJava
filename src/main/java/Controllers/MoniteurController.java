@@ -240,14 +240,22 @@ public class MoniteurController {
     // Méthode utilitaire pour traduire les jours de la semaine en français
     private String translateDayOfWeek(DayOfWeek day) {
         switch (day) {
-            case MONDAY: return "Lundi";
-            case TUESDAY: return "Mardi";
-            case WEDNESDAY: return "Mercredi";
-            case THURSDAY: return "Jeudi";
-            case FRIDAY: return "Vendredi";
-            case SATURDAY: return "Samedi";
-            case SUNDAY: return "Dimanche";
-            default: return day.toString();
+            case MONDAY:
+                return "Lundi";
+            case TUESDAY:
+                return "Mardi";
+            case WEDNESDAY:
+                return "Mercredi";
+            case THURSDAY:
+                return "Jeudi";
+            case FRIDAY:
+                return "Vendredi";
+            case SATURDAY:
+                return "Samedi";
+            case SUNDAY:
+                return "Dimanche";
+            default:
+                return day.toString();
         }
     }
 
@@ -273,6 +281,7 @@ public class MoniteurController {
         vehiculeComboBox.setValue(moniteur.getVehicule());
         dispoComboBox.setValue(moniteur.getDisponibilite());
     }
+
     @FXML
     private void ajouterMoniteur(MouseEvent event) {
         try {
