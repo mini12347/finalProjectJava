@@ -1,7 +1,10 @@
 package Controllers;
+import DAO.AutoEcoleDAO;
 import DAO.VehiculesDAO;
+import Entities.AutoEcole;
 import Entities.TypeP;
 import Entities.Vehicule;
+import Service.VehiculesGeneratePDF;
 import Service.VehiculesS;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -15,8 +18,11 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -37,11 +43,27 @@ public class VehiculesController {
     @FXML private TableColumn<Vehicule, Integer> kilometrageColumn;
     @FXML private TableColumn<Vehicule, Void> actionsColumn;
     @FXML private TextField matricule, amatricule, datem, kilo, type, searchField;
+    @FXML private Button generatePdfButton;
     private final VehiculesS vehiculesS = new VehiculesS();
+    private final AutoEcoleDAO autoEcoleDAO = new AutoEcoleDAO();
     private ObservableList<Vehicule> vehiculesList;
+    private AutoEcole autoEcole;
 
     public void initialize() {
         try {
+            // Récupérer les informations de l'auto-école
+            autoEcole = autoEcoleDAO.getLastModifiedAutoEcole();
+            if (autoEcole == null) {
+                // Si aucune auto-école n'est trouvée, créer une auto-école par défaut
+                autoEcole = new AutoEcole(
+                        "Auto-École",
+                        12345678,
+                        "contact@autoecole.com",
+                        "Adresse de l'auto-école",
+                        null // Horaire non défini
+                );
+            }
+
             List<Vehicule> vehicules = vehiculesS.getVehicules();
             vehiculesList = FXCollections.observableArrayList(vehicules);
             vehiculesTable.setItems(vehiculesList);
@@ -62,7 +84,8 @@ public class VehiculesController {
                 private final Button viewButton = new Button("🔍");
                 private final Button deleteButton = new Button("❌");
                 private final Button advancedButton = new Button("🔧");
-                private final HBox container = new HBox(10, viewButton, deleteButton, advancedButton);
+                private final Button pdfButton = new Button("📄");
+                private final HBox container = new HBox(10, viewButton, deleteButton, advancedButton, pdfButton);
 
                 {
                     viewButton.setOnAction(event -> {
@@ -94,7 +117,6 @@ public class VehiculesController {
                         }
                     });
 
-
                     deleteButton.setOnAction(event -> {
                         int index = getIndex();
                         if (index >= 0 && index < getTableView().getItems().size()) {
@@ -115,10 +137,19 @@ public class VehiculesController {
                         }
                     });
 
+                    pdfButton.setOnAction(event -> {
+                        int index = getIndex();
+                        if (index >= 0 && index < getTableView().getItems().size()) {
+                            Vehicule vehicule = getTableView().getItems().get(index);
+                            generateSingleVehiculePDF(vehicule);
+                        }
+                    });
+
                     String buttonStyle = "-fx-font-size: 12px; -fx-background-color: rgba(62,72,84,0.75); -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10px; -fx-border-radius: 5px; -fx-cursor: hand;";
                     viewButton.setStyle(buttonStyle);
                     deleteButton.setStyle(buttonStyle);
                     advancedButton.setStyle(buttonStyle);
+                    pdfButton.setStyle(buttonStyle);
                 }
 
                 @Override
@@ -255,4 +286,64 @@ public class VehiculesController {
         }
     }
 
+    @FXML
+    public void generateAllVehiculesPDF() {
+        try {
+            // Create a file chooser
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Enregistrer le fichier PDF");
+            fileChooser.getExtensionFilters().add(
+                    new FileChooser.ExtensionFilter("Fichiers PDF", "*.pdf"));
+            fileChooser.setInitialFileName("vehicules.pdf");
+
+            // Show save file dialog
+            Stage stage = (Stage) vehiculesTable.getScene().getWindow();
+            File file = fileChooser.showSaveDialog(stage);
+
+            if (file != null) {
+                // Générer le PDF avec les infos de l'auto-école
+                VehiculesGeneratePDF.generateVehiculesPDF(vehiculesList, autoEcole, file.getAbsolutePath());
+
+                // Show success message
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Succès");
+                alert.setHeaderText(null);
+                alert.setContentText("Le fichier PDF a été généré avec succès!");
+                alert.showAndWait();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            showError("Erreur lors de la génération du PDF: " + e.getMessage());
+        }
+    }
+
+    private void generateSingleVehiculePDF(Vehicule vehicule) {
+        try {
+            // Create a file chooser
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Enregistrer le fichier PDF");
+            fileChooser.getExtensionFilters().add(
+                    new FileChooser.ExtensionFilter("Fichiers PDF", "*.pdf"));
+            fileChooser.setInitialFileName("vehicule_" + vehicule.getMatricule().replaceAll("[^a-zA-Z0-9]", "_") + ".pdf");
+
+            // Show save file dialog
+            Stage stage = (Stage) vehiculesTable.getScene().getWindow();
+            File file = fileChooser.showSaveDialog(stage);
+
+            if (file != null) {
+                // Générer le PDF avec les infos de l'auto-école
+                VehiculesGeneratePDF.generateSingleVehiculePDF(vehicule, autoEcole, file.getAbsolutePath());
+
+                // Show success message
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Succès");
+                alert.setHeaderText(null);
+                alert.setContentText("Le fichier PDF a été généré avec succès!");
+                alert.showAndWait();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            showError("Erreur lors de la génération du PDF: " + e.getMessage());
+        }
+    }
 }

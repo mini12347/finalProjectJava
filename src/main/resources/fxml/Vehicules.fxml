@@ -38,6 +38,10 @@
                    <Button styleClass="animated-button" text="📝 Modifier" onAction="#update" />
                    <Button styleClass="animated-button2" text="💾 Sauvegarder" onAction="#save"/>
                    <Button styleClass="animated-button3" text="❌ Annuler" onAction="#cancel"/>
+                   <Button fx:id="generatePdfButton"
+                           text="Générer PDF"
+                           onAction="#generateAllVehiculesPDF"
+                           styleClass="animated-button"/>
                    <VBox.margin>
                        <Insets left="60" top="30"/>
                    </VBox.margin>

@@ -6,6 +6,7 @@
 
 <AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="Controllers.MoniteurController" stylesheets="@../css/Moniteur.css">
     <children>
+        <!-- Bouton pour générer un PDF de tous les moniteurs -->
         <VBox spacing="10" AnchorPane.topAnchor="10" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10" AnchorPane.bottomAnchor="10">
             <padding>
                 <Insets top="10" right="10" bottom="10" left="10"/>
@@ -56,6 +57,11 @@
                     <Button text="Supprimer" onMouseClicked="#supprimerMoniteur" styleClass="delete-button"/>
                     <Button text="Rechercher" onMouseClicked="#rechercherMoniteurParId" styleClass="search-button"/>
                     <Button text="Afficher tout" onAction="#afficherMoniteurs" styleClass="display-button"/>
+                    <Button fx:id="genererPDFButton" mnemonicParsing="false" onMouseClicked="#genererPDF"
+                            text="Générer PDF" styleClass="pdfAll-button"/>
+
+                    <!-- Bouton pour générer un PDF du moniteur sélectionné uniquement -->
+                    <Button fx:id="genererPDFSelectionButton" mnemonicParsing="false" onMouseClicked="#genererPDFSelection"  text="PDF Sélection"  styleClass="pdfOne-button" />
                 </HBox>
 
                 <!-- Compteur -->
@@ -117,6 +123,7 @@
                     </columns>
                 </TableView>
             </VBox>
+
         </VBox>
     </children>
 </AnchorPane>

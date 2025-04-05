@@ -6,6 +6,10 @@ module org.openjfx.finalproject {
     opens Entities to javafx.base;
     opens Controllers to javafx.fxml;
     opens org.openjfx.finalproject to javafx.fxml;
-   // Ajoutez cette ligne
+    // Ajoutez cette ligne
     exports org.openjfx.finalproject;
+
+    requires com.github.librepdf.openpdf;
+    requires java.desktop;
+
 }

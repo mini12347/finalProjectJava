@@ -42,6 +42,10 @@
                         <TableColumn fx:id="FactureColumn" prefWidth="150.0" text="Facture" />
                     </columns>
                 </TableView>
+                <Button fx:id="generatePdfButton" layoutX="20" layoutY="350" mnemonicParsing="false"
+                        onAction="#handleGeneratePDF" prefHeight="30" prefWidth="180"
+
+                        text="Générer PDF" />
             </VBox>
         </VBox>
     </center>

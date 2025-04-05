@@ -7,7 +7,7 @@ import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import Entities.Candidat;
 import java.io.ByteArrayInputStream;
-import java.time.format.DateTimeFormatter;
+import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.Optional;
 
@@ -50,16 +50,17 @@ public class DisplayCandidateController {
             prenom.setText(candidate.getPrenom());
             cin.setText(String.valueOf(candidate.getCIN()));
             tel.setText(String.valueOf(candidate.getNumTelephone()));
-
             email.setText(candidate.getMail());
+
+            // Fix for date formatting - use SimpleDateFormat for java.util.Date objects
             dateNaissance.setText(
                     Optional.ofNullable(candidate.getDateNaissance())
-                            .map(date -> date.format(DateTimeFormatter
-                                    .ofPattern("dd MMMM yyyy")
-                                    .withLocale(Locale.FRENCH)))
+                            .map(date -> {
+                                SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy", Locale.FRENCH);
+                                return formatter.format(date);
+                            })
                             .orElse("Date de naissance non renseignée")
             );
-
 
             // Convert byte[] to Image
             if (candidate.getCinImage() != null) {
@@ -69,6 +70,3 @@ public class DisplayCandidateController {
         }
     }
 }
-
-
-

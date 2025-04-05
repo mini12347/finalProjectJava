@@ -3,8 +3,13 @@ import Entities.AutoEcole;
 import Entities.Disponibility;
 import Entities.Hours;
 import Service.AutoEcoleInfosS;
+import Service.PDFGenerator;
+import com.lowagie.text.DocumentException;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.stage.FileChooser;
+import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.time.DayOfWeek;
 import java.util.HashMap;
@@ -17,6 +22,7 @@ public class AutoEcoleInfoController {
             FriStart, FriEnd, SatStart, SatEnd, SunStart, SunEnd;
     @FXML private TextField nomField, numtelField, emailField, adresseField;
     @FXML private Label indication;
+    @FXML private Button generatePdfBtn;
 
     private AutoEcoleInfosS autoEcoleService = new AutoEcoleInfosS();
     private AutoEcole autoEcole;
@@ -265,6 +271,37 @@ public class AutoEcoleInfoController {
         SatEnd.clear();
         SunEnd.clear();
         indication.setText("Entrer les nouvelles informations de votre auto école ");
+    }
 
+    @FXML
+    public void generatePDF() {
+        try {
+            if (autoEcole == null) {
+                autoEcole = autoEcoleService.getAutoEcole();
+            }
+
+            if (autoEcole == null) {
+                showErrorMessage("Aucune information d'auto-école disponible.");
+                return;
+            }
+
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Enregistrer le PDF");
+            fileChooser.getExtensionFilters().add(
+                    new FileChooser.ExtensionFilter("Fichiers PDF", "*.pdf"));
+            fileChooser.setInitialFileName(autoEcole.getNom() + "_informations.pdf");
+
+            File file = fileChooser.showSaveDialog(null);
+            if (file != null) {
+                PDFGenerator.generateAutoEcolePDF(autoEcole, file.getAbsolutePath());
+                showSuccessMessage("PDF généré avec succès à l'emplacement : " + file.getAbsolutePath());
+            }
+        } catch (SQLException e) {
+            showErrorMessage("Erreur lors de la récupération des données.");
+            e.printStackTrace();
+        } catch (IOException | DocumentException e) {
+            showErrorMessage("Erreur lors de la génération du PDF : " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 }

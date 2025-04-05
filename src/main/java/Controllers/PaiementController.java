@@ -3,13 +3,20 @@ package Controllers;
 import Entities.Paiement;
 import Entities.ParFacilite;
 import Service.PaiementService;
+import Service.PaiementPdfGenerator;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Callback;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.sql.Date;
 import java.sql.Time;
 import java.util.List;
@@ -42,11 +49,15 @@ public class PaiementController {
     private TableColumn<Paiement, String> montantsColumn;
     @FXML
     private TableColumn<Paiement, Void> choixColumn;
+    @FXML
+    private TableColumn<Paiement, Void> pdfColumn;  // New column for PDF generation
 
     private PaiementService paiementService;
+    private PaiementPdfGenerator pdfGenerator;
 
     public PaiementController() {
         paiementService = new PaiementService();
+        pdfGenerator = new PaiementPdfGenerator();
     }
 
     @FXML
@@ -79,6 +90,9 @@ public class PaiementController {
 
         // Setup Choix column with a "Par Facilité" button
         choixColumn.setCellFactory(createPaymentButtonCell());
+
+        // Setup PDF column with "Générer PDF" button
+        pdfColumn.setCellFactory(createPdfButtonCell());
     }
 
     // Helper method to format montants for display
@@ -117,6 +131,65 @@ public class PaiementController {
                 }
             }
         };
+    }
+
+    // Method to create the cell factory for the PDF column
+    private Callback<TableColumn<Paiement, Void>, TableCell<Paiement, Void>> createPdfButtonCell() {
+        return param -> new TableCell<>() {
+            private final Button pdfButton = new Button("Générer PDF");
+
+            {
+                pdfButton.setOnAction(event -> {
+                    Paiement paiement = getTableView().getItems().get(getIndex());
+                    generatePdfForPayment(paiement);
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(pdfButton);
+                }
+            }
+        };
+    }
+
+    // Method to handle PDF generation
+    private void generatePdfForPayment(Paiement paiement) {
+        try {
+            String generatedPdfPath = pdfGenerator.generatePaiementRecu(paiement);
+
+            if (generatedPdfPath != null) {
+                // Ask user where to save the PDF
+                FileChooser fileChooser = new FileChooser();
+                fileChooser.setTitle("Enregistrer le reçu de paiement");
+                fileChooser.setInitialFileName("paiement_" + paiement.getIdPaiement() + ".pdf");
+                fileChooser.getExtensionFilters().add(
+                        new FileChooser.ExtensionFilter("PDF Files", "*.pdf")
+                );
+
+                File selectedFile = fileChooser.showSaveDialog(new Stage());
+
+                if (selectedFile != null) {
+                    // Copy the generated PDF to the selected location
+                    Files.copy(Paths.get(generatedPdfPath), selectedFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+
+                    // Show success message
+                    showAlert("Succès", "Le reçu de paiement a été généré avec succès à: " + selectedFile.getAbsolutePath());
+
+                    // Clean up the temporary file
+                    Files.delete(Paths.get(generatedPdfPath));
+                }
+            } else {
+                showAlert("Erreur", "Impossible de générer le PDF pour ce paiement.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert("Erreur", "Une erreur s'est produite lors de la génération du PDF: " + e.getMessage());
+        }
     }
 
     // Method to handle par facilité payment initiation

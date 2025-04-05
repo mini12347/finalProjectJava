@@ -1,5 +1,5 @@
 package Controllers;
-
+import java.time.LocalDate;
 import Entities.Moniteur;
 import Entities.Vehicule;
 import Entities.Disponibility;
@@ -7,6 +7,7 @@ import DAO.MoniteurDAO;
 import DAO.VehiculeDAO;
 import DAO.DisponibilityDAO;
 import Connection.ConxDB;
+import Service.MoniteurPDFGenerator;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
@@ -15,19 +16,27 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.util.StringConverter;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
+import java.util.ArrayList;
+import java.io.File;
+import java.io.IOException;
 import java.time.DayOfWeek;
+
+import com.lowagie.text.DocumentException;
 
 public class MoniteurController {
 
     private MoniteurDAO moniteurDAO;
     private VehiculeDAO vehiculeDAO;
     private DisponibilityDAO disponibilityDAO;
+    private MoniteurPDFGenerator pdfGenerator;
 
     @FXML
     private TextField cinField, nomField, prenomField, adresseField, mailField, numTelephoneField;
@@ -45,12 +54,15 @@ public class MoniteurController {
     private TableColumn<Moniteur, String> nomColumn, prenomColumn, adresseColumn, mailColumn, numTelephoneColumn, dateNaissanceColumn, vehiculeColumn, dispoColumn;
     @FXML
     private Label nbMoniteursLabel;
+    @FXML
+    private Button genererPDFButton, genererPDFSelectionButton;
 
     public MoniteurController() {
         Connection connection = ConxDB.getInstance();
         this.moniteurDAO = new MoniteurDAO(connection);
         this.vehiculeDAO = new VehiculeDAO();
         this.disponibilityDAO = new DisponibilityDAO(connection);
+        this.pdfGenerator = new MoniteurPDFGenerator();
     }
 
     public void initialize() {
@@ -119,6 +131,9 @@ public class MoniteurController {
                 fillFieldsWithMoniteur(newSelection);
             }
         });
+
+        // Charger initialement tous les moniteurs
+        afficherMoniteurs();
     }
 
     // Initialisation des ComboBox (structure et affichage)
@@ -240,14 +255,22 @@ public class MoniteurController {
     // Méthode utilitaire pour traduire les jours de la semaine en français
     private String translateDayOfWeek(DayOfWeek day) {
         switch (day) {
-            case MONDAY: return "Lundi";
-            case TUESDAY: return "Mardi";
-            case WEDNESDAY: return "Mercredi";
-            case THURSDAY: return "Jeudi";
-            case FRIDAY: return "Vendredi";
-            case SATURDAY: return "Samedi";
-            case SUNDAY: return "Dimanche";
-            default: return day.toString();
+            case MONDAY:
+                return "Lundi";
+            case TUESDAY:
+                return "Mardi";
+            case WEDNESDAY:
+                return "Mercredi";
+            case THURSDAY:
+                return "Jeudi";
+            case FRIDAY:
+                return "Vendredi";
+            case SATURDAY:
+                return "Samedi";
+            case SUNDAY:
+                return "Dimanche";
+            default:
+                return day.toString();
         }
     }
 
@@ -263,9 +286,7 @@ public class MoniteurController {
 
         if (moniteur.getDateNaissance() != null) {
             // Conversion de java.sql.Date en LocalDate compatible avec toutes les versions de Java
-            dateNaissanceField.setValue(moniteur.getDateNaissance().toInstant()
-                    .atZone(java.time.ZoneId.systemDefault())
-                    .toLocalDate());
+            dateNaissanceField.setValue(LocalDate.parse(moniteur.getDateNaissance().toString()));  // <-- C'EST CETTE LIGNE À MODIFIER
         } else {
             dateNaissanceField.setValue(null);
         }
@@ -273,6 +294,7 @@ public class MoniteurController {
         vehiculeComboBox.setValue(moniteur.getVehicule());
         dispoComboBox.setValue(moniteur.getDisponibilite());
     }
+
     @FXML
     private void ajouterMoniteur(MouseEvent event) {
         try {
@@ -379,6 +401,63 @@ public class MoniteurController {
             updateCounterLabel();
         } catch (Exception e) {
             showAlert("Erreur", "Erreur lors de l'affichage des moniteurs : " + e.getMessage(), Alert.AlertType.ERROR);
+            e.printStackTrace();
+        }
+    }
+
+    // Méthode pour générer un PDF pour tous les moniteurs
+    @FXML
+    private void genererPDF(MouseEvent event) {
+        try {
+            List<Moniteur> moniteurs = moniteurDAO.afficherTousLesMoniteurs();
+            if (moniteurs.isEmpty()) {
+                showAlert("Information", "Aucun moniteur à inclure dans le rapport.", Alert.AlertType.INFORMATION);
+                return;
+            }
+
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Enregistrer le rapport PDF");
+            fileChooser.getExtensionFilters().add(
+                    new FileChooser.ExtensionFilter("Fichiers PDF", "*.pdf"));
+            fileChooser.setInitialFileName("liste_moniteurs.pdf");
+
+            File file = fileChooser.showSaveDialog(new Stage());
+            if (file != null) {
+                pdfGenerator.generatePDF(moniteurs, file.getAbsolutePath());
+                showAlert("Succès", "Le rapport PDF a été généré avec succès.", Alert.AlertType.INFORMATION);
+            }
+        } catch (SQLException | IOException | DocumentException e) {
+            showAlert("Erreur", "Erreur lors de la génération du PDF : " + e.getMessage(), Alert.AlertType.ERROR);
+            e.printStackTrace();
+        }
+    }
+
+    // Méthode pour générer un PDF pour le moniteur sélectionné
+    @FXML
+    private void genererPDFSelection(MouseEvent event) {
+        Moniteur selectedMoniteur = moniteurTableView.getSelectionModel().getSelectedItem();
+        if (selectedMoniteur == null) {
+            showAlert("Erreur", "Veuillez sélectionner un moniteur pour générer le rapport.", Alert.AlertType.WARNING);
+            return;
+        }
+
+        try {
+            List<Moniteur> moniteurs = new ArrayList<>();
+            moniteurs.add(selectedMoniteur);
+
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Enregistrer le rapport PDF");
+            fileChooser.getExtensionFilters().add(
+                    new FileChooser.ExtensionFilter("Fichiers PDF", "*.pdf"));
+            fileChooser.setInitialFileName("moniteur_" + selectedMoniteur.getCIN() + ".pdf");
+
+            File file = fileChooser.showSaveDialog(new Stage());
+            if (file != null) {
+                pdfGenerator.generatePDF(moniteurs, file.getAbsolutePath());
+                showAlert("Succès", "Le rapport PDF pour le moniteur sélectionné a été généré avec succès.", Alert.AlertType.INFORMATION);
+            }
+        } catch (SQLException | IOException | DocumentException e) {
+            showAlert("Erreur", "Erreur lors de la génération du PDF : " + e.getMessage(), Alert.AlertType.ERROR);
             e.printStackTrace();
         }
     }

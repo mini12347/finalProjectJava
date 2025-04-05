@@ -77,5 +77,11 @@
         <Button text="Modifier" onAction="#handleUpdate" styleClass="animated-button2"/>
         <Button text="sauvegarder" onAction="#saveChanges" styleClass="animated-button2"/>
         <Button text="annuler" onAction="#load" styleClass="animated-button3"/>
+        <Button fx:id="generatePdfBtn"
+                text="Générer PDF"
+                onAction="#generatePDF"
+                styleClass="animated-button2"/>
     </HBox>
+
+
 </VBox>

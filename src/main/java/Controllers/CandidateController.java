@@ -14,9 +14,12 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 import javafx.application.Platform;
+import java.awt.Desktop;
+import java.io.File;
 
 import Entities.Candidat;
 import Service.CandidateService;
+import Service.PdfService;
 
 public class CandidateController {
 
@@ -28,6 +31,7 @@ public class CandidateController {
 
 
     private final CandidateService service = new CandidateService();
+    private final PdfService pdfService = new PdfService();
     private final List<Candidat> candidates = new java.util.ArrayList<>();
 
     @FXML
@@ -52,17 +56,20 @@ public class CandidateController {
             }
         });
     }
-//Rôle : Créer une colonne personnalisée avec des boutons d'actions pour chaque ligne du tableau
+
+    //Rôle : Créer une colonne personnalisée avec des boutons d'actions pour chaque ligne du tableau
     private Callback<TableColumn<Candidat, Void>, TableCell<Candidat, Void>> getActionColumnFactory() {
         return param -> new TableCell<>() {
             private final Button btnEdit = new Button("Edit");
             private final Button btnDelete = new Button("Delete");
             private final Button btnShow = new Button("Show");
+            private final Button btnPdf = new Button("PDF");
 
             {
                 btnEdit.setOnAction(e -> handleEditAction(getTableRow().getItem()));
                 btnDelete.setOnAction(e -> handleDeleteAction(getTableRow().getItem()));
                 btnShow.setOnAction(e -> handleShowAction(getTableRow().getItem()));
+                btnPdf.setOnAction(e -> handlePdfAction(getTableRow().getItem()));
             }
 
             @Override
@@ -71,12 +78,11 @@ public class CandidateController {
                 if (empty) {
                     setGraphic(null);
                 } else {
-                    HBox hBox = new HBox(10, btnEdit, btnDelete, btnShow);
+                    HBox hBox = new HBox(5, btnEdit, btnDelete, btnShow, btnPdf);
                     setGraphic(hBox);
                 }
             }
         };
-
     }
 
     private void loadCandidates() {
@@ -92,9 +98,8 @@ public class CandidateController {
                 System.out.println("Nombre de candidats chargés : " + candidates.size());
             });
         } catch (SQLException e) {
-            showAlert("Database Error", "Could not load candidates:\n" + e.getMessage());
+            showAlert("Database Error", "Could not load candidates:\n" + e.getMessage(), Alert.AlertType.ERROR);
         }
-
     }
 
     @FXML
@@ -124,24 +129,20 @@ public class CandidateController {
                     loadCandidates();
 
                     // Message de succès
-                    Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
-                    successAlert.setTitle("Succès");
-                    successAlert.setHeaderText(null);
-                    successAlert.setContentText("Candidat ajouté avec succès !");
-                    successAlert.showAndWait();
+                    showAlert("Succès", "Candidat ajouté avec succès !", Alert.AlertType.INFORMATION);
                 } catch (SQLException e) {
-
                     if (e.getMessage().contains("email")) {
-                        showAlert("Erreur", "Un candidat avec cet email existe déjà.");
+                        showAlert("Erreur", "Un candidat avec cet email existe déjà.", Alert.AlertType.ERROR);
                     } else {
-                        showAlert("Erreur de sauvegarde", e.getMessage());
+                        showAlert("Erreur de sauvegarde", e.getMessage(), Alert.AlertType.ERROR);
                     }
                 }
             }
         } catch (IOException e) {
-            showAlert("Erreur", "Erreur lors de l'ouverture du formulaire : " + e.getMessage());
+            showAlert("Erreur", "Erreur lors de l'ouverture du formulaire : " + e.getMessage(), Alert.AlertType.ERROR);
         }
     }
+
     private void handleDeleteAction(Candidat candidate) {
         if (candidate != null) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete this candidate?", ButtonType.YES, ButtonType.NO);
@@ -153,12 +154,12 @@ public class CandidateController {
                         candidates.remove(candidate);
                         candidatesTable.getItems().setAll(candidates);
                     } catch (SQLException e) {
-                        showAlert("Delete Error", "Could not delete candidate:\n" + e.getMessage());
+                        showAlert("Delete Error", "Could not delete candidate:\n" + e.getMessage(), Alert.AlertType.ERROR);
                     }
                 }
             });
         } else {
-            showAlert("Warning", "Please select a candidate to delete.");
+            showAlert("Warning", "Please select a candidate to delete.", Alert.AlertType.WARNING);
         }
     }
 
@@ -169,15 +170,91 @@ public class CandidateController {
             try {
                 candidatesTable.getItems().setAll(service.searchCandidates(keyword));
             } catch (SQLException e) {
-                showAlert("Search Error", "Search failed:\n" + e.getMessage());
+                showAlert("Search Error", "Search failed:\n" + e.getMessage(), Alert.AlertType.ERROR);
             }
         } else {
             loadCandidates();
         }
     }
 
-    private void showAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR, message, ButtonType.OK);
+    /**
+     * Génère un PDF pour un candidat sélectionné
+     */
+    private void handlePdfAction(Candidat candidate) {
+        if (candidate != null) {
+            try {
+                String filePath = pdfService.generateCandidatePdf(candidate);
+
+                // Demander à l'utilisateur s'il souhaite ouvrir le PDF généré
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("PDF Généré");
+                alert.setHeaderText("Le PDF a été généré avec succès");
+                alert.setContentText("Voulez-vous ouvrir le fichier PDF ?");
+
+                ButtonType buttonTypeYes = new ButtonType("Oui");
+                ButtonType buttonTypeNo = new ButtonType("Non");
+
+                alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo);
+
+                alert.showAndWait().ifPresent(buttonType -> {
+                    if (buttonType == buttonTypeYes) {
+                        try {
+                            Desktop.getDesktop().open(new File(filePath));
+                        } catch (IOException e) {
+                            showAlert("Erreur", "Impossible d'ouvrir le fichier PDF :\n" + e.getMessage(), Alert.AlertType.ERROR);
+                        }
+                    }
+                });
+
+            } catch (IOException e) {
+                showAlert("Erreur PDF", "Impossible de générer le PDF :\n" + e.getMessage(), Alert.AlertType.ERROR);
+            }
+        } else {
+            showAlert("Attention", "Veuillez sélectionner un candidat.", Alert.AlertType.WARNING);
+        }
+    }
+
+    /**
+     * Génère un PDF contenant la liste de tous les candidats
+     */
+    @FXML
+    private void handleGenerateListPdf() {
+        try {
+            if (candidates.isEmpty()) {
+                showAlert("Attention", "Aucun candidat à exporter.", Alert.AlertType.WARNING);
+                return;
+            }
+
+            String filePath = pdfService.generateCandidatesListPdf(candidates);
+
+            // Demander à l'utilisateur s'il souhaite ouvrir le PDF généré
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("PDF Généré");
+            alert.setHeaderText("Le PDF de la liste des candidats a été généré avec succès");
+            alert.setContentText("Voulez-vous ouvrir le fichier PDF ?");
+
+            ButtonType buttonTypeYes = new ButtonType("Oui");
+            ButtonType buttonTypeNo = new ButtonType("Non");
+
+            alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo);
+
+            alert.showAndWait().ifPresent(buttonType -> {
+                if (buttonType == buttonTypeYes) {
+                    try {
+                        Desktop.getDesktop().open(new File(filePath));
+                    } catch (IOException e) {
+                        showAlert("Erreur", "Impossible d'ouvrir le fichier PDF :\n" + e.getMessage(), Alert.AlertType.ERROR);
+                    }
+                }
+            });
+
+        } catch (IOException e) {
+            showAlert("Erreur PDF", "Impossible de générer le PDF de la liste :\n" + e.getMessage(), Alert.AlertType.ERROR);
+        }
+    }
+
+    private void showAlert(String title, String message, Alert.AlertType type) {
+        Alert alert = new Alert(type, message, ButtonType.OK);
         alert.setTitle(title);
         alert.showAndWait();
     }
@@ -213,7 +290,7 @@ public class CandidateController {
                     }
                 }
             } catch (IOException | SQLException e) {
-                showAlert("Error", "Error updating candidate:\n" + e.getMessage());
+                showAlert("Error", "Error updating candidate:\n" + e.getMessage(), Alert.AlertType.ERROR);
             }
         }
     }
@@ -238,7 +315,7 @@ public class CandidateController {
 
                 dialogStage.showAndWait();
             } catch (IOException e) {
-                showAlert("Error", "Error opening the form:\n" + e.getMessage());
+                showAlert("Error", "Error opening the form:\n" + e.getMessage(), Alert.AlertType.ERROR);
             }
         }
     }
