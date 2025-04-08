@@ -1,0 +1,92 @@
+.root {
+    -fx-background-color: #f5f5f7;
+    -fx-font-family: "Segoe UI", Arial, sans-serif;
+}
+
+.title {
+    -fx-text-fill: #2c3e50;
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-padding: 0 0 15 0;
+}
+
+.subtitle {
+    -fx-text-fill: #2c3e50;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-padding: 15 0 10 0;
+}
+
+/* Cards styling */
+.card {
+    -fx-background-color: white;
+    -fx-background-radius: 8px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 8, 0, 0, 0);
+    -fx-min-width: 200px;
+}
+
+/* Card title styling - replace first-child */
+.card-title {
+    -fx-text-fill: #7f8c8d;
+    -fx-font-size: 14px;
+    -fx-font-weight: normal;
+}
+
+/* Card value styling - replace nth-child */
+.card-value {
+    -fx-text-fill: #2c3e50;
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-padding: 5 0 0 0;
+}
+
+/* Alerts styling */
+.alert {
+    -fx-background-color: white;
+    -fx-background-radius: 6px;
+    -fx-border-width: 0 0 0 4px;
+    -fx-border-radius: 4px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 4, 0, 0, 0);
+}
+
+.alert-warning {
+    -fx-border-color: #ffa726;
+}
+
+.alert-danger {
+    -fx-border-color: #e74c3c;
+}
+
+.alert-info {
+    -fx-border-color: #3498db;
+}
+
+/* ScrollPane styling */
+.scroll-pane {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}
+
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+.scroll-pane .scroll-bar:vertical {
+    -fx-background-color: transparent;
+    -fx-background-radius: 0;
+}
+
+.scroll-pane .scroll-bar:vertical .track {
+    -fx-background-color: transparent;
+}
+
+.scroll-pane .scroll-bar:vertical .thumb {
+    -fx-background-color: #cccccc;
+    -fx-background-radius: 5px;
+}
+
+/* Add a nice hover effect to cards */
+.card:hover {
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.15), 10, 0, 0, 0);
+    -fx-translate-y: -2;
+}

@@ -116,7 +116,7 @@ public class LandingPController {
      * Affiche l'interface du tableau de bord
      */
     private void showDashboard() {
-        loadFXML("/fxml/Dashboard.fxml");
+        loadFXML("/fxml/dashboard.fxml");
     }
 
     /**
