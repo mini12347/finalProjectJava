@@ -94,24 +94,7 @@ public class MoniteurController {
         if (dispoColumn != null) {
             dispoColumn.setCellValueFactory(cellData -> {
                 Disponibility dispo = cellData.getValue().getDisponibilite();
-                if (dispo == null || dispo.getDaysOfWeek() == null || dispo.getDaysOfWeek().isEmpty()) {
-                    return new SimpleStringProperty("Aucune");
-                }
-
-                StringBuilder sb = new StringBuilder();
-                int count = 0;
-                for (Map.Entry<DayOfWeek, Entities.Hours> entry : dispo.getDaysOfWeek().entrySet()) {
-                    if (count > 0) sb.append(", ");
-                    sb.append(translateDayOfWeek(entry.getKey())).append(" ")
-                            .append(entry.getValue().getStarthour()).append("h-")
-                            .append(entry.getValue().getEndhour()).append("h");
-                    count++;
-                    if (count >= 1) {
-                        sb.append("...");
-                        break;
-                    }
-                }
-                return new SimpleStringProperty(sb.toString());
+                return new SimpleStringProperty(dispo != null ? dispo.toString() : "Aucune");
             });
         }
 
@@ -166,60 +149,19 @@ public class MoniteurController {
             }
         });
 
-        // Configuration de l'affichage des disponibilités
+        // Configuration de l'affichage des disponibilités - version simplifiée
         dispoComboBox.setCellFactory(param -> new ListCell<Disponibility>() {
             @Override
             protected void updateItem(Disponibility item, boolean empty) {
                 super.updateItem(item, empty);
-                if (empty || item == null) {
-                    setText(null);
-                } else {
-                    StringBuilder sb = new StringBuilder();
-                    Map<DayOfWeek, Entities.Hours> schedule = item.getDaysOfWeek();
-                    if (schedule != null && !schedule.isEmpty()) {
-                        sb.append("Disponibilité: ");
-                        int count = 0;
-                        for (Map.Entry<DayOfWeek, Entities.Hours> entry : schedule.entrySet()) {
-                            if (count > 0) sb.append(", ");
-                            sb.append(translateDayOfWeek(entry.getKey())).append(" ")
-                                    .append(entry.getValue().getStarthour()).append("h-")
-                                    .append(entry.getValue().getEndhour()).append("h");
-                            count++;
-                            // Limiter l'affichage pour éviter de trop longues chaînes
-                            if (count >= 2) {
-                                sb.append("...");
-                                break;
-                            }
-                        }
-                    } else {
-                        sb.append("Aucune disponibilité");
-                    }
-                    setText(sb.toString());
-                }
+                setText(empty || item == null ? null : item.toString());
             }
         });
 
         dispoComboBox.setConverter(new StringConverter<Disponibility>() {
             @Override
             public String toString(Disponibility dispo) {
-                if (dispo == null || dispo.getDaysOfWeek() == null || dispo.getDaysOfWeek().isEmpty()) {
-                    return null;
-                }
-
-                StringBuilder sb = new StringBuilder("Dispo: ");
-                int count = 0;
-                for (Map.Entry<DayOfWeek, Entities.Hours> entry : dispo.getDaysOfWeek().entrySet()) {
-                    if (count > 0) sb.append(", ");
-                    sb.append(translateDayOfWeek(entry.getKey())).append(" ")
-                            .append(entry.getValue().getStarthour()).append("h-")
-                            .append(entry.getValue().getEndhour()).append("h");
-                    count++;
-                    if (count >= 2) {
-                        sb.append("...");
-                        break;
-                    }
-                }
-                return sb.toString();
+                return dispo == null ? null : dispo.toString();
             }
 
             @Override
@@ -275,7 +217,6 @@ public class MoniteurController {
     }
 
     // Méthode pour remplir le formulaire avec les données d'un moniteur sélectionné
-    // Méthode pour remplir le formulaire avec les données d'un moniteur sélectionné
     private void fillFieldsWithMoniteur(Moniteur moniteur) {
         cinField.setText(String.valueOf(moniteur.getCIN()));
         nomField.setText(moniteur.getNom());
@@ -286,13 +227,25 @@ public class MoniteurController {
 
         if (moniteur.getDateNaissance() != null) {
             // Conversion de java.sql.Date en LocalDate compatible avec toutes les versions de Java
-            dateNaissanceField.setValue(LocalDate.parse(moniteur.getDateNaissance().toString()));  // <-- C'EST CETTE LIGNE À MODIFIER
+            dateNaissanceField.setValue(LocalDate.parse(moniteur.getDateNaissance().toString()));
         } else {
             dateNaissanceField.setValue(null);
         }
 
         vehiculeComboBox.setValue(moniteur.getVehicule());
-        dispoComboBox.setValue(moniteur.getDisponibilite());
+
+        // Find the matching disponibility in the combobox items
+        Disponibility moniteurDispo = moniteur.getDisponibilite();
+        if (moniteurDispo != null) {
+            for (Disponibility dispo : dispoComboBox.getItems()) {
+                if (dispo.getId() == moniteurDispo.getId()) {
+                    dispoComboBox.setValue(dispo);
+                    break;
+                }
+            }
+        } else {
+            dispoComboBox.setValue(null);
+        }
     }
 
     @FXML

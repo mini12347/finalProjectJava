@@ -7,6 +7,8 @@ import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 
+import java.awt.Desktop;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.DayOfWeek;
@@ -15,11 +17,33 @@ import java.util.Locale;
 import java.util.Map;
 
 public class PDFGenerator {
+    // Chemin du logo défini directement dans la classe
+    private static final String LOGO_PATH = "C:\\Users\\souma\\finalProjectJava\\src\\main\\resources\\images\\111-removebg-preview.png"; // Remplacez par le chemin réel de votre logo
 
     public static void generateAutoEcolePDF(AutoEcole autoEcole, String filePath) throws IOException, DocumentException {
         Document document = new Document(PageSize.A4);
         PdfWriter.getInstance(document, new FileOutputStream(filePath));
         document.open();
+
+        // Ajouter le logo en haut de page
+        try {
+            Image logo = Image.getInstance(LOGO_PATH);
+
+            // Ajuster la taille du logo si nécessaire
+            logo.scaleToFit(200, 100); // Ajuster ces valeurs selon la taille désirée
+
+            // Centrer le logo
+            logo.setAlignment(Element.ALIGN_CENTER);
+
+            // Ajouter le logo au document
+            document.add(logo);
+
+            // Ajouter un espace après le logo
+            document.add(Chunk.NEWLINE);
+        } catch (Exception e) {
+            System.err.println("Erreur lors du chargement du logo: " + e.getMessage());
+            // Continue sans le logo en cas d'erreur
+        }
 
         // Titre
         Font titleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18, Font.NORMAL);
@@ -92,5 +116,26 @@ public class PDFGenerator {
         document.add(footer);
 
         document.close();
+
+        // Ouvrir le PDF après génération
+        openPDF(filePath);
+    }
+
+    // Méthode pour ouvrir le fichier PDF généré
+    private static void openPDF(String filePath) {
+        try {
+            File pdfFile = new File(filePath);
+            if (pdfFile.exists()) {
+                if (Desktop.isDesktopSupported()) {
+                    Desktop.getDesktop().open(pdfFile);
+                } else {
+                    System.out.println("L'ouverture automatique du PDF n'est pas supportée sur ce système.");
+                }
+            } else {
+                System.out.println("Le fichier PDF n'a pas été trouvé: " + filePath);
+            }
+        } catch (IOException e) {
+            System.err.println("Erreur lors de l'ouverture du PDF: " + e.getMessage());
+        }
     }
 }

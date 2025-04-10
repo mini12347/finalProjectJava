@@ -52,7 +52,7 @@ public class DisponibilityDAO {
             disponibilites.put(jour, horaire);
         }
 
-        return new Disponibility(disponibilites);
+        return new Disponibility(cin, disponibilites); // Using cin as ID for now
     }
 
     // Supprimer les disponibilités d'un moniteur par CIN
@@ -66,48 +66,55 @@ public class DisponibilityDAO {
     // Récupérer toutes les disponibilités pour tous les moniteurs et retourner une Liste
     public List<Disponibility> getAllDisponibilities() throws SQLException {
         List<Disponibility> disponibilitesList = new ArrayList<>();
-        String sql = "SELECT cin, jour, start_hour, end_hour FROM disponibility";
-        PreparedStatement ps = conn.prepareStatement(sql);
-        ResultSet rs = ps.executeQuery();
 
-        Map<Integer, Disponibility> disponibilitesMap = new HashMap<>();
+        // Modified query to group by CIN for distinct moniteur disponibilities
+        String sql = "SELECT DISTINCT cin FROM disponibility ORDER BY cin";
+        try (PreparedStatement psDistinct = conn.prepareStatement(sql);
+             ResultSet rsDistinct = psDistinct.executeQuery()) {
 
-        while (rs.next()) {
-            int cin = rs.getInt("cin");
-            String jourStr = rs.getString("jour");
-            DayOfWeek jour;
+            while (rsDistinct.next()) {
+                int cin = rsDistinct.getInt("cin");
+                Map<DayOfWeek, Hours> dayMap = new HashMap<>();
 
-            // Vérifier si le jour est déjà un enum DayOfWeek valide
-            try {
-                jour = DayOfWeek.valueOf(jourStr);
-            } catch (IllegalArgumentException e) {
-                // Si ce n'est pas un enum valide, essayer de convertir les noms français
-                switch(jourStr.toUpperCase()) {
-                    case "LUNDI": jour = DayOfWeek.MONDAY; break;
-                    case "MARDI": jour = DayOfWeek.TUESDAY; break;
-                    case "MERCREDI": jour = DayOfWeek.WEDNESDAY; break;
-                    case "JEUDI": jour = DayOfWeek.THURSDAY; break;
-                    case "VENDREDI": jour = DayOfWeek.FRIDAY; break;
-                    case "SAMEDI": jour = DayOfWeek.SATURDAY; break;
-                    case "DIMANCHE": jour = DayOfWeek.SUNDAY; break;
-                    default: throw new IllegalArgumentException("Jour invalide: " + jourStr);
+                // For each moniteur CIN, get all their availability entries
+                String daysSql = "SELECT jour, start_hour, end_hour FROM disponibility WHERE cin = ?";
+                try (PreparedStatement psDays = conn.prepareStatement(daysSql)) {
+                    psDays.setInt(1, cin);
+                    try (ResultSet rsDays = psDays.executeQuery()) {
+                        while (rsDays.next()) {
+                            String jourStr = rsDays.getString("jour");
+                            DayOfWeek jour;
+
+                            // Vérifier si le jour est déjà un enum DayOfWeek valide
+                            try {
+                                jour = DayOfWeek.valueOf(jourStr);
+                            } catch (IllegalArgumentException e) {
+                                // Si ce n'est pas un enum valide, essayer de convertir les noms français
+                                switch (jourStr.toUpperCase()) {
+                                    case "LUNDI": jour = DayOfWeek.MONDAY; break;
+                                    case "MARDI": jour = DayOfWeek.TUESDAY; break;
+                                    case "MERCREDI": jour = DayOfWeek.WEDNESDAY; break;
+                                    case "JEUDI": jour = DayOfWeek.THURSDAY; break;
+                                    case "VENDREDI": jour = DayOfWeek.FRIDAY; break;
+                                    case "SAMEDI": jour = DayOfWeek.SATURDAY; break;
+                                    case "DIMANCHE": jour = DayOfWeek.SUNDAY; break;
+                                    default: throw new IllegalArgumentException("Jour invalide: " + jourStr);
+                                }
+                            }
+
+                            int start = rsDays.getInt("start_hour");
+                            int end = rsDays.getInt("end_hour");
+                            Hours horaire = new Hours(start, end);
+                            dayMap.put(jour, horaire);
+                        }
+                    }
+                }
+
+                // Create a single Disponibility object for each moniteur
+                if (!dayMap.isEmpty()) {
+                    disponibilitesList.add(new Disponibility(cin, dayMap));
                 }
             }
-
-            int start = rs.getInt("start_hour");
-            int end = rs.getInt("end_hour");
-
-            Hours horaire = new Hours(start, end);
-
-            if (!disponibilitesMap.containsKey(cin)) {
-                disponibilitesMap.put(cin, new Disponibility(new HashMap<>()));
-            }
-            disponibilitesMap.get(cin).getDaysOfWeek().put(jour, horaire);
-        }
-
-        // Convert Map into List
-        for (Disponibility disponibility : disponibilitesMap.values()) {
-            disponibilitesList.add(disponibility);
         }
 
         return disponibilitesList;

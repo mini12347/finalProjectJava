@@ -11,6 +11,8 @@ import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.PdfWriter;
 
 import java.awt.Color;
+import java.awt.Desktop;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -20,6 +22,7 @@ import java.util.List;
 public class PaiementPdfGenerator {
 
     private AutoEcoleDAO autoEcoleDAO;
+    private static final String LOGO_PATH =  "C:\\Users\\souma\\finalProjectJava\\src\\main\\resources\\images\\111-removebg-preview.png"; // Chemin corrigé
 
     public PaiementPdfGenerator() throws SQLException {
         this.autoEcoleDAO = new AutoEcoleDAO();
@@ -33,10 +36,10 @@ public class PaiementPdfGenerator {
             PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(destination));
 
             // Add event handlers for header and footer
-            HeaderFooter event = new HeaderFooter(autoEcoleDAO);
+            HeaderFooter event = new HeaderFooter(autoEcoleDAO, LOGO_PATH);
             writer.setPageEvent(event);
 
-            document.setMargins(50, 50, 70, 70); // left, right, top, bottom
+            document.setMargins(50, 50, 130, 70); // left, right, top, bottom (increased top margin for logo)
             document.open();
 
             // Add title
@@ -129,11 +132,35 @@ public class PaiementPdfGenerator {
             document.add(dateInfo);
 
             document.close();
+
+            // Ouvrir le PDF après sa génération
+            openPDF(destination);
+
             return destination;
 
         } catch (Exception e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    /**
+     * Ouvre le fichier PDF généré avec l'application par défaut du système
+     * @param filePath Chemin vers le fichier PDF
+     */
+    private void openPDF(String filePath) {
+        try {
+            if (Desktop.isDesktopSupported()) {
+                File pdfFile = new File(filePath);
+                if (pdfFile.exists()) {
+                    Desktop.getDesktop().open(pdfFile);
+                }
+            } else {
+                System.out.println("Le bureau n'est pas supporté sur cette plateforme.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Impossible d'ouvrir le fichier PDF: " + e.getMessage());
         }
     }
 
@@ -156,14 +183,38 @@ public class PaiementPdfGenerator {
     // Inner class to handle header and footer
     class HeaderFooter extends PdfPageEventHelper {
         private AutoEcoleDAO autoEcoleDAO;
+        private String logoPath;
+        private Image logo;
 
-        public HeaderFooter(AutoEcoleDAO autoEcoleDAO) {
+        public HeaderFooter(AutoEcoleDAO autoEcoleDAO, String logoPath) {
             this.autoEcoleDAO = autoEcoleDAO;
+            this.logoPath = logoPath;
+            try {
+                this.logo = Image.getInstance(logoPath);
+                // Redimensionner le logo si nécessaire
+                this.logo.scaleToFit(150, 100); // Ajustez ces valeurs selon la taille souhaitée
+            } catch (Exception e) {
+                e.printStackTrace();
+                this.logo = null;
+            }
         }
 
         @Override
         public void onStartPage(PdfWriter writer, Document document) {
             try {
+                PdfContentByte cb = writer.getDirectContent();
+
+                // Ajouter le logo centré en haut de la page
+                if (logo != null) {
+                    float logoWidth = logo.getScaledWidth();
+                    float centerX = (document.right() - document.left()) / 2 + document.left();
+                    float logoX = centerX - (logoWidth / 2);
+                    float logoY = document.top() + 30; // Position au-dessus de l'en-tête
+
+                    logo.setAbsolutePosition(logoX, logoY);
+                    cb.addImage(logo);
+                }
+
                 AutoEcole autoEcole = autoEcoleDAO.getLastModifiedAutoEcole();
                 if (autoEcole != null) {
                     // Add header title
@@ -179,7 +230,7 @@ public class PaiementPdfGenerator {
                     headerInfo.add(headerTitle);
                     headerInfo.add(emailPhrase);
 
-                    // Add the header to the document
+                    // Add the header to the document (below the logo)
                     ColumnText.showTextAligned(
                             writer.getDirectContent(),
                             Element.ALIGN_CENTER,
@@ -189,7 +240,6 @@ public class PaiementPdfGenerator {
                             0);
 
                     // Add a line separator
-                    PdfContentByte cb = writer.getDirectContent();
                     cb.setLineWidth(1f);
                     cb.moveTo(document.left(), document.top() - 5);
                     cb.lineTo(document.right(), document.top() - 5);

@@ -14,12 +14,15 @@ import java.time.DayOfWeek;
 import java.util.List;
 import java.util.Map;
 import java.awt.Color;
+import java.io.File;
+import java.awt.Desktop;
 import java.io.IOException;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 
 public class MoniteurPDFGenerator {
     private AutoEcoleDAO autoEcoleDAO;
+    private static final String LOGO_PATH = "/images/111-removebg-preview.png"; // Chemin relatif au classpath
 
     public MoniteurPDFGenerator() throws SQLException {
         this.autoEcoleDAO = new AutoEcoleDAO();
@@ -37,20 +40,21 @@ public class MoniteurPDFGenerator {
         PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(filePath));
 
         // Ajout d'un event pour les en-têtes et pieds de page
-        HeaderFooter event = new HeaderFooter(autoEcole);
+        HeaderFooter event = new HeaderFooter(autoEcoleDAO, LOGO_PATH);
         writer.setPageEvent(event);
 
+        document.setMargins(50, 50, 130, 70); // left, right, top, bottom (increased top margin for logo)
         document.open();
 
         // Titre du document
-        Font titleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 16, Color.BLUE);
+        Font titleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 16);
         Paragraph title = new Paragraph("Liste des Moniteurs", titleFont);
         title.setAlignment(Element.ALIGN_CENTER);
         title.setSpacingAfter(20);
         document.add(title);
 
         // Date d'impression
-        Font normalFont = FontFactory.getFont(FontFactory.HELVETICA, 10, Color.BLACK);
+        Font normalFont = FontFactory.getFont(FontFactory.HELVETICA, 10);
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         Paragraph dateString = new Paragraph("Date d'impression: " + dateFormat.format(new Date()), normalFont);
         dateString.setAlignment(Element.ALIGN_RIGHT);
@@ -68,11 +72,11 @@ public class MoniteurPDFGenerator {
         table.setWidths(columnWidths);
 
         // En-têtes du tableau
-        Font headerFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 10, Color.WHITE);
+        Font headerFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 10);
         addTableHeader(table, headerFont);
 
         // Données du tableau
-        Font cellFont = FontFactory.getFont(FontFactory.HELVETICA, 9, Color.BLACK);
+        Font cellFont = FontFactory.getFont(FontFactory.HELVETICA, 9);
         for (Moniteur moniteur : moniteurs) {
             addMoniteurToTable(table, moniteur, cellFont);
         }
@@ -86,13 +90,34 @@ public class MoniteurPDFGenerator {
         document.add(total);
 
         document.close();
+
+        // Ouvrir le PDF après génération
+        openPDF(filePath);
+    }
+
+    // Méthode pour ouvrir le PDF généré
+    private void openPDF(String filePath) {
+        try {
+            File pdfFile = new File(filePath);
+            if (pdfFile.exists()) {
+                if (Desktop.isDesktopSupported()) {
+                    Desktop.getDesktop().open(pdfFile);
+                } else {
+                    System.out.println("Desktop n'est pas supporté, impossible d'ouvrir automatiquement le PDF.");
+                }
+            } else {
+                System.out.println("Le fichier PDF n'existe pas: " + filePath);
+            }
+        } catch (IOException e) {
+            System.err.println("Erreur lors de l'ouverture du PDF: " + e.getMessage());
+        }
     }
 
     private void addTableHeader(PdfPTable table, Font headerFont) {
         String[] headers = {"CIN", "Nom", "Prénom", "Adresse", "Email", "Téléphone", "Date Naissance", "Disponibilités"};
         for (String header : headers) {
             PdfPCell cell = new PdfPCell(new Phrase(header, headerFont));
-            cell.setBackgroundColor(new Color(30, 144, 255));
+            cell.setBackgroundColor(Color.LIGHT_GRAY);
             cell.setPadding(5);
             cell.setHorizontalAlignment(Element.ALIGN_CENTER);
             cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
@@ -182,39 +207,74 @@ public class MoniteurPDFGenerator {
 
     // Classe interne pour gérer l'en-tête et le pied de page
     class HeaderFooter extends PdfPageEventHelper {
-        private AutoEcole autoEcole;
+        private AutoEcoleDAO autoEcoleDAO;
+        private String logoPath;
+        private Image logo;
 
-        public HeaderFooter(AutoEcole autoEcole) {
-            this.autoEcole = autoEcole;
+        public HeaderFooter(AutoEcoleDAO autoEcoleDAO, String logoPath) {
+            this.autoEcoleDAO = autoEcoleDAO;
+            this.logoPath = logoPath;
+            try {
+                // Obtenir le chemin absolu du logo à partir des ressources
+                String absoluteLogoPath = getClass().getResource(logoPath).getPath();
+                this.logo = Image.getInstance(absoluteLogoPath);
+                // Redimensionner le logo si nécessaire
+                this.logo.scaleToFit(150, 100); // Ajustez ces valeurs selon la taille souhaitée
+            } catch (Exception e) {
+                e.printStackTrace();
+                this.logo = null;
+            }
         }
 
         @Override
         public void onStartPage(PdfWriter writer, Document document) {
             try {
-                PdfPTable headerTable = new PdfPTable(1);
-                headerTable.setWidthPercentage(100);
-                headerTable.setSpacingAfter(20);
+                PdfContentByte cb = writer.getDirectContent();
 
-                Font headerFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12, Color.BLUE);
-                Font subHeaderFont = FontFactory.getFont(FontFactory.HELVETICA, 10, Color.DARK_GRAY);
+                // Ajouter le logo centré en haut de la page
+                if (logo != null) {
+                    float logoWidth = logo.getScaledWidth();
+                    float centerX = (document.right() - document.left()) / 2 + document.left();
+                    float logoX = centerX - (logoWidth / 2);
+                    float logoY = document.top() + 30; // Position au-dessus de l'en-tête
 
-                PdfPCell cell = new PdfPCell();
-                cell.setBorder(Rectangle.NO_BORDER);
-                cell.setPadding(5);
+                    logo.setAbsolutePosition(logoX, logoY);
+                    cb.addImage(logo);
+                }
 
-                // Logo ou titre de l'auto-école
-                Paragraph header = new Paragraph(autoEcole.getNom(), headerFont);
-                header.setAlignment(Element.ALIGN_CENTER);
-                cell.addElement(header);
+                AutoEcole autoEcole = autoEcoleDAO.getLastModifiedAutoEcole();
+                if (autoEcole != null) {
+                    // Add header title
+                    Font titleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 16);
+                    Phrase headerTitle = new Phrase(autoEcole.getNom(), titleFont);
 
-                // Email de l'auto-école
-                Paragraph subHeader = new Paragraph("Email: " + autoEcole.getEmail(), subHeaderFont);
-                subHeader.setAlignment(Element.ALIGN_CENTER);
-                cell.addElement(subHeader);
+                    // Add email
+                    Font emailFont = FontFactory.getFont(FontFactory.HELVETICA, 10);
+                    Phrase emailPhrase = new Phrase(" | Email: " + autoEcole.getEmail(), emailFont);
 
-                headerTable.addCell(cell);
-                document.add(headerTable);
-            } catch (DocumentException e) {
+                    // Combine title and email in one line
+                    Paragraph headerInfo = new Paragraph();
+                    headerInfo.add(headerTitle);
+                    headerInfo.add(emailPhrase);
+
+                    // Add the header to the document (below the logo)
+                    ColumnText.showTextAligned(
+                            writer.getDirectContent(),
+                            Element.ALIGN_CENTER,
+                            headerInfo,
+                            (document.right() - document.left()) / 2 + document.left(),
+                            document.top() + 10,
+                            0);
+
+                    // Add a line separator
+                    cb.setLineWidth(1f);
+                    cb.moveTo(document.left(), document.top() - 5);
+                    cb.lineTo(document.right(), document.top() - 5);
+                    cb.stroke();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -222,29 +282,43 @@ public class MoniteurPDFGenerator {
         @Override
         public void onEndPage(PdfWriter writer, Document document) {
             try {
-                PdfPTable footerTable = new PdfPTable(1);
-                footerTable.setWidthPercentage(100);
-                footerTable.setTotalWidth(document.right() - document.left());
+                AutoEcole autoEcole = autoEcoleDAO.getLastModifiedAutoEcole();
+                if (autoEcole != null) {
+                    // Add a line separator
+                    PdfContentByte cb = writer.getDirectContent();
+                    cb.setLineWidth(1f);
+                    cb.moveTo(document.left(), document.bottom() + 30);
+                    cb.lineTo(document.right(), document.bottom() + 30);
+                    cb.stroke();
 
-                Font footerFont = FontFactory.getFont(FontFactory.HELVETICA, 8, Color.DARK_GRAY);
+                    // Add footer text
+                    Font footerFont = FontFactory.getFont(FontFactory.HELVETICA, 9);
+                    Phrase footerPhrase = new Phrase(
+                            autoEcole.getNom() + " | Adresse: " + autoEcole.getAdresse() +
+                                    " | Tél: " + autoEcole.getNumtel(), footerFont);
 
-                PdfPCell cell = new PdfPCell();
-                cell.setBorder(Rectangle.TOP);
-                cell.setPadding(5);
+                    // Position footer text
+                    ColumnText.showTextAligned(
+                            writer.getDirectContent(),
+                            Element.ALIGN_CENTER,
+                            footerPhrase,
+                            (document.right() - document.left()) / 2 + document.left(),
+                            document.bottom() + 15,
+                            0);
 
-                // Adresse et téléphone
-                Paragraph footer = new Paragraph(
-                        "Adresse: " + autoEcole.getAdresse() + " | Tél: " + autoEcole.getNumtel() +
-                                " | Page " + writer.getPageNumber(),
-                        footerFont);
-                footer.setAlignment(Element.ALIGN_CENTER);
-                cell.addElement(footer);
-
-                footerTable.addCell(cell);
-
-                // Position du pied de page
-                footerTable.writeSelectedRows(0, -1, document.left(), document.bottom() + 10, writer.getDirectContent());
-            } catch (DocumentException e) {
+                    // Add page number
+                    Phrase pageNumber = new Phrase("Page " + writer.getPageNumber(), footerFont);
+                    ColumnText.showTextAligned(
+                            writer.getDirectContent(),
+                            Element.ALIGN_RIGHT,
+                            pageNumber,
+                            document.right(),
+                            document.bottom() + 15,
+                            0);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
