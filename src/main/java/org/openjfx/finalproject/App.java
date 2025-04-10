@@ -1,4 +1,5 @@
 package org.openjfx.finalproject;
+import Connection.ConxDB;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -22,4 +23,13 @@ public class App extends Application {
     public static void main(String[] args) {
         launch(args);
     }
+    @Override
+    public void stop() throws Exception {
+        // Fermer la connexion à la base de données lors de la fermeture de l'application
+        ConxDB.closeConnection();
+
+        // Appel à la méthode parente
+        super.stop();
+    }
+
 }

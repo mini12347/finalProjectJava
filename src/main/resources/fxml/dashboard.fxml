@@ -32,7 +32,7 @@
                                     </padding>
                                     <children>
                                         <Label text="Total Candidats" styleClass="card-title" />
-                                        <Label fx:id="totalCandidatsLabel" text="0" styleClass="card-value" />
+                                        <Label fx:id="totalCandidatsLabel"  styleClass="card-value" />
                                     </children>
                                 </VBox>
                                 <VBox styleClass="card">
@@ -41,7 +41,7 @@
                                     </padding>
                                     <children>
                                         <Label text="Taux de Réussite Code" styleClass="card-title" />
-                                        <Label fx:id="tauxReussiteLabel" text="0%" styleClass="card-value" />
+                                        <Label fx:id="tauxReussiteLabel"  styleClass="card-value" />
                                     </children>
                                 </VBox>
                                 <VBox styleClass="card">
@@ -50,7 +50,7 @@
                                     </padding>
                                     <children>
                                         <Label text="Taux de Réussite Conduite" styleClass="card-title" />
-                                        <Label fx:id="tauxReussiteConduiteLabel" text="0%" styleClass="card-value" />
+                                        <Label fx:id="tauxReussiteConduiteLabel"  styleClass="card-value" />
                                     </children>
                                 </VBox>
                             </children>
@@ -65,7 +65,7 @@
                                     </padding>
                                     <children>
                                         <Label text="Revenus Mensuels" styleClass="card-title" />
-                                        <Label fx:id="revenusLabel" text="0 DT" styleClass="card-value" />
+                                        <Label fx:id="revenusLabel"  styleClass="card-value" />
                                     </children>
                                 </VBox>
                                 <VBox styleClass="card">
@@ -74,7 +74,7 @@
                                     </padding>
                                     <children>
                                         <Label text="Moniteurs Actifs" styleClass="card-title" />
-                                        <Label fx:id="moniteursLabel" text="0" styleClass="card-value" />
+                                        <Label fx:id="moniteursLabel"  styleClass="card-value" />
                                     </children>
                                 </VBox>
                                 <VBox styleClass="card">
@@ -83,7 +83,7 @@
                                     </padding>
                                     <children>
                                         <Label text="Véhicules Disponibles" styleClass="card-title" />
-                                        <Label fx:id="vehiculesLabel" text="0" styleClass="card-value" />
+                                        <Label fx:id="vehiculesLabel"  styleClass="card-value" />
                                     </children>
                                 </VBox>
                             </children>
@@ -99,7 +99,7 @@
                                     </padding>
                                     <children>
                                         <Label text="Type A (Moto)" styleClass="card-title" />
-                                        <Label fx:id="candidatsTypeALabel" text="0" styleClass="card-value" />
+                                        <Label fx:id="candidatsTypeALabel" styleClass="card-value" />
                                     </children>
                                 </VBox>
                                 <VBox styleClass="card">
@@ -108,7 +108,7 @@
                                     </padding>
                                     <children>
                                         <Label text="Type B (Voiture)" styleClass="card-title" />
-                                        <Label fx:id="candidatsTypeBLabel" text="0" styleClass="card-value" />
+                                        <Label fx:id="candidatsTypeBLabel"  styleClass="card-value" />
                                     </children>
                                 </VBox>
                                 <VBox styleClass="card">
@@ -117,44 +117,11 @@
                                     </padding>
                                     <children>
                                         <Label text="Type C (Camion)" styleClass="card-title" />
-                                        <Label fx:id="candidatsTypeCLabel" text="0" styleClass="card-value" />
+                                        <Label fx:id="candidatsTypeCLabel" styleClass="card-value" />
                                     </children>
                                 </VBox>
                             </children>
                         </HBox>
-
-                        <!-- Alerts Section -->
-                        <Label text="Alertes et Notifications" styleClass="subtitle" />
-
-                        <VBox fx:id="alertsBox" spacing="10.0">
-                            <!-- Alerts will be added dynamically -->
-                            <children>
-                                <HBox styleClass="alert, alert-warning">
-                                    <padding>
-                                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
-                                    </padding>
-                                    <children>
-                                        <Label text="Véhicule TUN 8234 doit passer la visite technique dans 7 jours" />
-                                    </children>
-                                </HBox>
-                                <HBox styleClass="alert, alert-danger">
-                                    <padding>
-                                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
-                                    </padding>
-                                    <children>
-                                        <Label text="Assurance de Véhicule TUN 5643 expire dans 14 jours" />
-                                    </children>
-                                </HBox>
-                                <HBox styleClass="alert, alert-info">
-                                    <padding>
-                                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
-                                    </padding>
-                                    <children>
-                                        <Label text="Vidange de Véhicule TUN 9876 prévue dans 200 km" />
-                                    </children>
-                                </HBox>
-                            </children>
-                        </VBox>
                     </children>
                 </VBox>
             </content>

@@ -6,6 +6,7 @@ import com.lowagie.text.*;
 import com.lowagie.text.pdf.*;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -17,6 +18,9 @@ import static com.lowagie.text.StandardFonts.HELVETICA_ITALIC;
 
 public class PdfGeneratorCandidat {
     private final AutoEcoleInfosS autoEcoleService = new AutoEcoleInfosS();
+
+    public PdfGeneratorCandidat() throws SQLException {
+    }
 
     /**
      * Génère un PDF contenant les données d'un candidat avec l'en-tête et

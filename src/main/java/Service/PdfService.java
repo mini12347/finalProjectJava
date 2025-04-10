@@ -4,6 +4,7 @@ import Entities.Candidat;
 import Service.PdfGeneratorCandidat;
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 public class PdfService {
@@ -11,7 +12,7 @@ public class PdfService {
     private final PdfGeneratorCandidat pdfGenerator = new PdfGeneratorCandidat();
     private final String PDF_DIRECTORY = System.getProperty("user.home") + File.separator + "CandidatesPDF";
 
-    public PdfService() {
+    public PdfService() throws SQLException {
         // Création du répertoire de sauvegarde s'il n'existe pas
         File directory = new File(PDF_DIRECTORY);
         if (!directory.exists()) {

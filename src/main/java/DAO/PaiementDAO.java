@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 public class PaiementDAO {
     private final Connection connection;
 
-    public PaiementDAO() {
+    public PaiementDAO() throws SQLException {
         connection = ConxDB.getInstance();
     }
 

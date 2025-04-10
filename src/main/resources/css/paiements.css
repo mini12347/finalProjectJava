@@ -1,75 +1,214 @@
 .paiement-container {
     -fx-background-color: #f4f4f4;
+    -fx-background-radius: 8px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 2);
+    -fx-translate-x: 70px;
 }
 
 .label-search {
     -fx-font-size: 14px;
     -fx-font-weight: bold;
+    -fx-text-fill: #2C3E50;
 }
 
 .search-field {
     -fx-pref-width: 200px;
-    -fx-padding: 5px;
+    -fx-padding: 8px;
+    -fx-background-radius: 5px;
+    -fx-border-color: #dcdcdc;
+    -fx-border-radius: 5px;
+    -fx-effect: innershadow(gaussian, rgba(0,0,0,0.05), 5, 0, 0, 1);
+    -fx-prompt-text-fill: #a3a3a3;
+}
+
+.search-field:focused {
+    -fx-border-color: #2C3E50;
+    -fx-effect: innershadow(gaussian, rgba(44,62,80,0.15), 5, 0, 0, 1);
 }
 
 .btn-search {
     -fx-font-size: 12px;
+    -fx-font-weight: bold;
     -fx-background-color: #2C3E50;
     -fx-text-fill: white;
-    -fx-padding: 10px;
+    -fx-padding: 10px 15px;
     -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
     -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 3, 0, 0, 1);
 }
 
 .btn-search:hover {
+    -fx-background-color: #3a546b;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 2);
+    -fx-translate-y: -1px;
+}
+
+.btn-search:pressed {
     -fx-background-color: #45a049;
+    -fx-translate-y: 1px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 2, 0, 0, 0);
 }
 
 .table-view {
     -fx-background-color: white;
     -fx-border-color: #ddd;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-padding: 0;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 1);
+}
+
+.table-view .column-header-background {
+    -fx-background-radius: 5px 5px 0 0;
+    -fx-padding: 5px 0;
+}
+
+.table-view .column-header, .table-view .filler {
+    -fx-background-color: transparent;
+    -fx-size: 40px;
+    -fx-border-width: 0 0 1 0;
+    -fx-border-color: #ddd;
+}
+
+.table-view .column-header .label {
+    -fx-font-weight: bold;
+    -fx-alignment: CENTER;
 }
 
 .table-column {
     -fx-alignment: CENTER;
-    -fx-font-weight: bold;
+    -fx-font-weight: normal;
+}
+
+.table-row-cell {
+    -fx-background-color: white;
+    -fx-border-color: transparent transparent #f1f1f1 transparent;
+    -fx-padding: 2px 0;
+}
+
+.table-row-cell:odd {
+    -fx-background-color: #f9f9f9;
+}
+
+.table-row-cell:hover {
+    -fx-background-color: #e8f4f8;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: #d3e5f0;
+    -fx-text-fill: #2C3E50;
+}
+
+.table-view .scroll-bar:vertical {
+    -fx-background-color: #f4f4f4;
+    -fx-background-radius: 0;
+}
+
+.table-view .scroll-bar:vertical .thumb {
+    -fx-background-color: #c1c1c1;
+    -fx-background-radius: 5px;
+}
+
+.table-view .scroll-bar:vertical .thumb:hover {
+    -fx-background-color: #a8a8a8;
 }
 
 .btn-payer {
-    -fx-font-size: 12px;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
     -fx-background-color: #2C3E50;
     -fx-text-fill: white;
-    -fx-padding: 10px;
+    -fx-padding: 10px 20px;
     -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
     -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 3, 0, 0, 1);
 }
 
 .btn-payer:hover {
+    -fx-background-color: #3a546b;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 2);
+    -fx-translate-y: -1px;
+}
+
+.btn-payer:pressed {
     -fx-background-color: #007399;
+    -fx-translate-y: 1px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 2, 0, 0, 0);
 }
 
 .btn-reset {
-    -fx-font-size: 12px;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
     -fx-background-color: #2C3E50;
     -fx-text-fill: white;
-    -fx-padding: 10px;
+    -fx-padding: 10px 20px;
     -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
     -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 3, 0, 0, 1);
 }
 
 .btn-reset:hover {
+    -fx-background-color: #3a546b;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 2);
+    -fx-translate-y: -1px;
+}
+
+.btn-reset:pressed {
     -fx-background-color: #d32f2f;
+    -fx-translate-y: 1px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 2, 0, 0, 0);
 }
 
 .par-facilite-button {
     -fx-font-size: 12px;
+    -fx-font-weight: bold;
     -fx-background-color: #2C3E50;
     -fx-text-fill: white;
     -fx-padding: 10px;
     -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
     -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 3, 0, 0, 1);
 }
 
 .par-facilite-button:hover {
+    -fx-background-color: #3a546b;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 2);
+    -fx-translate-y: -1px;
+}
+
+.par-facilite-button:pressed {
     -fx-background-color: #FFA000;
+    -fx-translate-y: 1px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 2, 0, 0, 0);
+}
+
+/* Additional refinements */
+HBox {
+    -fx-padding: 5px 0;
+}
+
+/* Add this to your CSS file */
+.paiement-container:hover {
+    -fx-border-color: #2C3E50;
+    -fx-border-width: 1px;
+    -fx-border-radius: 8px;
+    -fx-effect: dropshadow(three-pass-box, rgba(44, 62, 80, 0.3), 8, 0, 0, 2);
+    -fx-transition: all 0.3s ease;
+}
+
+/* You can also apply this to other container elements that need the hover effect */
+.table-view:hover {
+    -fx-border-color: #2C3E50;
+    -fx-border-width: 1px;
+    -fx-effect: dropshadow(three-pass-box, rgba(44, 62, 80, 0.3), 8, 0, 0, 2);
+}
+
+/* For individual form elements if needed */
+.search-field:hover{
+    -fx-border-color: #2C3E50;
+    -fx-effect: dropshadow(three-pass-box, rgba(44, 62, 80, 0.15), 3, 0, 0, 1);
 }

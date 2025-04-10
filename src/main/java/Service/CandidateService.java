@@ -8,6 +8,9 @@ import DAO.CandidateDAO;
 public class CandidateService {
     private final CandidateDAO repository = new CandidateDAO();
 
+    public CandidateService() throws SQLException {
+    }
+
     /**
      * Sauvegarde un nouveau candidat
      * @param candidate Le candidat à sauvegarder

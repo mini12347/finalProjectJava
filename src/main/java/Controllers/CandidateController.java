@@ -34,6 +34,9 @@ public class CandidateController {
     private final PdfService pdfService = new PdfService();
     private final List<Candidat> candidates = new java.util.ArrayList<>();
 
+    public CandidateController() throws SQLException {
+    }
+
     @FXML
     private void initialize() {
         // Configurez les colonnes

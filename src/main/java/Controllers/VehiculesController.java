@@ -49,6 +49,9 @@ public class VehiculesController {
     private ObservableList<Vehicule> vehiculesList;
     private AutoEcole autoEcole;
 
+    public VehiculesController() throws SQLException {
+    }
+
     public void initialize() {
         try {
             // Récupérer les informations de l'auto-école

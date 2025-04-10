@@ -57,7 +57,7 @@ public class MoniteurController {
     @FXML
     private Button genererPDFButton, genererPDFSelectionButton;
 
-    public MoniteurController() {
+    public MoniteurController() throws SQLException {
         Connection connection = ConxDB.getInstance();
         this.moniteurDAO = new MoniteurDAO(connection);
         this.vehiculeDAO = new VehiculeDAO();

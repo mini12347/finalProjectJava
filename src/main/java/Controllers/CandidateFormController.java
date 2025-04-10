@@ -35,6 +35,9 @@ public class CandidateFormController {
     private boolean isEditMode = false;
     private CandidateService candidateService = new CandidateService();
 
+    public CandidateFormController() throws SQLException {
+    }
+
     /**
      * Définit la fenêtre de dialogue
      */

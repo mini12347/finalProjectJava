@@ -1,13 +1,16 @@
 package Controllers;
 
+import Service.DashboardService;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class DashboardController implements Initializable {
 
@@ -38,59 +41,51 @@ public class DashboardController implements Initializable {
     @FXML
     private Label candidatsTypeCLabel;
 
-    @FXML
-    private VBox alertsBox;
+    private DashboardService dashboardService;
+    private ScheduledExecutorService scheduledExecutorService;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        dashboardService = new DashboardService();
+
+        // Charger les données immédiatement au démarrage
         chargerStatistiques();
-        // Si vous souhaitez charger les alertes dynamiquement, décommentez la ligne suivante
-        // chargerAlertes();
+
+        // Mettre en place un rafraîchissement périodique des données
+        scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
+        scheduledExecutorService.scheduleAtFixedRate(() -> {
+            Platform.runLater(() -> {
+                chargerStatistiques();
+            });
+        }, 30, 30, TimeUnit.SECONDS); // Rafraîchir toutes les 30 secondes
     }
 
+    /**
+     * Méthode appelée lorsque le contrôleur est détruit (par exemple, lors de la fermeture de la fenêtre)
+     */
+    public void shutdown() {
+        if (scheduledExecutorService != null) {
+            scheduledExecutorService.shutdown();
+        }
+    }
+
+    /**
+     * Charge toutes les statistiques depuis la base de données
+     */
     private void chargerStatistiques() {
-        // Ici vous devez remplacer ces valeurs par des données réelles de votre base de données
-        // en utilisant vos classes DAO
-
-        // Exemple:
-        // int totalCandidats = candidatDAO.getTotalCandidats();
-
-        totalCandidatsLabel.setText("125");
-        tauxReussiteLabel.setText("68.5%");
-        tauxReussiteConduiteLabel.setText("72.8%");
-        revenusLabel.setText("15750.50 DT");
-        moniteursLabel.setText("8");
-        vehiculesLabel.setText("12");
-        candidatsTypeALabel.setText("20");
-        candidatsTypeBLabel.setText("95");
-        candidatsTypeCLabel.setText("10");
-    }
-
-    private void chargerAlertes() {
-        // Vider les alertes existantes
-        alertsBox.getChildren().clear();
-
-        // Charger les alertes depuis la base de données
-        // Exemple avec vos classes DAO:
-        // List<Alerte> alertes = alerteDAO.getAlertesActives();
-        // for (Alerte alerte : alertes) {
-        //     ajouterAlerte(alerte.getMessage(), alerte.getType());
-        // }
-
-        // Exemples d'alertes
-        ajouterAlerte("Véhicule TUN 8234 doit passer la visite technique dans 7 jours", "warning");
-        ajouterAlerte("Assurance de Véhicule TUN 5643 expire dans 14 jours", "danger");
-        ajouterAlerte("Vidange de Véhicule TUN 9876 prévue dans 200 km", "info");
-    }
-
-    private void ajouterAlerte(String message, String type) {
-        HBox alertBox = new HBox();
-        alertBox.getStyleClass().addAll("alert", "alert-" + type);
-        alertBox.setPadding(new javafx.geometry.Insets(15, 15, 15, 15));
-
-        Label alertLabel = new Label(message);
-        alertBox.getChildren().add(alertLabel);
-
-        alertsBox.getChildren().add(alertBox);
+        try {
+            totalCandidatsLabel.setText(dashboardService.getTotalCandidats());
+            tauxReussiteLabel.setText(dashboardService.getTauxReussiteCode());
+            tauxReussiteConduiteLabel.setText(dashboardService.getTauxReussiteConduite());
+            revenusLabel.setText(dashboardService.getRevenusMensuels());
+            moniteursLabel.setText(dashboardService.getNombreMoniteurs());
+            vehiculesLabel.setText(dashboardService.getNombreVehicules());
+            candidatsTypeALabel.setText(dashboardService.getCandidatsTypeA());
+            candidatsTypeBLabel.setText(dashboardService.getCandidatsTypeB());
+            candidatsTypeCLabel.setText(dashboardService.getCandidatsTypeC());
+        } catch (Exception e) {
+            System.err.println("Erreur lors du chargement des statistiques: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 }

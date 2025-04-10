@@ -16,7 +16,7 @@ public class VehiculesDAO {
     private static final SimpleDateFormat DB_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
     private static final SimpleDateFormat DISPLAY_DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy");
 
-    public VehiculesDAO() {
+    public VehiculesDAO() throws SQLException {
         conx = ConxDB.getInstance();
     }
 

@@ -18,6 +18,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.sql.Date;
+import java.sql.SQLException;
 import java.sql.Time;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -55,7 +56,7 @@ public class PaiementController {
     private PaiementService paiementService;
     private PaiementPdfGenerator pdfGenerator;
 
-    public PaiementController() {
+    public PaiementController() throws SQLException {
         paiementService = new PaiementService();
         pdfGenerator = new PaiementPdfGenerator();
     }
@@ -238,10 +239,10 @@ public class PaiementController {
         }
 
         // Check payment state
-        if (!"par facilité".equals(selectedPaiement.getEtat()) &&
-                !"acompte payé".equals(selectedPaiement.getEtat()) &&
-                !"en cours".equals(selectedPaiement.getEtat())) {
-            showAlert("Erreur", "Ce paiement ne peut pas être payé dans son état actuel.");
+        if (
+
+                "effectué".equals(selectedPaiement.getEtat())) {
+            showAlert("Erreur", "Vous avez déjà payé !!");
             return;
         }
 

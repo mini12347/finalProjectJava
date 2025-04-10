@@ -10,7 +10,7 @@ import Connection.ConxDB;
 public class AutoEcoleDAO {
     private Connection connection;
 
-    public AutoEcoleDAO() {
+    public AutoEcoleDAO() throws SQLException {
         connection = ConxDB.getInstance();
     }
 

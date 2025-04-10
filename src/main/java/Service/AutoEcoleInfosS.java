@@ -8,6 +8,9 @@ import java.sql.SQLException;
 public class AutoEcoleInfosS {
     private AutoEcoleDAO autoEcoleDAO = new AutoEcoleDAO();
 
+    public AutoEcoleInfosS() throws SQLException {
+    }
+
     public void addAutoEcole(AutoEcole autoEcole) throws SQLException {
         autoEcoleDAO.addAutoEcole(autoEcole);
     }

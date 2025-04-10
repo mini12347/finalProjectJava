@@ -3,12 +3,13 @@ package Service;
 import DAO.PaiementDAO;
 import Entities.Paiement;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public class PaiementService {
     private PaiementDAO paiementDAO;
 
-    public PaiementService() {
+    public PaiementService() throws SQLException {
         this.paiementDAO = new PaiementDAO();
     }
 

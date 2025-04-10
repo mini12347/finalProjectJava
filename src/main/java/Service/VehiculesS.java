@@ -5,7 +5,7 @@ import java.sql.SQLException;
 import java.util.List;
 public class VehiculesS {
     private VehiculesDAO vehiculesDAO;
-    public VehiculesS() {
+    public VehiculesS() throws SQLException {
         vehiculesDAO = new VehiculesDAO();
     }
     public List<Vehicule> getVehicules() throws SQLException {

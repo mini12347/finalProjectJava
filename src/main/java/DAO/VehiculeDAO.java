@@ -12,7 +12,7 @@ public class VehiculeDAO {
     private Connection conn;
 
     // Constructeur qui initialise la connexion
-    public VehiculeDAO() {
+    public VehiculeDAO() throws SQLException {
         this.conn = ConxDB.getInstance();
         if (this.conn == null) {
             throw new IllegalStateException("Erreur : Impossible d'obtenir une connexion à la base de données !");

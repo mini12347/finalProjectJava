@@ -21,7 +21,7 @@ public class PaiementPdfGenerator {
 
     private AutoEcoleDAO autoEcoleDAO;
 
-    public PaiementPdfGenerator() {
+    public PaiementPdfGenerator() throws SQLException {
         this.autoEcoleDAO = new AutoEcoleDAO();
     }
 

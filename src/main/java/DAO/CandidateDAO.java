@@ -11,7 +11,7 @@ import java.util.List;
 public class CandidateDAO {
     private Connection connection;
 
-    public CandidateDAO() {
+    public CandidateDAO() throws SQLException {
         connection = ConxDB.getInstance();
     }
 

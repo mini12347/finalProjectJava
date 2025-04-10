@@ -21,7 +21,7 @@ import java.text.SimpleDateFormat;
 public class MoniteurPDFGenerator {
     private AutoEcoleDAO autoEcoleDAO;
 
-    public MoniteurPDFGenerator() {
+    public MoniteurPDFGenerator() throws SQLException {
         this.autoEcoleDAO = new AutoEcoleDAO();
     }
 

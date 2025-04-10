@@ -15,75 +15,146 @@
 
 /* Titre principal */
 .title-label {
-    -fx-font-size: 22px;
+    -fx-font-size: 24px;
     -fx-font-weight: bold;
-    -fx-text-fill: #333333;
+    -fx-text-fill: #2C3E50;
+    -fx-padding: 0 0 10px 0;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 3, 0, 0, 1);
 }
 
 /* Formulaire */
 .form-container {
     -fx-background-color: #f9f9f9;
-    -fx-padding: 15px;
+    -fx-padding: 20px;
     -fx-border-radius: 8px;
     -fx-background-radius: 8px;
+    -fx-border-color: #e0e0e0;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 1);
+    -fx-translate-x: 5px;
+}
+
+.form-container:hover {
+    -fx-border-color: #2C3E50;
+    -fx-effect: dropshadow(three-pass-box, rgba(44, 62, 80, 0.3), 8, 0, 0, 2);
 }
 
 .form-label {
     -fx-font-size: 14px;
-    -fx-text-fill: #555555;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2C3E50;
+    -fx-padding: 3px 0;
 }
 
 .text-input {
     -fx-background-color: #ffffff;
     -fx-border-color: #cccccc;
     -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-padding: 8px;
+    -fx-effect: innershadow(gaussian, rgba(0,0,0,0.05), 5, 0, 0, 1);
+    -fx-prompt-text-fill: #a3a3a3;
+}
+
+.text-input:focused {
+    -fx-border-color: #2C3E50;
+    -fx-effect: innershadow(gaussian, rgba(44,62,80,0.15), 5, 0, 0, 1);
+}
+
+.date-input {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
     -fx-padding: 5px;
+}
+
+.date-input:focused {
+    -fx-border-color: #2C3E50;
+}
+
+.combo-input {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-padding: 5px;
+}
+
+.combo-input:focused {
+    -fx-border-color: #2C3E50;
 }
 
 /* Boutons */
 .button-container {
     -fx-alignment: center;
+    -fx-padding: 15px 0 5px 0;
 }
 
-.action-button {
-    -fx-font-size: 12px;
+.action-button, .delete-button, .search-button, .display-button,
+.pdfOne-button, .pdfAll-button {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
     -fx-background-color: #2C3E50;
     -fx-text-fill: white;
-    -fx-padding: 10px;
+    -fx-padding: 10px 15px;
     -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
     -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 3, 0, 0, 1);
 }
 
-.delete-button {
-    -fx-font-size: 12px;
-    -fx-background-color: #2C3E50;
-    -fx-text-fill: white;
-    -fx-padding: 10px;
-    -fx-border-radius: 5px;
-    -fx-cursor: hand;
+.action-button:hover {
+    -fx-background-color: #3a546b;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 2);
+    -fx-translate-y: -1px;
 }
 
-.search-button {
-    -fx-font-size: 12px;
-    -fx-background-color: #2C3E50;
-    -fx-text-fill: white;
-    -fx-padding: 10px;
-    -fx-border-radius: 5px;
-    -fx-cursor: hand;
+.action-button:pressed {
+    -fx-background-color: #45a049;
+    -fx-translate-y: 1px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 2, 0, 0, 0);
 }
 
-.display-button {
-    -fx-font-size: 12px;
-    -fx-background-color: #2C3E50;
-    -fx-text-fill: white;
-    -fx-padding: 10px;
-    -fx-border-radius: 5px;
-    -fx-cursor: hand;
+.delete-button:hover {
+    -fx-background-color: #3a546b;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 2);
+    -fx-translate-y: -1px;
+}
+
+.delete-button:pressed {
+    -fx-background-color: #d32f2f;
+    -fx-translate-y: 1px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 2, 0, 0, 0);
+}
+
+.search-button:hover, .display-button:hover {
+    -fx-background-color: #3a546b;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 2);
+    -fx-translate-y: -1px;
+}
+
+.search-button:pressed, .display-button:pressed {
+    -fx-background-color: #007399;
+    -fx-translate-y: 1px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 2, 0, 0, 0);
+}
+
+.pdfOne-button:hover, .pdfAll-button:hover {
+    -fx-background-color: #3a546b;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 2);
+    -fx-translate-y: -1px;
+}
+
+.pdfOne-button:pressed, .pdfAll-button:pressed {
+    -fx-background-color: #FFA000;
+    -fx-translate-y: 1px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 2, 0, 0, 0);
 }
 
 /* Séparateur */
 .separator {
     -fx-background-color: #d3d3d3;
+    -fx-padding: 5px 0;
 }
 
 /* Tableau */
@@ -92,12 +163,40 @@
     -fx-border-radius: 8px;
     -fx-background-radius: 8px;
     -fx-padding: 10px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 1);
+    -fx-translate-x: 5px;
 }
 
-.moniteur-table {
+.paiement-table {
     -fx-background-color: white;
     -fx-border-color: #dddddd;
     -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 1);
+}
+
+.paiement-table:hover {
+    -fx-border-color: #2C3E50;
+    -fx-effect: dropshadow(three-pass-box, rgba(44, 62, 80, 0.3), 8, 0, 0, 2);
+}
+
+.paiement-table .column-header-background {
+    -fx-background-color: #f4f4f4;
+    -fx-background-radius: 5px 5px 0 0;
+    -fx-padding: 5px 0;
+}
+
+.paiement-table .column-header .label {
+    -fx-text-fill: #2C3E50;
+    -fx-font-weight: bold;
+    -fx-alignment: CENTER;
+}
+
+.paiement-table .column-header, .paiement-table .filler {
+    -fx-background-color: transparent;
+    -fx-size: 40px;
+    -fx-border-width: 0 0 1 0;
+    -fx-border-color: #ddd;
 }
 
 .table-column {
@@ -106,25 +205,59 @@
     -fx-text-fill: #444444;
 }
 
+.paiement-table .table-row-cell {
+    -fx-background-color: white;
+    -fx-border-color: transparent transparent #f1f1f1 transparent;
+    -fx-padding: 2px 0;
+}
+
+.paiement-table .table-row-cell:odd {
+    -fx-background-color: #f9f9f9;
+}
+
+.paiement-table .table-row-cell:hover {
+    -fx-background-color: #e8f4f8;
+}
+
+.paiement-table .table-row-cell:selected {
+    -fx-background-color: #d3e5f0;
+    -fx-text-fill: #2C3E50;
+}
+
+.paiement-table .scroll-bar:vertical {
+    -fx-background-color: #f4f4f4;
+    -fx-background-radius: 0;
+}
+
+.paiement-table .scroll-bar:vertical .thumb {
+    -fx-background-color: #c1c1c1;
+    -fx-background-radius: 5px;
+}
+
+.paiement-table .scroll-bar:vertical .thumb:hover {
+    -fx-background-color: #a8a8a8;
+}
+
 .counter-label {
     -fx-font-size: 14px;
     -fx-font-weight: bold;
-    -fx-text-fill: #333333;
-}
-.pdfOne-button{
-    -fx-font-size: 12px;
-    -fx-background-color: #2C3E50;
-    -fx-text-fill: white;
-    -fx-padding: 10px;
-    -fx-border-radius: 5px;
-    -fx-cursor: hand;
-}
-.pdfAll-button{
-    -fx-font-size: 12px;
-    -fx-background-color: #2C3E50;
-    -fx-text-fill: white;
-    -fx-padding: 10px;
-    -fx-border-radius: 5px;
-    -fx-cursor: hand;
+    -fx-text-fill: #2C3E50;
+    -fx-padding: 10px 0 0 0;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 2, 0, 0, 1);
 }
 
+/* AnchorPane style */
+AnchorPane {
+    -fx-background-color: #f4f4f4;
+}
+
+/* Style pour la VBox principale */
+VBox {
+    -fx-spacing: 15;
+}
+
+/* Animation de transition pour les éléments interactifs */
+.text-input, .date-input, .combo-input, .action-button, .delete-button,
+.search-button, .display-button, .pdfOne-button, .pdfAll-button {
+    -fx-transition: all 0.2s ease;
+}

@@ -27,6 +27,9 @@ public class AutoEcoleInfoController {
     private AutoEcoleInfosS autoEcoleService = new AutoEcoleInfosS();
     private AutoEcole autoEcole;
 
+    public AutoEcoleInfoController() throws SQLException {
+    }
+
     public void initialize() {
         try {
             autoEcole = autoEcoleService.getAutoEcole();
