@@ -1,0 +1,82 @@
+.root {
+    -fx-background-color: #ecf0f1;
+    -fx-font-family: "Segoe UI", sans-serif;
+}
+
+/* Sidebar */
+.sidebar-button {
+    -fx-background-color: #2C3E50;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 6;
+    -fx-border-radius: 6;
+    -fx-padding: 8 16;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 4, 0.5, 0, 2);
+}
+
+.button:hover {
+    -fx-background-color: #1a252f;
+}
+
+/* Barre de recherche */
+.search-field {
+    -fx-background-radius: 6;
+    -fx-border-radius: 6;
+    -fx-padding: 6 10;
+    -fx-border-color: #bdc3c7;
+    -fx-background-color: white;
+    -fx-prompt-text-fill: #95a5a6;
+}
+
+/* TableView Modernisé + Cellules élargies */
+.data-table {
+    -fx-background-color: white;
+    -fx-border-color: transparent;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-padding: 5;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 10, 0.5, 0, 1);
+}
+
+.table-view .column-header-background {
+    -fx-background-color: linear-gradient(to bottom, #dfe6e9, #bdc3c7);
+    -fx-background-radius: 10 10 0 0;
+    -fx-padding: 10;
+}
+
+.table-view .label {
+    -fx-text-fill: #2c3e50;
+    -fx-font-weight: bold;
+}
+
+.table-row-cell {
+    -fx-background-color: white;
+    -fx-border-color: #ecf0f1;
+    -fx-font-size: 13px;
+    -fx-padding: 12 16; /* Ajout de padding pour élargir visuellement les cellules */
+}
+
+.table-row-cell:filled:selected {
+    -fx-background-color: #d6eaf8;
+}
+.btn-primary, .btn-secondary {
+    -fx-background-color: #2C3E50;   /* Bleu foncé élégant */
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 6;
+    -fx-border-radius: 6;
+    -fx-padding: 8 16;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 4, 0.5, 0, 2);
+    -fx-transition: all 0.3s ease-in-out;
+}
+
+.btn-primary:hover, .btn-secondary:hover {
+    -fx-background-color: #3a546b;  /* Bleu clair au survol */
+}
+
+/* Conserver un focus élégant */
+.btn-primary:focused, .btn-secondary:focused {
+    -fx-border-color: #1c6ea4;
+}

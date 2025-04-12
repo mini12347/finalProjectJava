@@ -3,30 +3,31 @@
 <?import javafx.scene.layout.*?>
 
 <BorderPane xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="Controllers.CandidateController">
-    <VBox prefWidth="200" spacing="10" style="-fx-background-color: #2C3E50;" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0">
-        <Label text="Dashboard" style="-fx-text-fill: white; -fx-font-size: 18px;"/>
-        <Button text="Candidates" />
-        <Button text="Settings" />
+            fx:controller="Controllers.CandidateController" stylesheets="@../css/mv.css">
+    <VBox prefWidth="200" spacing="10" style="-fx-background-color: #2C3E50;" styleClass="sidebar"
+          AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0">
+        <Label text="Dashboard" style="-fx-text-fill: white; -fx-font-size: 18px;" styleClass="sidebar-label"/>
+        <Button text="Candidates" styleClass="sidebar-button"/>
+        <Button text="Settings" styleClass="sidebar-button"/>
     </VBox>
+
     <top>
-        <ToolBar>
-            <Button text="Add" onAction="#handleAddCandidate"/>
-            <TextField fx:id="searchField" promptText="Search..."/>
-            <Button text="Search" onAction="#handleSearch"/>
+        <ToolBar styleClass="tool-bar">
+            <Button text="Add" onAction="#handleAddCandidate" styleClass="btn-secondary"/>
+            <TextField fx:id="searchField" promptText="Search..." styleClass="search-field"/>
+            <Button text="Search" onAction="#handleSearch" styleClass="btn-primary"/>
         </ToolBar>
     </top>
 
     <center>
-        <TableView fx:id="candidatesTable">
+        <TableView fx:id="candidatesTable" styleClass="data-table">
             <columns>
-                <TableColumn text="Nom" fx:id="nomColumn"/>
-                <TableColumn text="Prenom" fx:id="prenomColumn"/>
-                <TableColumn text="CIN" fx:id="cinColumn"/>
-                <TableColumn text="Telephone" fx:id="telephoneColumn"/>
-                <TableColumn text="Email" fx:id="emailColumn"/>
-                <TableColumn fx:id="colActions" text="Actions" prefWidth="200"/>
-
+                <TableColumn text="Nom" fx:id="nomColumn" prefWidth="150"/>
+                <TableColumn text="Prenom" fx:id="prenomColumn" prefWidth="150"/>
+                <TableColumn text="CIN" fx:id="cinColumn" prefWidth="120"/>
+                <TableColumn text="Telephone" fx:id="telephoneColumn" prefWidth="150"/>
+                <TableColumn text="Email" fx:id="emailColumn" prefWidth="200"/>
+                <TableColumn fx:id="colActions" text="Actions" prefWidth="270"/>
             </columns>
         </TableView>
     </center>

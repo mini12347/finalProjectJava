@@ -7,6 +7,13 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.shape.Arc?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.layout.Region?>
 
 <BorderPane prefHeight="600.0" prefWidth="800.0" stylesheets="@../css/dashboard.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.DashboardController">
     <center>
@@ -17,22 +24,32 @@
                         <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
                     </padding>
                     <children>
-                        <Label text="Tableau de Bord" styleClass="title">
-                            <font>
-                                <Font name="System Bold" size="24.0" />
-                            </font>
-                        </Label>
+                        <HBox alignment="CENTER_LEFT" spacing="10.0">
+                            <ImageView fitHeight="32.0" fitWidth="32.0">
+                                <Image url="@../images/info.png" />
+                            </ImageView>
+                            <Label text="Tableau de Bord" styleClass="title">
+                                <font>
+                                    <Font name="System Bold" size="24.0" />
+                                </font>
+                            </Label>
+                        </HBox>
 
                         <!-- Stats Cards -->
-                        <HBox spacing="20.0">
+                        <HBox spacing="20.0" styleClass="cards-container" alignment="CENTER">
                             <children>
                                 <VBox styleClass="card">
                                     <padding>
                                         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                                     </padding>
                                     <children>
-                                        <Label text="Total Candidats" styleClass="card-title" />
-                                        <Label fx:id="totalCandidatsLabel"  styleClass="card-value" />
+                                        <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="card-header">
+                                            <ImageView fitHeight="24.0" fitWidth="24.0" styleClass="card-icon">
+                                                <Image url="@../images/candidat.png" />
+                                            </ImageView>
+                                            <Label text="Total Candidats" styleClass="card-title" />
+                                        </HBox>
+                                        <Label fx:id="totalCandidatsLabel" styleClass="card-value" />
                                     </children>
                                 </VBox>
                                 <VBox styleClass="card">
@@ -40,8 +57,21 @@
                                         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                                     </padding>
                                     <children>
-                                        <Label text="Taux de Réussite Code" styleClass="card-title" />
-                                        <Label fx:id="tauxReussiteLabel"  styleClass="card-value" />
+                                        <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="card-header">
+                                            <ImageView fitHeight="24.0" fitWidth="24.0" styleClass="card-icon">
+                                                <Image url="@../images/info.png" />
+                                            </ImageView>
+                                            <Label text="Taux de Réussite Code" styleClass="card-title" />
+                                        </HBox>
+                                        <HBox alignment="CENTER_LEFT" spacing="10">
+                                            <Label fx:id="tauxReussiteLabel" styleClass="card-value" />
+                                            <StackPane prefHeight="60" prefWidth="60">
+                                                <Circle fill="#f0f0f0" radius="30" />
+                                                <Arc fx:id="codeReussiteArc" fill="#2ecc71" length="0" radiusX="30" radiusY="30" startAngle="90" styleClass="progress-arc" type="ROUND" />
+                                                <Circle fill="WHITE" radius="20" />
+                                            </StackPane>
+                                        </HBox>
+                                        <ProgressBar fx:id="codeReussiteBar" progress="0.0" prefWidth="200" styleClass="custom-progress-bar" />
                                     </children>
                                 </VBox>
                                 <VBox styleClass="card">
@@ -49,23 +79,41 @@
                                         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                                     </padding>
                                     <children>
-                                        <Label text="Taux de Réussite Conduite" styleClass="card-title" />
-                                        <Label fx:id="tauxReussiteConduiteLabel"  styleClass="card-value" />
+                                        <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="card-header">
+                                            <ImageView fitHeight="24.0" fitWidth="24.0" styleClass="card-icon">
+                                                <Image url="@../images/info.png" />
+                                            </ImageView>
+                                            <Label text="Taux de Réussite Conduite" styleClass="card-title" />
+                                        </HBox>
+                                        <HBox alignment="CENTER_LEFT" spacing="10">
+                                            <Label fx:id="tauxReussiteConduiteLabel" styleClass="card-value" />
+                                            <StackPane prefHeight="60" prefWidth="60">
+                                                <Circle fill="#f0f0f0" radius="30" />
+                                                <Arc fx:id="conduiteReussiteArc" fill="#3498db" length="0" radiusX="30" radiusY="30" startAngle="90" styleClass="progress-arc" type="ROUND" />
+                                                <Circle fill="WHITE" radius="20" />
+                                            </StackPane>
+                                        </HBox>
+                                        <ProgressBar fx:id="conduiteReussiteBar" progress="0.0" prefWidth="200" styleClass="custom-progress-bar" />
                                     </children>
                                 </VBox>
                             </children>
                         </HBox>
 
                         <!-- Stats Row 2 -->
-                        <HBox spacing="20.0">
+                        <HBox spacing="20.0" styleClass="cards-container" alignment="CENTER">
                             <children>
                                 <VBox styleClass="card">
                                     <padding>
                                         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                                     </padding>
                                     <children>
-                                        <Label text="Revenus Mensuels" styleClass="card-title" />
-                                        <Label fx:id="revenusLabel"  styleClass="card-value" />
+                                        <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="card-header">
+                                            <ImageView fitHeight="40.0" fitWidth="40.0" styleClass="card-icon">
+                                                <Image url="@../images/money.png" />
+                                            </ImageView>
+                                            <Label text="Revenus Mensuels" styleClass="card-title" />
+                                        </HBox>
+                                        <Label fx:id="revenusLabel" styleClass="card-value" />
                                     </children>
                                 </VBox>
                                 <VBox styleClass="card">
@@ -73,8 +121,13 @@
                                         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                                     </padding>
                                     <children>
-                                        <Label text="Moniteurs Actifs" styleClass="card-title" />
-                                        <Label fx:id="moniteursLabel"  styleClass="card-value" />
+                                        <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="card-header">
+                                            <ImageView fitHeight="24.0" fitWidth="24.0" styleClass="card-icon">
+                                                <Image url="@../images/moniteur.png" />
+                                            </ImageView>
+                                            <Label text="Moniteurs Actifs" styleClass="card-title" />
+                                        </HBox>
+                                        <Label fx:id="moniteursLabel" styleClass="card-value" />
                                     </children>
                                 </VBox>
                                 <VBox styleClass="card">
@@ -82,46 +135,131 @@
                                         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                                     </padding>
                                     <children>
-                                        <Label text="Véhicules Disponibles" styleClass="card-title" />
-                                        <Label fx:id="vehiculesLabel"  styleClass="card-value" />
+                                        <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="card-header">
+                                            <ImageView fitHeight="24.0" fitWidth="24.0" styleClass="card-icon">
+                                                <Image url="@../images/v.png" />
+                                            </ImageView>
+                                            <Label text="Véhicules Disponibles" styleClass="card-title" />
+                                        </HBox>
+                                        <Label fx:id="vehiculesLabel" styleClass="card-value" />
                                     </children>
                                 </VBox>
                             </children>
                         </HBox>
 
                         <!-- Distribution par type de permis -->
-                        <Label text="Distribution par Type de Permis" styleClass="subtitle" />
-                        <HBox spacing="20.0">
+                        <HBox alignment="CENTER_LEFT" spacing="10.0">
+                            <ImageView fitHeight="24.0" fitWidth="24.0">
+                                <Image url="@../images/info.png" />
+                            </ImageView>
+                            <Label text="Distribution par Type de Permis" styleClass="subtitle" />
+                        </HBox>
+                        <HBox spacing="20.0" styleClass="cards-container" alignment="CENTER">
                             <children>
-                                <VBox styleClass="card">
+                                <VBox styleClass="card, license-type-card">
                                     <padding>
                                         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                                     </padding>
                                     <children>
-                                        <Label text="Type A (Moto)" styleClass="card-title" />
-                                        <Label fx:id="candidatsTypeALabel" styleClass="card-value" />
+                                        <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="card-header">
+                                            <ImageView fitHeight="70.0" fitWidth="70.0" styleClass="card-icon">
+                                                <Image url="@../images/moto.png" />
+                                            </ImageView>
+                                            <Label text="Type A (Moto)" styleClass="card-title" />
+                                        </HBox>
+                                        <Label fx:id="candidatsTypeALabel" styleClass="card-value" text="1" />
+                                        <ProgressBar fx:id="typeAProgressBar" progress="0.0" prefWidth="200" styleClass="custom-progress-bar-moto" />
+                                        <!-- Added spacing VBox to ensure card has enough height -->
+                                        <VBox minHeight="20" />
                                     </children>
                                 </VBox>
-                                <VBox styleClass="card">
+                                <VBox styleClass="card, license-type-card">
                                     <padding>
                                         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                                     </padding>
                                     <children>
-                                        <Label text="Type B (Voiture)" styleClass="card-title" />
-                                        <Label fx:id="candidatsTypeBLabel"  styleClass="card-value" />
+                                        <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="card-header">
+                                            <ImageView fitHeight="70.0" fitWidth="70.0" styleClass="card-icon">
+                                                <Image url="@../images/voiture.png" />
+                                            </ImageView>
+                                            <Label text="Type B (Voiture)" styleClass="card-title" />
+                                        </HBox>
+                                        <Label fx:id="candidatsTypeBLabel" styleClass="card-value" text="2" />
+                                        <ProgressBar fx:id="typeBProgressBar" progress="0.0" prefWidth="200" styleClass="custom-progress-bar-voiture" />
+                                        <!-- Added spacing VBox to ensure card has enough height -->
+                                        <VBox minHeight="20" />
                                     </children>
                                 </VBox>
-                                <VBox styleClass="card">
+                                <VBox styleClass="card, license-type-card">
                                     <padding>
                                         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                                     </padding>
                                     <children>
-                                        <Label text="Type C (Camion)" styleClass="card-title" />
-                                        <Label fx:id="candidatsTypeCLabel" styleClass="card-value" />
+                                        <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="card-header">
+                                            <ImageView fitHeight="70.0" fitWidth="70.0" styleClass="card-icon">
+                                                <Image url="@../images/camion.png" />
+                                            </ImageView>
+                                            <Label text="Type C (Camion)" styleClass="card-title" />
+                                        </HBox>
+                                        <Label fx:id="candidatsTypeCLabel" styleClass="card-value" text="1" />
+                                        <ProgressBar fx:id="typeCProgressBar" progress="0.0" prefWidth="200" styleClass="custom-progress-bar-camion" />
+                                        <!-- Added spacing VBox to ensure card has enough height -->
+                                        <VBox minHeight="20" />
                                     </children>
                                 </VBox>
                             </children>
                         </HBox>
+
+                        <!-- Vue graphique répartition par type de permis - CARD MODIFIÉ -->
+                        <HBox alignment="CENTER_LEFT" spacing="10.0">
+                            <ImageView fitHeight="24.0" fitWidth="24.0">
+                                <Image url="@../images/info.png" />
+                            </ImageView>
+                            <Label text="Répartition Graphique" styleClass="subtitle" />
+                        </HBox>
+
+                        <!-- Card pleine largeur avec hauteur fixe pour le graphique -->
+                        <VBox styleClass="card, chart-card">
+                            <padding>
+                                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                            </padding>
+                            <children>
+                                <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="card-header">
+                                    <ImageView fitHeight="32.0" fitWidth="32.0" styleClass="card-icon">
+                                        <Image url="@../images/info.png" />
+                                    </ImageView>
+                                    <Label text="Distribution des Candidats par Type de Permis" styleClass="card-title" />
+                                </HBox>
+
+                                <!-- Contenu graphique avec disposition verticale pour éviter les débordements -->
+                                <VBox spacing="20" alignment="CENTER" minHeight="350">
+                                    <!-- Graphique centré -->
+                                    <StackPane fx:id="distributionGraphContainer" minHeight="220" prefHeight="220" maxHeight="220" prefWidth="350" />
+
+                                    <!-- Légendes en dessous du graphique -->
+                                    <HBox spacing="30" alignment="CENTER" styleClass="legend-container">
+                                        <VBox spacing="10" alignment="CENTER_LEFT">
+                                            <HBox styleClass="legend-item">
+                                                <Region styleClass="legend-color, legend-moto" />
+                                                <Label text="Type A (Moto): Permis deux-roues motorisés" styleClass="legend-text" />
+                                            </HBox>
+                                        </VBox>
+                                        <VBox spacing="10" alignment="CENTER_LEFT">
+                                            <HBox styleClass="legend-item">
+                                                <Region styleClass="legend-color, legend-voiture" />
+                                                <Label text="Type B (Voiture): Permis véhicules légers" styleClass="legend-text" />
+                                            </HBox>
+                                        </VBox>
+                                        <VBox spacing="10" alignment="CENTER_LEFT">
+                                            <HBox styleClass="legend-item">
+                                                <Region styleClass="legend-color, legend-camion" />
+                                                <Label text="Type C (Camion): Permis poids lourds" styleClass="legend-text" />
+                                            </HBox>
+                                        </VBox>
+                                    </HBox>
+                                </VBox>
+                            </children>
+                        </VBox>
                     </children>
                 </VBox>
             </content>

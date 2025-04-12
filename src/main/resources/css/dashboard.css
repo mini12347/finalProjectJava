@@ -1,3 +1,4 @@
+/* Styles existants */
 .root {
     -fx-background-color: #f5f5f7;
     -fx-font-family: "Segoe UI", Arial, sans-serif;
@@ -14,30 +15,81 @@
     -fx-text-fill: #2c3e50;
     -fx-font-size: 18px;
     -fx-font-weight: bold;
-    -fx-padding: 15 0 10 0;
+    -fx-padding: 10 0 10 0;
 }
 
-/* Cards styling */
+/* Cards styling with grid alignment */
 .card {
     -fx-background-color: white;
     -fx-background-radius: 8px;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 8, 0, 0, 0);
-    -fx-min-width: 200px;
+    -fx-min-width: 230px;
+    -fx-pref-width: 230px;
+    -fx-max-width: 230px;
+    -fx-min-height: 120px;
 }
 
-/* Card title styling - replace first-child */
+/* Style spécifique pour les cartes de type de permis */
+.license-type-card {
+    -fx-min-height: 180px; /* Augmenté pour accommoder le numéro */
+}
+
+/* Nouveau style pour la carte graphique */
+.chart-card {
+    -fx-min-width: 750px;
+    -fx-pref-width: 750px;
+    -fx-max-width: 750px;
+    -fx-min-height: 450px; /* Hauteur fixe pour garantir l'espace */
+    -fx-pref-height: 450px;
+    -fx-max-height: 450px;
+}
+
+/* HBox containing cards - ensuring they take equal width */
+HBox.cards-container {
+    -fx-alignment: center;
+    -fx-spacing: 20;
+    -fx-fill-height: true;
+}
+
+HBox.cards-container > .card {
+    -fx-hgrow: always;
+}
+
+/* Card title styling avec ajustement pour les icônes */
 .card-title {
     -fx-text-fill: #7f8c8d;
     -fx-font-size: 14px;
     -fx-font-weight: normal;
 }
 
-/* Card value styling - replace nth-child */
+/* Card value styling */
 .card-value {
     -fx-text-fill: #2c3e50;
     -fx-font-size: 28px;
     -fx-font-weight: bold;
     -fx-padding: 5 0 0 0;
+}
+
+/* Nouveaux styles pour les icônes dans les cartes */
+.card-icon {
+    -fx-opacity: 0.8;
+}
+
+.card:hover .card-icon {
+    -fx-opacity: 1.0;
+}
+
+/* Style pour les HBox contenant les icônes et les titres */
+HBox.card-header {
+    -fx-alignment: center-left;
+    -fx-spacing: 10;
+}
+
+/* Style pour le conteneur de graphique */
+#distributionGraphContainer {
+    -fx-background-color: transparent;
+    -fx-padding: 10;
+    -fx-alignment: center;
 }
 
 /* Alerts styling */
@@ -89,4 +141,111 @@
 .card:hover {
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.15), 10, 0, 0, 0);
     -fx-translate-y: -2;
+}
+
+/* Progress arc styling */
+.progress-arc {
+    -fx-stroke: transparent;
+}
+
+/* Custom progress bars */
+.custom-progress-bar > .track {
+    -fx-background-color: #f0f0f0;
+    -fx-background-radius: 5;
+}
+
+.custom-progress-bar > .bar {
+    -fx-background-color: linear-gradient(to right, #2ecc71, #27ae60);
+    -fx-background-radius: 5;
+}
+
+.custom-progress-bar-moto > .track {
+    -fx-background-color: #f0f0f0;
+    -fx-background-radius: 5;
+}
+
+.custom-progress-bar-moto > .bar {
+    -fx-background-color: linear-gradient(to right, #e74c3c, #c0392b);
+    -fx-background-radius: 5;
+}
+
+.custom-progress-bar-voiture > .track {
+    -fx-background-color: #f0f0f0;
+    -fx-background-radius: 5;
+}
+
+.custom-progress-bar-voiture > .bar {
+    -fx-background-color: linear-gradient(to right, #3498db, #2980b9);
+    -fx-background-radius: 5;
+}
+
+.custom-progress-bar-camion > .track {
+    -fx-background-color: #f0f0f0;
+    -fx-background-radius: 5;
+}
+
+.custom-progress-bar-camion > .bar {
+    -fx-background-color: linear-gradient(to right, #f39c12, #d35400);
+    -fx-background-radius: 5;
+}
+
+/* Distribution pie chart styling */
+.chart-pie {
+    -fx-border-color: transparent;
+}
+
+.chart-pie-label {
+    -fx-fill: #2c3e50;
+    -fx-font-size: 12px;
+}
+
+.chart-legend {
+    -fx-background-color: transparent;
+}
+
+.chart-legend-item {
+    -fx-text-fill: #2c3e50;
+}
+
+/* Coloration des sections du graphique */
+.default-color0.chart-pie { -fx-pie-color: #e74c3c; }
+.default-color1.chart-pie { -fx-pie-color: #3498db; }
+.default-color2.chart-pie { -fx-pie-color: #f39c12; }
+
+/* Styles pour les légendes personnalisées */
+.legend-item {
+    -fx-alignment: center-left;
+    -fx-spacing: 10;
+}
+
+.legend-color {
+    -fx-min-width: 20px;
+    -fx-min-height: 20px;
+    -fx-max-width: 20px;
+    -fx-max-height: 20px;
+    -fx-background-radius: 3px;
+}
+
+.legend-text {
+    -fx-text-fill: #2c3e50;
+    -fx-font-size: 14px;
+}
+
+.legend-moto {
+    -fx-background-color: #e74c3c;
+}
+
+.legend-voiture {
+    -fx-background-color: #3498db;
+}
+
+.legend-camion {
+    -fx-background-color: #f39c12;
+}
+
+/* Style pour le conteneur de légendes */
+HBox.legend-container {
+    -fx-spacing: 20;
+    -fx-padding: 10 0 0 0;
+    -fx-alignment: center;
 }
