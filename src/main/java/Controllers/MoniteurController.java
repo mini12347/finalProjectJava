@@ -1,5 +1,6 @@
 package Controllers;
 import java.time.LocalDate;
+import java.time.Period;
 import Entities.Moniteur;
 import Entities.Vehicule;
 import Entities.Disponibility;
@@ -28,6 +29,7 @@ import java.util.ArrayList;
 import java.io.File;
 import java.io.IOException;
 import java.time.DayOfWeek;
+import java.util.regex.Pattern;
 
 import com.lowagie.text.DocumentException;
 
@@ -56,6 +58,11 @@ public class MoniteurController {
     private Label nbMoniteursLabel;
     @FXML
     private Button genererPDFButton, genererPDFSelectionButton;
+
+    // Patterns de validation
+    private static final Pattern ALPHA_PATTERN = Pattern.compile("^[a-zA-ZÀ-ÿ\\s'-]+$");
+    private static final Pattern NUMERIC_PATTERN = Pattern.compile("^[0-9]+$");
+    private static final Pattern EMAIL_PATTERN = Pattern.compile("^[A-Za-z0-9+_.-]+@(.+)$");
 
     public MoniteurController() throws SQLException {
         Connection connection = ConxDB.getInstance();
@@ -115,8 +122,70 @@ public class MoniteurController {
             }
         });
 
+        // Ajouter des listeners pour validation en temps réel
+        addInputValidationListeners();
+
         // Charger initialement tous les moniteurs
         afficherMoniteurs();
+    }
+
+    /**
+     * Ajoute des écouteurs pour valider les entrées en temps réel
+     */
+    private void addInputValidationListeners() {
+        // Validation du CIN pendant la saisie
+        cinField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.isEmpty() && !isValidCIN(newValue)) {
+                cinField.setStyle("-fx-border-color: red;");
+            } else {
+                cinField.setStyle("");
+            }
+        });
+
+        // Validation du nom pendant la saisie
+        nomField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.isEmpty() && !isValidName(newValue)) {
+                nomField.setStyle("-fx-border-color: red;");
+            } else {
+                nomField.setStyle("");
+            }
+        });
+
+        // Validation du prénom pendant la saisie
+        prenomField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.isEmpty() && !isValidName(newValue)) {
+                prenomField.setStyle("-fx-border-color: red;");
+            } else {
+                prenomField.setStyle("");
+            }
+        });
+
+        // Validation du numéro de téléphone pendant la saisie
+        numTelephoneField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.isEmpty() && !isValidPhoneNumber(newValue)) {
+                numTelephoneField.setStyle("-fx-border-color: red;");
+            } else {
+                numTelephoneField.setStyle("");
+            }
+        });
+
+        // Validation de l'email pendant la saisie
+        mailField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.isEmpty() && !isValidEmail(newValue)) {
+                mailField.setStyle("-fx-border-color: red;");
+            } else {
+                mailField.setStyle("");
+            }
+        });
+
+        // Validation de la date de naissance
+        dateNaissanceField.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null && !isValidAge(newValue)) {
+                dateNaissanceField.setStyle("-fx-border-color: red;");
+            } else {
+                dateNaissanceField.setStyle("");
+            }
+        });
     }
 
     // Initialisation des ComboBox (structure et affichage)
@@ -248,13 +317,118 @@ public class MoniteurController {
         }
     }
 
+    /**
+     * Méthode de validation du CIN (8 chiffres)
+     */
+    private boolean isValidCIN(String cin) {
+        return NUMERIC_PATTERN.matcher(cin).matches() && cin.length() == 8;
+    }
+
+    /**
+     * Méthode de validation du nom/prénom (alphabétique)
+     */
+    private boolean isValidName(String name) {
+        return ALPHA_PATTERN.matcher(name).matches();
+    }
+
+    /**
+     * Méthode de validation du numéro de téléphone (numérique)
+     */
+    private boolean isValidPhoneNumber(String number) {
+        return NUMERIC_PATTERN.matcher(number).matches() && number.length() == 8;
+    }
+
+    /**
+     * Méthode de validation de l'email
+     */
+    private boolean isValidEmail(String email) {
+        return EMAIL_PATTERN.matcher(email).matches();
+    }
+
+    /**
+     * Méthode de validation de l'âge (≥ 18 ans)
+     */
+    private boolean isValidAge(LocalDate birthDate) {
+        return Period.between(birthDate, LocalDate.now()).getYears() >= 18;
+    }
+
+    /**
+     * Valide toutes les entrées du formulaire
+     * @return true si toutes les validations passent, false sinon
+     */
+    private boolean validateAllInputs() {
+        StringBuilder errorMessage = new StringBuilder();
+
+        // Validation du CIN
+        if (cinField.getText().isEmpty()) {
+            errorMessage.append("Le CIN est obligatoire.\n");
+        } else if (!isValidCIN(cinField.getText())) {
+            errorMessage.append("Le CIN doit contenir exactement 8 chiffres.\n");
+        }
+
+        // Validation du nom
+        if (nomField.getText().isEmpty()) {
+            errorMessage.append("Le nom est obligatoire.\n");
+        } else if (!isValidName(nomField.getText())) {
+            errorMessage.append("Le nom doit contenir uniquement des caractères alphabétiques.\n");
+        }
+
+        // Validation du prénom
+        if (prenomField.getText().isEmpty()) {
+            errorMessage.append("Le prénom est obligatoire.\n");
+        } else if (!isValidName(prenomField.getText())) {
+            errorMessage.append("Le prénom doit contenir uniquement des caractères alphabétiques.\n");
+        }
+
+        // Validation de l'adresse
+        if (adresseField.getText().isEmpty()) {
+            errorMessage.append("L'adresse est obligatoire.\n");
+        }
+
+        // Validation de l'email
+        if (mailField.getText().isEmpty()) {
+            errorMessage.append("L'email est obligatoire.\n");
+        } else if (!isValidEmail(mailField.getText())) {
+            errorMessage.append("Format d'email invalide.\n");
+        }
+
+        // Validation du numéro de téléphone
+        if (numTelephoneField.getText().isEmpty()) {
+            errorMessage.append("Le numéro de téléphone est obligatoire.\n");
+        } else if (!isValidPhoneNumber(numTelephoneField.getText())) {
+            errorMessage.append("Le numéro de téléphone doit contenir exactement 8 chiffres.\n");
+        }
+
+        // Validation de la date de naissance
+        if (dateNaissanceField.getValue() == null) {
+            errorMessage.append("La date de naissance est obligatoire.\n");
+        } else if (!isValidAge(dateNaissanceField.getValue())) {
+            errorMessage.append("Le moniteur doit être âgé d'au moins 18 ans.\n");
+        }
+
+        // Validation des sélections dans les combobox
+        if (vehiculeComboBox.getValue() == null) {
+            errorMessage.append("Veuillez sélectionner un véhicule.\n");
+        }
+
+        if (dispoComboBox.getValue() == null) {
+            errorMessage.append("Veuillez sélectionner une disponibilité.\n");
+        }
+
+        // Si des erreurs ont été détectées, afficher l'alerte et retourner false
+        if (errorMessage.length() > 0) {
+            showAlert("Erreur de validation", errorMessage.toString(), Alert.AlertType.ERROR);
+            return false;
+        }
+
+        return true;
+    }
+
     @FXML
     private void ajouterMoniteur(MouseEvent event) {
         try {
-            if (cinField.getText().isEmpty() || nomField.getText().isEmpty() || prenomField.getText().isEmpty() ||
-                    adresseField.getText().isEmpty() || mailField.getText().isEmpty() || numTelephoneField.getText().isEmpty() ||
-                    dateNaissanceField.getValue() == null || vehiculeComboBox.getValue() == null || dispoComboBox.getValue() == null) {
-                showAlert("Erreur", "Veuillez remplir tous les champs.", Alert.AlertType.ERROR);
+            // Validation de toutes les entrées
+            if (!validateAllInputs()) {
                 return;
             }
 
@@ -283,6 +457,11 @@ public class MoniteurController {
         try {
             // Si le champ CIN n'est pas vide, utiliser cette valeur
             if (!cinField.getText().isEmpty()) {
+                if (!isValidCIN(cinField.getText())) {
+                    showAlert("Erreur", "Le CIN doit contenir exactement 8 chiffres.", Alert.AlertType.ERROR);
+                    return;
+                }
+
                 int cin = Integer.parseInt(cinField.getText());
                 // Vérifier d'abord si le moniteur existe
                 Moniteur moniteur = moniteurDAO.chercherMoniteur(cin);
@@ -321,6 +500,11 @@ public class MoniteurController {
         try {
             if (cinField.getText().isEmpty()) {
                 showAlert("Erreur", "Veuillez entrer un CIN pour la recherche.", Alert.AlertType.WARNING);
+                return;
+            }
+
+            if (!isValidCIN(cinField.getText())) {
+                showAlert("Erreur", "Le CIN doit contenir exactement 8 chiffres.", Alert.AlertType.ERROR);
                 return;
             }
 
@@ -440,5 +624,14 @@ public class MoniteurController {
         dateNaissanceField.setValue(null);
         vehiculeComboBox.setValue(null);
         dispoComboBox.setValue(null);
+
+        // Réinitialiser les styles pour retirer les indications d'erreur
+        cinField.setStyle("");
+        nomField.setStyle("");
+        prenomField.setStyle("");
+        adresseField.setStyle("");
+        mailField.setStyle("");
+        numTelephoneField.setStyle("");
+        dateNaissanceField.setStyle("");
     }
 }

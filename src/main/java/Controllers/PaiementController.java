@@ -7,13 +7,19 @@ import Service.PaiementPdfGenerator;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Callback;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
@@ -239,24 +245,44 @@ public class PaiementController {
         }
 
         // Check payment state
-        if (
-
-                "effectué".equals(selectedPaiement.getEtat())) {
+        if ("effectué".equals(selectedPaiement.getEtat())) {
             showAlert("Erreur", "Vous avez déjà payé !!");
             return;
         }
 
-        // Determine if it's a par facilité payment
-        boolean parFacilite = selectedPaiement.getParFacilite() != null;
+        // Show password dialog
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/PasswordDialog.fxml"));
+            Parent root = loader.load();
+            PasswordDialogController dialogController = loader.getController();
 
-        boolean success = paiementService.effectuerPaiement(selectedPaiement, parFacilite);
+            Stage dialogStage = new Stage();
+            dialogStage.initModality(Modality.APPLICATION_MODAL);
+            dialogStage.initStyle(StageStyle.UNDECORATED);
+            dialogStage.setScene(new Scene(root));
+            dialogStage.showAndWait();
 
-        if (success) {
-            showAlert("Succès", "Paiement effectué avec succès.");
-            // Refresh the table
-            rechercherPaiements();
-        } else {
-            showAlert("Erreur", "Échec du paiement.");
+            // Check if user confirmed with password
+            if (dialogController.isConfirmed()) {
+                String password = dialogController.getPassword();
+
+                // Determine if it's a par facilité payment
+                boolean parFacilite = selectedPaiement.getParFacilite() != null;
+
+                // Try to process payment with password
+                boolean success = paiementService.effectuerPaiement(selectedPaiement, parFacilite, password);
+
+                if (success) {
+                    showAlert("Succès", "Paiement effectué avec succès.");
+                    // Refresh the table
+                    rechercherPaiements();
+                } else {
+                    showAlert("Erreur", "Mot de passe incorrect. Échec du paiement.");
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert("Erreur", "Erreur lors de l'ouverture de la boîte de dialogue de mot de passe.");
         }
     }
 

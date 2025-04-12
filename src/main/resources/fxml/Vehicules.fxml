@@ -79,7 +79,7 @@
                        <TableColumn fx:id="datemColumn" prefWidth="200.0" text="Date de mise en service" />
                        <TableColumn fx:id="kilometrageColumn" prefWidth="150.0" text="Kilométrage" />
                        <TableColumn fx:id="typeColumn" prefWidth="120.0" text="Type" />
-                       <TableColumn fx:id="actionsColumn" prefWidth="160.0" text="Actions" />
+                       <TableColumn fx:id="actionsColumn" prefWidth="210.0" text="Actions" />
                    </columns>
                </TableView>
              <BorderPane.margin>

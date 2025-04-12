@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.Period;
 import java.time.ZoneId;
 import java.util.Date;
 
@@ -155,37 +156,34 @@ public class CandidateFormController {
     private boolean validateInput() {
         String errorMessage = "";
 
-        if (nomField.getText() == null || nomField.getText().trim().isEmpty()) {
-            errorMessage += "Le nom est obligatoire\n";
+        // Validation du nom
+        if (!isValidName(nomField.getText())) {
+            errorMessage += "Le nom est invalide. Utilisez uniquement des caractères alphabétiques.\n";
         }
-        if (prenomField.getText() == null || prenomField.getText().trim().isEmpty()) {
-            errorMessage += "Le prénom est obligatoire\n";
+
+        // Validation du prénom
+        if (!isValidName(prenomField.getText())) {
+            errorMessage += "Le prénom est invalide. Utilisez uniquement des caractères alphabétiques.\n";
         }
-        if (cinField.getText() == null || cinField.getText().trim().isEmpty()) {
-            errorMessage += "Le CIN est obligatoire\n";
-        } else {
-            try {
-                Integer.parseInt(cinField.getText());
-            } catch (NumberFormatException e) {
-                errorMessage += "Le CIN doit être un nombre valide\n";
-            }
+
+        // Validation du CIN
+        if (!isValidCIN(cinField.getText())) {
+            errorMessage += "Le CIN doit être composé exactement de 8 chiffres.\n";
         }
-        if (telephoneField.getText() == null || telephoneField.getText().trim().isEmpty()) {
-            errorMessage += "Le numéro de téléphone est obligatoire\n";
-        } else {
-            try {
-                Integer.parseInt(telephoneField.getText());
-            } catch (NumberFormatException e) {
-                errorMessage += "Le numéro de téléphone doit être un nombre valide\n";
-            }
+
+        // Validation du numéro de téléphone
+        if (!isValidPhoneNumber(telephoneField.getText())) {
+            errorMessage += "Le numéro de téléphone doit être composé de 8 chiffres.\n";
         }
-        if (emailField.getText() == null || emailField.getText().trim().isEmpty()) {
-            errorMessage += "L'email est obligatoire\n";
-        } else if (!isValidEmail(emailField.getText())) {
-            errorMessage += "L'email n'est pas valide\n";
+
+        // Validation de l'email
+        if (!isValidEmail(emailField.getText())) {
+            errorMessage += "L'email n'est pas valide.\n";
         }
-        if (dateNaissancePicker.getValue() == null) {
-            errorMessage += "La date de naissance est obligatoire\n";
+
+        // Validation de l'âge
+        if (!isValidAge(dateNaissancePicker.getValue())) {
+            errorMessage += "L'âge doit être égal ou supérieur à 18 ans.\n";
         }
 
         if (errorMessage.isEmpty()) {
@@ -197,9 +195,56 @@ public class CandidateFormController {
     }
 
     /**
+     * Vérifie si le nom est valide (chaîne alphabétique)
+     */
+    private boolean isValidName(String name) {
+        if (name == null || name.trim().isEmpty()) {
+            return false;
+        }
+        return name.matches("^[a-zA-ZÀ-ÿ\\s'-]+$");
+    }
+
+    /**
+     * Vérifie si le CIN est valide (8 chiffres)
+     */
+    private boolean isValidCIN(String cin) {
+        if (cin == null || cin.trim().isEmpty()) {
+            return false;
+        }
+        return cin.matches("^\\d{8}$");
+    }
+
+    /**
+     * Vérifie si le numéro de téléphone est valide (8 chiffres)
+     */
+    private boolean isValidPhoneNumber(String phone) {
+        if (phone == null || phone.trim().isEmpty()) {
+            return false;
+        }
+        return phone.matches("^\\d{8}$");
+    }
+
+    /**
+     * Vérifie si l'âge est valide (≥ 18 ans)
+     */
+    private boolean isValidAge(LocalDate birthDate) {
+        if (birthDate == null) {
+            return false;
+        }
+
+        LocalDate currentDate = LocalDate.now();
+        Period period = Period.between(birthDate, currentDate);
+
+        return period.getYears() >= 18;
+    }
+
+    /**
      * Valide le format de l'email
      */
     private boolean isValidEmail(String email) {
+        if (email == null || email.trim().isEmpty()) {
+            return false;
+        }
         String regex = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
         return email.matches(regex);
     }
@@ -235,6 +280,14 @@ public class CandidateFormController {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    /**
+     * Annule l'édition et ferme la fenêtre
+     */
+    @FXML
+    private void handleCancel() {
+        dialogStage.close();
     }
 
     /**

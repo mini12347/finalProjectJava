@@ -1,0 +1,58 @@
+.root {
+    -fx-background-color: #f0f0f0;
+    -fx-font-family: "Segoe UI", Arial, sans-serif;
+}
+
+.vbox {
+    -fx-background-color: white;
+    -fx-background-radius: 5px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 0);
+    -fx-padding: 20px;
+}
+
+.label {
+    -fx-text-fill: #2c3e50;
+}
+
+.password-field {
+    -fx-background-color: #ecf0f1;
+    -fx-background-radius: 3px;
+    -fx-border-color: #bdc3c7;
+    -fx-border-radius: 3px;
+    -fx-padding: 8px;
+    -fx-font-size: 14px;
+}
+
+.password-field:focused {
+    -fx-border-color: #3498db;
+    -fx-effect: dropshadow(three-pass-box, rgba(52,152,219,0.3), 5, 0, 0, 0);
+}
+
+.button {
+    -fx-cursor: hand;
+    -fx-background-radius: 3px;
+    -fx-font-weight: bold;
+    -fx-padding: 8px 15px;
+    -fx-text-fill: white;
+}
+
+.cancel-button {
+    -fx-background-color: #e74c3c;
+}
+
+.cancel-button:hover {
+    -fx-background-color: #c0392b;
+}
+
+.confirm-button {
+    -fx-background-color: #2ecc71;
+}
+
+.confirm-button:hover {
+    -fx-background-color: #27ae60;
+}
+
+.error-label {
+    -fx-text-fill: #e74c3c;
+    -fx-font-size: 12px;
+}

@@ -209,7 +209,7 @@ public class PaiementDAO {
         }
     }
 
-    // Nouvelle méthode pour mettre à jour l'état avec la date et l'heure actuelles
+    // Méthode pour mettre à jour l'état avec la date et l'heure actuelles
     private void updatePaiementStateWithDateTime(Paiement paiement, String nouvelEtat) throws SQLException {
         String updatePaiementQuery = "UPDATE paiement SET etat = ?, date = CURRENT_DATE, time = CURRENT_TIME WHERE id_paiement = ?";
         try (PreparedStatement ps = connection.prepareStatement(updatePaiementQuery)) {

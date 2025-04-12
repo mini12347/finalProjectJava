@@ -16,7 +16,7 @@
 }
 
 .button:hover {
-    -fx-background-color: #1a252f;
+    -fx-border-color: #1a252f;
 }
 
 /* Barre de recherche */
