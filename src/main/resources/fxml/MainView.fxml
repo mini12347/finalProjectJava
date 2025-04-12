@@ -3,11 +3,11 @@
 <?import javafx.scene.layout.*?>
 
 <BorderPane xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="Controllers.CandidateController">
+            fx:controller="Controllers.CandidateController" >
     <VBox prefWidth="200" spacing="10" style="-fx-background-color: #2C3E50;" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0">
         <Label text="Dashboard" style="-fx-text-fill: white; -fx-font-size: 18px;"/>
-        <Button text="Candidates" />
-        <Button text="Settings" />
+        <Button text="Candidates" styleClass="btn-search" />
+        <Button text="Settings" styleClass="btn-search"  />
     </VBox>
     <top>
         <ToolBar>
