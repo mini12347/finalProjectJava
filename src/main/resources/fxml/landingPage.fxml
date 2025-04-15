@@ -109,7 +109,7 @@
 
             <Button fx:id="btnmenu" mnemonicParsing="false" text="cliquer sur l'un des item du menu pour commencer ">
                 <VBox.margin>
-                   <Insets left="300.0" top="30.0" />
+                    <Insets left="300.0" top="30.0" />
                 </VBox.margin>
             </Button>
             <BorderPane.margin>
@@ -119,18 +119,18 @@
     </center>
     <right>
         <VBox alignment="TOP_RIGHT" spacing="10">
-            <VBox fx:id="notificationPanel" prefHeight="226.0" prefWidth="366.0" spacing="10" style="-fx-background-color: #FFEB99; -fx-padding: 10; -fx-border-color: #E0C060;" styleClass="notification-panel">
-                <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Notifications urgentes" />
-                <VBox fx:id="notificationsContainer" prefHeight="200.0" prefWidth="330.0" spacing="5" style="-fx-background-color: white; -fx-padding: 10; -fx-border-color: #ccc; -fx-border-width: 1; -fx-border-radius: 20px;-fx-background-radius: 20px;">
+            <VBox fx:id="notificationPanel" prefHeight="226.0" prefWidth="366.0" spacing="10" styleClass="notification-panel">
+                <Label styleClass="notification-title" text="Notifications urgentes" />
+                <VBox fx:id="notificationsContainer" prefHeight="200.0" prefWidth="330.0" spacing="5">
                     <children>
-                        <HBox prefHeight="91.0" prefWidth="307.0">
+                        <HBox prefHeight="91.0" prefWidth="307.0" styleClass="notification-item">
                             <children>
-                                <ImageView fitHeight="25.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                                <ImageView styleClass="warning-icon" fitHeight="25.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
                                         <Image url="@../images/w.png" />
                                     </image>
                                 </ImageView>
-                                <Label text="Aucune notification pour le moment..." textFill="#8f8c8cd4">
+                                <Label styleClass="no-notification" text="Aucune notification pour le moment...">
                                     <HBox.margin>
                                         <Insets left="2.0" top="5.0" />
                                     </HBox.margin>

@@ -80,3 +80,10 @@
 .btn-primary:focused, .btn-secondary:focused {
     -fx-border-color: #1c6ea4;
 }
+Button{
+    -fx-background-color: #152238;
+    -fx-font-family: Verdana, Geneva, Tahoma, sans-serif;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+
+}

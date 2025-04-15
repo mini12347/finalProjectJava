@@ -96,14 +96,6 @@ BorderPane{
     -fx-background-radius: 5px;
 }
 
-.notification-button {
-    -fx-font-size: 18px;
-    -fx-background-color: #d9534f;
-    -fx-text-fill: white;
-    -fx-padding: 5px 10px;
-    -fx-cursor: hand;
-    -fx-background-radius: 5px;
-}
 
 .menu-button {
     -fx-background-color: transparent;
@@ -194,4 +186,112 @@ BorderPane{
     -fx-background-color: rgba(25, 70, 103, 0.62);
     -fx-background-radius: 5px;
 
+}
+/* Style général pour le panneau de notification */
+/* Style général pour le panneau de notification */
+/* Style pour le panneau de notification - initialement caché avec translateX */
+/* Style général pour le panneau de notification - maintenu visible */
+.notification-panel {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 15px;
+    -fx-border-radius: 15px;
+    -fx-border-color: #E0E5E9;
+    -fx-border-width: 1px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);
+    -fx-padding: 15px;
+    /* Pas de modification à translate-x pour garder le panneau visible */
+}
+
+/* Style pour le titre des notifications */
+.notification-title {
+    -fx-font-family: kanit-regular;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2C3E50;
+    -fx-border-color: transparent transparent #D9E5F3 transparent;
+    -fx-border-width: 0 0 1px 0;
+}
+
+/* Style pour le conteneur des notifications */
+#notificationsContainer {
+    -fx-background-color: #F8F9FA;
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+    -fx-border-color: #E0E5E9;
+    -fx-border-width: 1px;
+    -fx-padding: 10px;
+}
+
+/* Style pour chaque élément de notification */
+.notification-item {
+    -fx-background-color: white;
+    -fx-background-radius: 8px;
+    -fx-border-radius: 8px;
+    -fx-border-color: #E0E5E9;
+    -fx-border-width: 1px;
+    -fx-padding: 8px;
+}
+
+/* Style pour les notifications urgentes */
+.urgent-notification {
+    -fx-background-color: #F5F7FA;
+    -fx-border-color: #2C3E50;
+    -fx-border-width: 0 0 0 3px;
+}
+
+/* Style pour le texte des notifications */
+.notification-text {
+    -fx-font-family: kanit-regular;
+    -fx-font-size: 14px;
+    -fx-text-fill: #2C3E50;
+}
+
+/* Style pour mettre en évidence des parties spécifiques du texte */
+.highlight-text {
+    -fx-font-weight: bold;
+    -fx-text-fill: #1D344E;
+}
+
+/* Style pour l'icône d'avertissement */
+.warning-icon {
+    -fx-opacity: 0.9;
+}
+
+/* Style pour le message "Aucune notification" */
+.no-notification {
+    -fx-text-fill: #7F8C8D;
+    -fx-font-style: italic;
+}
+
+/* Animation subtile au survol des notifications */
+.notification-item:hover {
+    -fx-background-color: #EFF2F7;
+    -fx-effect: dropshadow(three-pass-box, rgba(44, 62, 80, 0.2), 5, 0, 0, 2);
+    -fx-cursor: hand;
+}
+
+/* Style pour le bouton de notification dans la barre supérieure */
+.notification-button {
+    -fx-font-size: 18px;
+    -fx-background-color: #2C3E50;
+    -fx-text-fill: white;
+    -fx-padding: 5px 10px;
+    -fx-cursor: hand;
+    -fx-background-radius: 5px;
+    -fx-transition: background-color 0.3s ease;
+}
+
+.notification-button:hover {
+    -fx-background-color: #1D344E;
+}
+
+/* Animation d'apparition subtile pour les nouvelles notifications */
+.new-notification {
+    -fx-opacity: 0;
+    -fx-animation: fadeIn 0.5s ease-in forwards;
+}
+
+@keyframes fadeIn {
+    from { -fx-opacity: 0; }
+    to { -fx-opacity: 1; }
 }

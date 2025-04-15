@@ -83,6 +83,10 @@ public class DashboardController implements Initializable {
         codeReussiteArc.setStartAngle(90);  // Commence à midi (90 degrés)
         conduiteReussiteArc.setStartAngle(90);
 
+        // S'assurer que la longueur initiale est à 0
+        codeReussiteArc.setLength(0);
+        conduiteReussiteArc.setLength(0);
+
         // Initialiser le graphique pour la distribution des permis
         distributionPieChart = new PieChart();
         distributionPieChart.setLabelsVisible(true);
@@ -148,6 +152,7 @@ public class DashboardController implements Initializable {
 
     /**
      * Met à jour les représentations graphiques pour les taux de réussite
+     * Méthode corrigée pour afficher correctement l'arc de progression
      */
     private void updateReussiteGraphique(String tauxTexte, Arc arc, ProgressBar progressBar) {
         try {
@@ -155,17 +160,16 @@ public class DashboardController implements Initializable {
             String tauxNormalise = tauxTexte.replace("%", "").replace(",", ".").trim();
             double pourcentage = Double.parseDouble(tauxNormalise);
 
-            // Mettre à jour l'arc (sens horaire)
-            double arcLength = pourcentage * 3.6; // 3.6 = 360/100
+            // Calculer l'angle en degrés pour l'arc (sens anti-horaire)
+            // La valeur maximale est -360 degrés pour un cercle complet
+            double arcLength = -(pourcentage * 3.6); // 3.6 = 360/100
 
-            // Réinitialiser l'arc avant de définir sa nouvelle longueur
-            arc.setLength(0);
+            // Mettre à jour l'arc avec animation
+            // Pour le debug: afficher les valeurs calculées
+            System.out.println("Taux: " + pourcentage + "%, Arc length: " + arcLength);
 
-            // Utiliser Platform.runLater pour s'assurer que le changement est appliqué après un cycle de rendu
-            Platform.runLater(() -> {
-                arc.setLength(arcLength);
-                System.out.println("Arc length set to: " + arcLength); // Pour déboguer
-            });
+            // Appliquer la nouvelle longueur à l'arc
+            arc.setLength(arcLength);
 
             // Mettre à jour la barre de progression
             progressBar.setProgress(pourcentage / 100.0);
