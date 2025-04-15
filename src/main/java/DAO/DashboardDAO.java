@@ -11,7 +11,7 @@ import java.util.Map;
 
 public class DashboardDAO {
     public int getTotalCandidats() throws SQLException {
-        String query = "SELECT COUNT(*) FROM candidat";
+        String query = "SELECT COUNT(*) FROM candidates";
         Connection conn = ConxDB.getInstance(); // Obtention de la connexion partagée
 
         try (PreparedStatement stmt = conn.prepareStatement(query);
@@ -139,18 +139,35 @@ public class DashboardDAO {
         distribution.put("CAMION", 0);
 
         // Cette requête compte le nombre de candidats participant à des séances par type de permis
-        String query = "SELECT typePermis, COUNT(DISTINCT cin_candidat ) as total " +
-                "FROM seance " +
-                "GROUP BY typePermis";
+        // Modifiée pour utiliser seance_code et seance_conduite avec les noms de colonnes corrects
+        String queryCode = "SELECT type_permis, COUNT(DISTINCT candidat_cin) as total " +
+                "FROM seance_code " +
+                "GROUP BY type_permis";
 
-        try (Connection conn = ConxDB.getInstance();
-             PreparedStatement stmt = conn.prepareStatement(query);
-             ResultSet rs = stmt.executeQuery()) {
+        String queryConduite = "SELECT type_permis, COUNT(DISTINCT candidat_cin) as total " +
+                "FROM seance_conduite " +
+                "GROUP BY type_permis";
 
-            while (rs.next()) {
-                String typePermis = rs.getString("typePermis");
-                int total = rs.getInt("total");
-                distribution.put(typePermis, total);
+        try (Connection conn = ConxDB.getInstance()) {
+            // Traitement pour seance_code
+            try (PreparedStatement stmt = conn.prepareStatement(queryCode);
+                 ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    String typePermis = rs.getString("type_permis");
+                    int total = rs.getInt("total");
+                    distribution.put(typePermis, distribution.getOrDefault(typePermis, 0) + total);
+                }
+            }
+
+            // Traitement pour seance_conduite
+            try (PreparedStatement stmt = conn.prepareStatement(queryConduite);
+                 ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    String typePermis = rs.getString("type_permis");
+                    int total = rs.getInt("total");
+                    // Ajouter aux valeurs existantes pour éviter de compter les doublons
+                    distribution.put(typePermis, distribution.getOrDefault(typePermis, 0) + total);
+                }
             }
 
             return distribution;

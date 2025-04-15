@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class ConxDB {
     private static Connection connexion;
-    private static final String DB_URL = "jdbc:mysql://localhost:3307/projectjava";
+    private static final String DB_URL = "jdbc:mysql://localhost:3306/projectjava";
     private static final String USER = "root";
     private static final String PASSWORD = ""; // mets ton mot de passe si nécessaire
 
