@@ -1,0 +1,35 @@
+
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane prefHeight="400.0" prefWidth="600.0" stylesheets="@../css/SeanceInfo.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.SeanceInfoController">
+    <center>
+        <VBox fx:id="rootVBox" spacing="10" styleClass="card">
+            <Label prefHeight="39.0" prefWidth="182.0" styleClass="title" text="Details de la Seance" />
+            <Label styleClass="title1" text="Type" />
+            <Label fx:id="typef" prefHeight="32.0" prefWidth="288.0" styleClass="text-field" />
+            <Label styleClass="title1" text="Date" />
+            <Label fx:id="datef" prefHeight="32.0" prefWidth="291.0" styleClass="text-field" />
+            <Label styleClass="title1" text="Heure" />
+            <Label fx:id="heuref" prefHeight="32.0" prefWidth="294.0" styleClass="text-field" />
+            <Label styleClass="title1" text="Candidat" />
+            <Label fx:id="candidatf" prefHeight="32.0" prefWidth="298.0" styleClass="text-field" />
+            <Label styleClass="title1" text="Moniteur" />
+            <Label fx:id="ingenieurf" prefHeight="32.0" prefWidth="298.0" styleClass="text-field" />
+            <Label styleClass="title1" text="Lieu / Salle" />
+            <Label fx:id="lieuf" prefHeight="32.0" prefWidth="300.0" styleClass="text-field" />
+            <Label styleClass="title1" text="Type" />
+            <Label fx:id="typePf" prefHeight="32.0" prefWidth="299.0" styleClass="text-field" />
+            <VBox  fx:id="secondVBOX" spacing="5">
+                <Button onAction="#update" prefWidth="100" styleClass="animated-button" text="📝 Modifier" />
+                <Button onAction="#save" prefWidth="120" styleClass="animated-button2" text="💾 Sauvegarder"/>
+                <Button onAction="#cancel" prefWidth="100" styleClass="animated-button3" text="❌ Annuler" />
+            </VBox>
+        </VBox>
+    </center>
+
+</BorderPane>

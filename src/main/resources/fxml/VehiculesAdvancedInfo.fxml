@@ -1,52 +1,155 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<BorderPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="Controllers.VehiculeAdvancedInfoController"
-            prefHeight="400.0" prefWidth="1200.0" stylesheets="@../css/VAdvancedInfos.css">
-    <center>
-        <VBox styleClass="card">
-            <Label styleClass="title" text="Details de la vehicule"/>
-            <VBox styleClass="card-details">
-                <Label styleClass="title1" text="Matricule:" />
-                <VBox spacing="10">
-                    <Label style="-fx-font-size: 12px;-fx-fill:#3e4854;-fx-font-weight: bold;" text="Matricule est sous cette forme nummatricule "/>
-                    <Label style="-fx-font-size: 12px;-fx-fill:#3e4854;-fx-font-weight: bold;" text="  تونس année matricule exp:2023->23"/>
-                    <HBox spacing="10">
-                        <TextField styleClass="text-field"  style="-fx-pref-width: 100px;" fx:id="matricule" disable="true" text="matricule " />
-                        <Label text="تونس"/>
-                        <TextField styleClass="text-field" style="-fx-pref-width: 50px;" fx:id="amatricule" disable="true" text="AN" />
-                    </HBox>
-                </VBox>
-                <Label styleClass="title1" text="Date de mise en service:" />
-                <TextField styleClass="text-field"  fx:id="datem" disable="true" text="dd-mm-yyyy" />
-                <Label  styleClass="title1" text="Kilométrage:" />
-                <TextField styleClass="text-field"  fx:id="kilo" disable="true" text="***** kilomètres" />
-                <Label styleClass="title1" text="Type:" />
-                <TextField styleClass="text-field"  fx:id="type" disable="true" text="MOTO/VOITURE/CAMION" />
-                <Label styleClass="title1" text="Kilometrage restant pour le prochain entretien"/>
-                <Label  fx:id="kilor" />
-                <Label styleClass="title1" text="date limite de paiement de vignette :"/>
-                <Label fx:id="datelv"/>
-                <Label styleClass="title1" text="date de la prochaine visite technique :"/>
-                <Label fx:id="datev"/>
-                <Label styleClass="title1" text="date limite de paiement de l'assurance "/>
-                <Label fx:id="datea"/>
-                <Label styleClass="title1" text="liste des reparations "/>
-                <TableView fx:id="reparationsTable" prefHeight="350" prefWidth="500.0" styleClass="table-view">
-                    <columns>
-                        <TableColumn fx:id="desColumn" prefWidth="150.0" text="Description" />
-                        <TableColumn fx:id="datemColumn" prefWidth="200.0" text="Date de reparation" />
-                        <TableColumn fx:id="MontantColumn" prefWidth="150.0" text="Montant" />
-                        <TableColumn fx:id="FactureColumn" prefWidth="150.0" text="Facture" />
-                    </columns>
-                </TableView>
-                <Button fx:id="generatePdfButton" layoutX="20" layoutY="350" mnemonicParsing="false"
-                        onAction="#handleGeneratePDF" prefHeight="30" prefWidth="180"
 
-                        text="Générer PDF" />
-            </VBox>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane prefHeight="700.0" prefWidth="1100.0" styleClass="main-container" stylesheets="@../css/VAdvancedInfos.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.VehiculeAdvancedInfoController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+
+    <!-- Vehicle Details Panel -->
+    <center>
+        <VBox maxWidth="766.0" prefHeight="660.0" prefWidth="766.0" spacing="15" styleClass="panel, vehicle-panel">
+            <HBox alignment="CENTER_LEFT" styleClass="panel-header">
+                <Label styleClass="panel-title" text="Détails du Véhicule" />
+            </HBox>
+
+            <ScrollPane fitToWidth="true" styleClass="content-scroll">
+                <VBox spacing="15" styleClass="panel-content">
+                    <!-- Matricule Section -->
+                    <VBox styleClass="form-group">
+                        <Label styleClass="form-label" text="Matricule:" />
+                        <Label styleClass="form-hint" text="Matricule est sous cette forme: nummatricule تونس année matricule (exp: 2023→23)" />
+                        <HBox alignment="CENTER_LEFT" spacing="10">
+                            <TextField fx:id="matricule" disable="true" promptText="Matricule" styleClass="form-field" />
+                            <Label styleClass="arabic-text" text="تونس" />
+                            <TextField fx:id="amatricule" disable="true" promptText="Année" styleClass="form-field, small-field" />
+                        </HBox>
+                    </VBox>
+
+                    <!-- Vehicle Details -->
+                    <GridPane hgap="15" vgap="10">
+                        <columnConstraints>
+                            <ColumnConstraints percentWidth="50" />
+                            <ColumnConstraints percentWidth="50" />
+                        </columnConstraints>
+
+                        <!-- Left Column -->
+                        <VBox spacing="10" styleClass="form-group" GridPane.columnIndex="0">
+                            <Label styleClass="form-label" text="Date de mise en service:" />
+                            <DatePicker fx:id="datem" disable="true" promptText="dd-mm-yyyy" styleClass="form-field" />
+
+                            <Label styleClass="form-label" text="Kilométrage:" />
+                            <TextField fx:id="kilo" disable="true" promptText="Kilométrage" styleClass="form-field" />
+
+                            <Label styleClass="form-label" text="Type:" />
+                            <ComboBox fx:id="type" disable="true" promptText="Type de véhicule" styleClass="form-field" />
+                        </VBox>
+
+                        <!-- Right Column -->
+                        <VBox spacing="10" styleClass="form-group" GridPane.columnIndex="1">
+                            <Label styleClass="form-label" text="Kilométrage restant pour le prochain entretien:" />
+                            <Label fx:id="kilor" prefHeight="32.0" prefWidth="148.0" styleClass="info-value" />
+
+                            <Label styleClass="form-label" text="Date limite de paiement de vignette:" />
+                            <Label fx:id="datelv" prefHeight="32.0" prefWidth="148.0" styleClass="info-value" />
+
+                            <Label styleClass="form-label" text="Date de la prochaine visite technique:" />
+                            <Label fx:id="datev" prefHeight="32.0" prefWidth="145.0" styleClass="info-value" />
+
+                            <Label styleClass="form-label" text="Date limite de paiement de l'assurance:" />
+                            <Label fx:id="datea" prefHeight="32.0" prefWidth="148.0" styleClass="info-value" />
+                        </VBox>
+                  <rowConstraints>
+                     <RowConstraints />
+                  </rowConstraints>
+                    </GridPane>
+
+                    <!-- Repairs Table Section -->
+                    <VBox spacing="10" styleClass="table-container">
+                        <HBox alignment="CENTER_LEFT" spacing="15">
+                            <Label styleClass="section-title" text="Liste des réparations" />
+                            <Button onAction="#addReparation" styleClass="btn-primary" text="+ Ajouter réparation" />
+                        </HBox>
+
+                        <TableView fx:id="reparationsTable" styleClass="data-table" VBox.vgrow="ALWAYS">
+                            <columns>
+                                <TableColumn fx:id="desColumn" prefWidth="150" text="Description" />
+                                <TableColumn fx:id="datemColumn" prefWidth="100" text="Date" />
+                                <TableColumn fx:id="MontantColumn" prefWidth="100" text="Montant" />
+                                <TableColumn fx:id="kilColumn" prefWidth="100" text="Kilométrage" />
+                                <TableColumn fx:id="FactureColumn" prefWidth="120" text="Facture" />
+                                <TableColumn fx:id="actionsColumn" prefWidth="100" text="Actions" />
+                            </columns>
+                        </TableView>
+                    </VBox>
+                </VBox>
+            </ScrollPane>
         </VBox>
     </center>
+
+    <!-- Repair Details Panel -->
+    <right>
+        <VBox spacing="15" styleClass="panel, repair-panel">
+            <HBox alignment="CENTER" styleClass="panel-header">
+                <Label styleClass="panel-title" text="Détails de la réparation" />
+            </HBox>
+
+            <VBox prefHeight="590.0" prefWidth="449.0" spacing="15" styleClass="panel-content">
+                <VBox styleClass="form-group">
+                    <Label styleClass="form-label" text="Description:" />
+                    <TextField fx:id="desc" disable="true" promptText="Description" styleClass="form-field" />
+                </VBox>
+
+                <VBox styleClass="form-group">
+                    <Label styleClass="form-label" text="Date:" />
+                    <DatePicker fx:id="date" disable="true" promptText="Date" styleClass="form-field" />
+                </VBox>
+
+                <VBox styleClass="form-group">
+                    <Label styleClass="form-label" text="Montant:" />
+                    <HBox alignment="CENTER_LEFT" spacing="5">
+                        <TextField fx:id="montant" disable="true" promptText="Montant" styleClass="form-field, small-field" />
+                        <Label styleClass="unit-label" text="dt" />
+                    </HBox>
+                </VBox>
+
+                <VBox styleClass="form-group">
+                    <Label styleClass="form-label" text="Kilométrage:" />
+                    <HBox alignment="CENTER_LEFT" spacing="5">
+                        <TextField fx:id="kilom" disable="true" promptText="Kilométrage" styleClass="form-field, small-field" />
+                        <Label styleClass="unit-label" text="km" />
+                    </HBox>
+                </VBox>
+
+                <VBox styleClass="form-group">
+                    <Label styleClass="form-label" text="Facture:" />
+                    <HBox spacing="10">
+                        <Button fx:id="btnVisualizeFacture" onAction="#handleVisualizeFacture" styleClass="btn-secondary" text="👁️ Visualiser" />
+                        <Button fx:id="btnGenerateFacture" disable="true" onAction="#generateFact" styleClass="btn-secondary" text="🧾 Générer PDF" />
+                    </HBox>
+                </VBox>
+
+                <VBox alignment="BOTTOM_CENTER" spacing="10" styleClass="action-buttons" VBox.vgrow="ALWAYS">
+                    <Button onAction="#update" styleClass="btn-edit" text="📝 Modifier" />
+                    <Button onAction="#save" styleClass="btn-save" text="💾 Sauvegarder" />
+                    <Button onAction="#cancel" styleClass="btn-cancel" text="❌ Annuler" />
+                </VBox>
+            </VBox>
+        </VBox>
+    </right>
 </BorderPane>

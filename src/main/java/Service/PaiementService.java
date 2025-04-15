@@ -1,7 +1,9 @@
 package Service;
 
 import DAO.PaiementDAO;
+import Entities.Examen;
 import Entities.Paiement;
+import Entities.Reparation;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -52,5 +54,12 @@ public class PaiementService {
      */
     public boolean verifierMotDePasse(String password) {
         return SECRETAIRE_PASSWORD.equals(password);
+    }
+
+    public boolean createPaiementFromExamen(Object examen, boolean parFacilite) {
+        return createPaiementFromExamen((Object) examen, parFacilite);
+    }
+    public void ajouterPaiement(Paiement paiement) throws SQLException {
+        paiementDAO.insertPaiement(paiement);
     }
 }

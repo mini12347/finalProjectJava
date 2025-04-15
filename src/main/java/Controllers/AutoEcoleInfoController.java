@@ -7,6 +7,7 @@ import Service.PDFGenerator;
 import com.lowagie.text.DocumentException;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import java.io.File;
 import java.io.IOException;
@@ -17,6 +18,7 @@ import java.util.Map;
 
 public class AutoEcoleInfoController {
     @FXML public CheckBox mondayCheck, tuesdayCheck, wedCheck, thurCheck, FriCheck, SatCheck, SunCheck;
+    @FXML public VBox disponibilityBox;
     @FXML private TextField mondayStart, mondayEnd, tuesdayStart, tuesdayEnd,
             wedStart, wedEnd, thurStart, thurEnd,
             FriStart, FriEnd, SatStart, SatEnd, SunStart, SunEnd;
@@ -38,7 +40,7 @@ public class AutoEcoleInfoController {
                 numtelField.setText(String.valueOf(autoEcole.getNumtel()));
                 emailField.setText(autoEcole.getEmail());
                 adresseField.setText(autoEcole.getAdresse());
-                deserializeDisponibility(autoEcole.getHoraire().toString());
+                deserializeDisponibility(autoEcole.getHoraire().serialize());
             }
         } catch (SQLException e) {
             showErrorMessage("Erreur lors du chargement des données.");

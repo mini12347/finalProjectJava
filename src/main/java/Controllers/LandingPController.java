@@ -145,14 +145,14 @@ public class LandingPController {
      * Affiche l'interface des séances
      */
     private void showSeanceInterface() {
-        loadFXML("/fxml/Seances.fxml");
+        loadFXML("/fxml/Seance.fxml");
     }
 
     /**
      * Affiche l'interface des examens
      */
     private void showExamenInterface() {
-        loadFXML("/fxml/Examens.fxml");
+        loadFXML("/fxml/Examen.fxml");
     }
 
     private void updateDateTime() {

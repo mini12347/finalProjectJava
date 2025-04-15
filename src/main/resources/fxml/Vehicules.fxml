@@ -10,6 +10,8 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.ComboBox?>
 <BorderPane prefHeight="1000.0" prefWidth="1200.0" stylesheets="@../css/Vehicule.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.VehiculesController">
        <left>
            <VBox prefHeight="300.0" prefWidth="306.0" spacing="20" styleClass="card">
@@ -27,13 +29,13 @@
                    </HBox>
                </VBox>
                <Label text="Date de mise en service:" />
-               <TextField styleClass="text-field"  fx:id="datem" disable="true" text="dd-mm-yyyy" />
+               <DatePicker styleClass="text-field"  fx:id="datem" disable="true"  />
 
                <Label text="Kilométrage:" />
                <TextField styleClass="text-field"  fx:id="kilo" disable="true" text="***** kilomètres" />
 
                <Label text="Type:" />
-               <TextField styleClass="text-field"  fx:id="type" disable="true" text="MOTO/VOITURE/CAMION" />
+               <ComboBox styleClass="text-field"  fx:id="type" disable="true"  />
                <VBox spacing="30">
                    <Button styleClass="animated-button" text="📝 Modifier" onAction="#update" />
                    <Button styleClass="animated-button2" text="💾 Sauvegarder" onAction="#save"/>

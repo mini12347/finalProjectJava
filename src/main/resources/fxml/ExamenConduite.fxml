@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import com.sothawo.mapjfx.MapView?>
+
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="Controllers.ExamenConduiteController"
+            prefHeight="600.0" prefWidth="900.0">
+    <children>
+        <VBox spacing="10" AnchorPane.topAnchor="10.0" AnchorPane.leftAnchor="10.0"
+              AnchorPane.rightAnchor="10.0" AnchorPane.bottomAnchor="10.0">
+            <Label text="Gestion des Examens de Conduite:" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+
+            <GridPane hgap="10" vgap="10">
+                <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
+
+                <Label text="ID:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                <TextField fx:id="idField" editable="false" promptText="Auto-généré" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+                <Label text="Date:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                <DatePicker fx:id="dateField" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+                <Label text="Heure:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                <TextField fx:id="timeField" promptText="HH:MM:SS" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+
+                <Label text="CIN Candidat:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+                <ComboBox fx:id="candidatComboBox" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+
+                <Label text="Résultat:" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+                <ComboBox fx:id="resultatComboBox" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+
+                <Label text="Type Permis:" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
+                <ComboBox fx:id="typePermisComboBox" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+                <Label text="Coût:" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
+                <TextField fx:id="coutField" promptText="0.00" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+
+                <Label text="Localisation:" GridPane.columnIndex="0" GridPane.rowIndex="7"/>
+                <HBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                    <TextField fx:id="localisationField" promptText="Adresse de localisation" HBox.hgrow="ALWAYS"/>
+                    <Button fx:id="mapBtn" text="Carte" onAction="#handleOpenMap" style="-fx-background-color: #607D8B; -fx-text-fill: white;"/>
+                </HBox>
+            </GridPane>
+
+            <HBox spacing="10" alignment="CENTER">
+                <Button fx:id="ajouterBtn" text="Ajouter" onAction="#handleAjouter" style="-fx-background-color: #233446; -fx-text-fill: white;"/>
+                <Button fx:id="modifierBtn" text="Modifier" onAction="#handleModifier" style="-fx-background-color: #233446; -fx-text-fill: white;"/>
+                <Button fx:id="supprimerBtn" text="Supprimer" onAction="#handleSupprimer" style="-fx-background-color: #233446; -fx-text-fill: white;"/>
+                <Button fx:id="rechercherBtn" text="Rechercher" onAction="#handleRechercher" style="-fx-background-color: #233446; -fx-text-fill: white;"/>
+                <Button fx:id="afficherToutBtn" text="Afficher tout" onAction="#handleAfficherTout" style="-fx-background-color: #233446; -fx-text-fill: white;"/>
+                <Button fx:id="clearBtn" text="Effacer" onAction="#handleClear" style="-fx-background-color: #233446; -fx-text-fill: white;"/>
+            </HBox>
+
+            <Label text="Nombre d'examens: 0" fx:id="countLabel"/>
+
+            <TableView fx:id="examenTable" VBox.vgrow="ALWAYS">
+                <columns>
+                    <TableColumn fx:id="idColumn" text="ID"/>
+                    <TableColumn fx:id="dateColumn" text="Date"/>
+                    <TableColumn fx:id="timeColumn" text="Heure"/>
+                    <TableColumn fx:id="candidatColumn" text="CIN Candidat"/>
+                    <TableColumn fx:id="resultatColumn" text="Résultat"/>
+                    <TableColumn fx:id="typePermisColumn" text="Type Permis"/>
+                    <TableColumn fx:id="localisationColumn" text="Localisation"/>
+                    <TableColumn fx:id="coutColumn" text="Coût"/>
+                </columns>
+            </TableView>
+        </VBox>
+    </children>
+</AnchorPane>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.ExamenCodeController">
+    <children>
+        <VBox spacing="10" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+            <Label prefHeight="30.0" prefWidth="276.0" style="-fx-font-size: 20px; -fx-font-weight: bold;" text="Gestion des Examens Code :" />
+
+            <GridPane hgap="10" vgap="10">
+                <padding><Insets bottom="10" left="10" right="10" top="10" /></padding>
+
+                <Label text="ID:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                <TextField fx:id="idField" editable="false" promptText="Auto-généré" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+                <Label text="Date:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                <DatePicker fx:id="dateField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+                <Label text="Heure:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                <TextField fx:id="timeField" promptText="HH:MM:SS" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+                <Label text="CIN Candidat:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                <ComboBox fx:id="candidatComboBox" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+
+                <Label text="Résultat:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                <ComboBox fx:id="resultatComboBox" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+
+                <Label text="Type Permis:" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                <ComboBox fx:id="typePermisComboBox" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+
+                <Label text="Coût:" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+                <TextField fx:id="coutField" promptText="0.00" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                <columnConstraints>
+                    <ColumnConstraints />
+                    <ColumnConstraints />
+                </columnConstraints>
+                <rowConstraints>
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints />
+                </rowConstraints>
+            </GridPane>
+
+            <HBox alignment="CENTER" spacing="10">
+                <Button fx:id="ajouterBtn" onAction="#handleAjouter" style="-fx-background-color: #233446; -fx-text-fill: white;" text="Ajouter" />
+                <Button fx:id="modifierBtn" onAction="#handleModifier" style="-fx-background-color: #233446; -fx-text-fill: white;" text="Modifier" />
+                <Button fx:id="supprimerBtn" onAction="#handleSupprimer" style="-fx-background-color: #233446; -fx-text-fill: white;" text="Supprimer" />
+                <Button fx:id="rechercherBtn" onAction="#handleRechercher" style="-fx-background-color: #233446; -fx-text-fill: white;" text="Rechercher" />
+                <Button fx:id="afficherToutBtn" onAction="#handleAfficherTout" style="-fx-background-color: #233446; -fx-text-fill: white;" text="Afficher tout" />
+                <Button fx:id="clearBtn" onAction="#handleClear" style="-fx-background-color: #233446; -fx-text-fill: white;" text="Effacer" />
+            </HBox>
+
+            <Label fx:id="countLabel" text="Nombre d'examens: 0" />
+
+            <TableView fx:id="examenTable" VBox.vgrow="ALWAYS">
+                <columns>
+                    <TableColumn fx:id="idColumn" text="ID" />
+                    <TableColumn fx:id="dateColumn" text="Date" />
+                    <TableColumn fx:id="timeColumn" text="Heure" />
+                    <TableColumn fx:id="candidatColumn" text="CIN Candidat" />
+                    <TableColumn fx:id="resultatColumn" text="Résultat" />
+                    <TableColumn fx:id="typePermisColumn" text="Type Permis" />
+                    <TableColumn fx:id="coutColumn" text="Coût" />
+                </columns>
+            </TableView>
+        </VBox>
+    </children>
+</AnchorPane>
+

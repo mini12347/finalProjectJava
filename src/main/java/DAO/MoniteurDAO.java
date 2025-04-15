@@ -1,43 +1,40 @@
 package DAO;
 
-import Entities.Moniteur;
-import Entities.Vehicule;
+import Connection.ConxDB;
 import Entities.Disponibility;
 import Entities.Hours;
+import Entities.Moniteur;
+import Entities.Vehicule;
 
 import java.sql.*;
 import java.time.DayOfWeek;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class MoniteurDAO {
-    private Connection conn;
-
-    public MoniteurDAO(Connection conn) {
-        this.conn = conn;
-    }
-
     // Ajouter un moniteur dans la base de données
     public void ajouterMoniteur(Moniteur moniteur) throws SQLException {
         // Insertion du moniteur
         String sqlMoniteur = "INSERT INTO moniteur (cin, nom, prenom, adresse, mail, numTelephone, dateNaissance, vehicule) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-        try (PreparedStatement psMoniteur = conn.prepareStatement(sqlMoniteur)) {
+        try (Connection conn = ConxDB.getInstance();
+                PreparedStatement psMoniteur = conn.prepareStatement(sqlMoniteur)) {
             psMoniteur.setInt(1, moniteur.getCIN());
             psMoniteur.setString(2, moniteur.getNom());
             psMoniteur.setString(3, moniteur.getPrenom());
             psMoniteur.setString(4, moniteur.getAdresse());
             psMoniteur.setString(5, moniteur.getMail());
             psMoniteur.setInt(6, moniteur.getNumTelephone());
-            psMoniteur.setDate(7, new java.sql.Date(moniteur.getDateNaissance().getTime()));
+            psMoniteur.setDate(7, new Date(moniteur.getDateNaissance().getTime()));
             psMoniteur.setString(8, moniteur.getVehicule().getMatricule()); // Utilisation du matricule du véhicule
             psMoniteur.executeUpdate();
         }
 
         // Insertion de la disponibilité
         String sqlDisponibility = "INSERT INTO disponibility (cin, jour, start_hour, end_hour) VALUES (?, ?, ?, ?)";
-        try (PreparedStatement psDisponibility = conn.prepareStatement(sqlDisponibility)) {
+        try (Connection conn = ConxDB.getInstance();
+                PreparedStatement psDisponibility = conn.prepareStatement(sqlDisponibility)) {
             for (Map.Entry<DayOfWeek, Hours> entry : moniteur.getHoraire().getDaysOfWeek().entrySet()) {
                 psDisponibility.setInt(1, moniteur.getCIN());
                 psDisponibility.setString(2, entry.getKey().name());
@@ -51,7 +48,8 @@ public class MoniteurDAO {
     // Chercher un moniteur par CIN
     public Moniteur chercherMoniteur(int cin) throws SQLException {
         String sqlMoniteur = "SELECT * FROM moniteur WHERE cin = ?";
-        try (PreparedStatement psMoniteur = conn.prepareStatement(sqlMoniteur)) {
+        try (Connection conn = ConxDB.getInstance();
+                PreparedStatement psMoniteur = conn.prepareStatement(sqlMoniteur)) {
             psMoniteur.setInt(1, cin);
             try (ResultSet rsMoniteur = psMoniteur.executeQuery()) {
                 if (rsMoniteur.next()) {
@@ -116,13 +114,15 @@ public class MoniteurDAO {
     // Supprimer un moniteur par CIN
     public void supprimerMoniteur(int cin) throws SQLException {
         String sqlDisponibility = "DELETE FROM disponibility WHERE cin = ?";
-        try (PreparedStatement psDisponibility = conn.prepareStatement(sqlDisponibility)) {
+        try (Connection conn = ConxDB.getInstance();
+                PreparedStatement psDisponibility = conn.prepareStatement(sqlDisponibility)) {
             psDisponibility.setInt(1, cin);
             psDisponibility.executeUpdate();
         }
 
         String sqlMoniteur = "DELETE FROM moniteur WHERE cin = ?";
-        try (PreparedStatement psMoniteur = conn.prepareStatement(sqlMoniteur)) {
+        try (Connection conn = ConxDB.getInstance();
+                PreparedStatement psMoniteur = conn.prepareStatement(sqlMoniteur)) {
             psMoniteur.setInt(1, cin);
             psMoniteur.executeUpdate();
         }
@@ -132,7 +132,8 @@ public class MoniteurDAO {
     public List<Moniteur> afficherTousLesMoniteurs() throws SQLException {
         List<Moniteur> moniteurs = new ArrayList<>();
         String sqlMoniteur = "SELECT * FROM moniteur";
-        try (PreparedStatement psMoniteur = conn.prepareStatement(sqlMoniteur);
+        try (Connection conn = ConxDB.getInstance();
+                PreparedStatement psMoniteur = conn.prepareStatement(sqlMoniteur);
              ResultSet rsMoniteur = psMoniteur.executeQuery()) {
             while (rsMoniteur.next()) {
                 // Récupération du véhicule

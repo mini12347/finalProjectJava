@@ -1,45 +1,66 @@
 package DAO;
+
+import Connection.ConxDB;
 import Entities.AutoEcole;
 import Entities.Disponibility;
 import Entities.Hours;
+
 import java.sql.*;
 import java.time.DayOfWeek;
 import java.util.HashMap;
 import java.util.Map;
-import Connection.ConxDB;
-public class AutoEcoleDAO {
-    private Connection connection;
 
-    public AutoEcoleDAO() throws SQLException {
-        connection = ConxDB.getInstance();
-    }
+public class AutoEcoleDAO {
 
     public void addAutoEcole(AutoEcole autoEcole) throws SQLException {
         String query = "INSERT INTO auto_ecole (nom, numtel, email, adresse, horaire) VALUES (?, ?, ?, ?, ?)";
-        PreparedStatement stmt = connection.prepareStatement(query);
-        stmt.setString(1, autoEcole.getNom());
-        stmt.setInt(2, autoEcole.getNumtel());
-        stmt.setString(3, autoEcole.getEmail());
-        stmt.setString(4, autoEcole.getAdresse());
-        stmt.setString(5, serializeDisponibility(autoEcole.getHoraire()));
-        stmt.executeUpdate();
+
+        try (Connection connection = ConxDB.getInstance();
+             PreparedStatement stmt = connection.prepareStatement(query)) {
+
+            stmt.setString(1, autoEcole.getNom());
+            stmt.setInt(2, autoEcole.getNumtel());
+            stmt.setString(3, autoEcole.getEmail());
+            stmt.setString(4, autoEcole.getAdresse());
+            stmt.setString(5, serializeDisponibility(autoEcole.getHoraire()));
+
+            stmt.executeUpdate();
+        }
     }
 
     public AutoEcole getLastModifiedAutoEcole() throws SQLException {
         String query = "SELECT * FROM auto_ecole ORDER BY updated_at DESC LIMIT 1";
-        Statement stmt = connection.createStatement();
-        ResultSet rs = stmt.executeQuery(query);
 
-        if (rs.next()) {
-            return new AutoEcole(
-                    rs.getString("nom"),
-                    rs.getInt("numtel"),
-                    rs.getString("email"),
-                    rs.getString("adresse"),
-                    deserializeDisponibility(rs.getString("horaire"))
-            );
-        } else {
-            return null;
+        try (Connection connection = ConxDB.getInstance();
+             Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+
+            if (rs.next()) {
+                return new AutoEcole(
+                        rs.getString("nom"),
+                        rs.getInt("numtel"),
+                        rs.getString("email"),
+                        rs.getString("adresse"),
+                        deserializeDisponibility(rs.getString("horaire"))
+                );
+            } else {
+                return null;
+            }
+        }
+    }
+
+    public Disponibility getTimeTable() throws SQLException {
+        String query = "SELECT horaire FROM auto_ecole";
+
+        try (Connection connection = ConxDB.getInstance();
+             Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+
+            if (rs.next()) {
+                return deserializeDisponibility(rs.getString("horaire"));
+            } else {
+                return null;
+            }
         }
     }
 

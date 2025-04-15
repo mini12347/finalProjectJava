@@ -25,51 +25,51 @@
             <HBox spacing="10">
                 <CheckBox fx:id="mondayCheck" text="Lundi" disable="true"/>
                 <Label text="De" />
-                <TextField fx:id="mondayStart" promptText="8" disable="true"/>
+                <TextField fx:id="mondayStart" text="8" disable="true"/>
                 <Label text="à" />
-                <TextField fx:id="mondayEnd" promptText="17" disable="true"/>
+                <TextField fx:id="mondayEnd" text="17" disable="true"/>
             </HBox>
             <HBox spacing="10">
                 <CheckBox fx:id="tuesdayCheck" text="Mardi" disable="true"/>
                 <Label text="De" />
-                <TextField fx:id="tuesdayStart" promptText="8" disable="true"/>
+                <TextField fx:id="tuesdayStart" text="" disable="true"/>
                 <Label text="à" />
-                <TextField fx:id="tuesdayEnd" promptText="17" disable="true"/>
+                <TextField fx:id="tuesdayEnd" text="" disable="true"/>
             </HBox>
             <HBox spacing="10">
                 <CheckBox fx:id="wedCheck" text="Mercredi" disable="true"/>
                 <Label text="De" />
-                <TextField fx:id="wedStart" promptText="8" disable="true"/>
+                <TextField fx:id="wedStart" text="" disable="true"/>
                 <Label text="à" />
-                <TextField fx:id="wedEnd" promptText="17" disable="true"/>
+                <TextField fx:id="wedEnd" text="" disable="true"/>
             </HBox>
             <HBox spacing="10">
                 <CheckBox fx:id="thurCheck" text="Jeudi" disable="true"/>
                 <Label text="De" />
-                <TextField fx:id="thurStart" promptText="8" disable="true"/>
+                <TextField fx:id="thurStart" text="" disable="true"/>
                 <Label text="à" />
-                <TextField fx:id="thurEnd" promptText="17" disable="true"/>
+                <TextField fx:id="thurEnd" text="" disable="true"/>
             </HBox>
             <HBox spacing="10">
                 <CheckBox fx:id="FriCheck" text="Vendredi" disable="true"/>
                 <Label text="De" />
-                <TextField fx:id="FriStart" promptText="8" disable="true"/>
+                <TextField fx:id="FriStart" text="" disable="true"/>
                 <Label text="à" />
-                <TextField fx:id="FriEnd" promptText="17" disable="true"/>
+                <TextField fx:id="FriEnd" text="" disable="true"/>
             </HBox>
             <HBox spacing="10">
                 <CheckBox fx:id="SatCheck" text="Samedi" disable="true"/>
                 <Label text="De" />
-                <TextField fx:id="SatStart" promptText="8" disable="true"/>
+                <TextField fx:id="SatStart" text="" disable="true"/>
                 <Label text="à" />
-                <TextField fx:id="SatEnd" promptText="17" disable="true"/>
+                <TextField fx:id="SatEnd" text="" disable="true"/>
             </HBox>
             <HBox spacing="10">
                 <CheckBox fx:id="SunCheck" text="Dimanche" disable="true"/>
                 <Label text="De" />
-                <TextField fx:id="SunStart" promptText="8" disable="true"/>
+                <TextField fx:id="SunStart" text="" disable="true"/>
                 <Label text="à" />
-                <TextField fx:id="SunEnd" promptText="17" disable="true"/>
+                <TextField fx:id="SunEnd" text="" disable="true"/>
             </HBox>
         </VBox>
     </VBox>

@@ -3,11 +3,11 @@ package Service;
 import Entities.AutoEcole;
 import Entities.Hours;
 import com.lowagie.text.*;
-import com.lowagie.text.pdf.PdfPCell;
-import com.lowagie.text.pdf.PdfPTable;
-import com.lowagie.text.pdf.PdfWriter;
-
-import java.awt.Desktop;
+import com.lowagie.text.Rectangle;
+import com.lowagie.text.pdf.*;
+import com.lowagie.text.Font;
+import com.lowagie.text.Image;
+import java.awt.*;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -17,125 +17,154 @@ import java.util.Locale;
 import java.util.Map;
 
 public class PDFGenerator {
-    // Chemin du logo défini directement dans la classe
-    private static final String LOGO_PATH = "C:\\Users\\souma\\finalProjectJava\\src\\main\\resources\\images\\111-removebg-preview.png"; // Remplacez par le chemin réel de votre logo
+
+    private static final String LOGO_PATH = "C:\\Users\\minya\\IdeaProjects\\finalProjectJava2\\src\\main\\resources\\images\\111-removebg-preview.png";
+
+    // Style
+    private static final Color PRIMARY_COLOR = new Color(41, 128, 185);
+    private static final Color SECONDARY_COLOR = new Color(52, 73, 94);
+    private static final Color ACCENT_COLOR = new Color(46, 204, 113);
+    private static final Color TEXT_COLOR = new Color(44, 62, 80);
+    private static final Color LIGHT_GRAY = new Color(236, 240, 241);
+
+    private static final Font TITLE_FONT = new Font(Font.HELVETICA, 20, Font.BOLD, PRIMARY_COLOR);
+    private static final Font HEADER_FONT = new Font(Font.HELVETICA, 12, Font.BOLD, Color.WHITE);
+    private static final Font SECTION_FONT = new Font(Font.HELVETICA, 14, Font.BOLD, SECONDARY_COLOR);
+    private static final Font CONTENT_FONT = new Font(Font.HELVETICA, 11, Font.NORMAL, TEXT_COLOR);
+    private static final Font FOOTER_FONT = new Font(Font.HELVETICA, 8, Font.ITALIC, SECONDARY_COLOR);
 
     public static void generateAutoEcolePDF(AutoEcole autoEcole, String filePath) throws IOException, DocumentException {
-        Document document = new Document(PageSize.A4);
+        Document document = new Document(PageSize.A4, 36, 36, 54, 36);
         PdfWriter.getInstance(document, new FileOutputStream(filePath));
         document.open();
 
-        // Ajouter le logo en haut de page
+        // === HEADER avec logo à gauche ===
+        PdfPTable headerTable = new PdfPTable(2);
+        headerTable.setWidthPercentage(100);
+        headerTable.setWidths(new float[]{1f, 3f});
+
+        Image logo = null;
         try {
-            Image logo = Image.getInstance(LOGO_PATH);
-
-            // Ajuster la taille du logo si nécessaire
-            logo.scaleToFit(200, 100); // Ajuster ces valeurs selon la taille désirée
-
-            // Centrer le logo
-            logo.setAlignment(Element.ALIGN_CENTER);
-
-            // Ajouter le logo au document
-            document.add(logo);
-
-            // Ajouter un espace après le logo
-            document.add(Chunk.NEWLINE);
+            logo = Image.getInstance(LOGO_PATH);
+            logo.scaleToFit(100, 60);
         } catch (Exception e) {
-            System.err.println("Erreur lors du chargement du logo: " + e.getMessage());
-            // Continue sans le logo en cas d'erreur
+            System.err.println("Erreur chargement logo : " + e.getMessage());
         }
 
-        // Titre
-        Font titleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18, Font.NORMAL);
-        Paragraph title = new Paragraph("Informations Auto-École", titleFont);
-        title.setAlignment(Element.ALIGN_CENTER);
-        title.setSpacingAfter(20);
-        document.add(title);
+        PdfPCell logoCell = new PdfPCell();
+        if (logo != null) {
+            logoCell.addElement(logo);
+        }
+        logoCell.setBorder(Rectangle.NO_BORDER);
+        logoCell.setHorizontalAlignment(Element.ALIGN_LEFT);
+        headerTable.addCell(logoCell);
 
-        // Informations de base
-        Font sectionFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 14, Font.NORMAL);
-        Font contentFont = FontFactory.getFont(FontFactory.HELVETICA, 12, Font.NORMAL);
+        Paragraph info = new Paragraph();
+        info.add(new Chunk(autoEcole.getNom() + "\n", SECTION_FONT));
+        info.add(new Chunk("Email : " + autoEcole.getEmail(), CONTENT_FONT));
 
-        // Section Informations Générales
-        Paragraph infoSection = new Paragraph("Informations Générales", sectionFont);
-        infoSection.setSpacingAfter(10);
-        document.add(infoSection);
+        PdfPCell infoCell = new PdfPCell(info);
+        infoCell.setBorder(Rectangle.NO_BORDER);
+        infoCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        infoCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+        headerTable.addCell(infoCell);
 
-        // Ajouter les informations générales
-        document.add(new Paragraph("Nom: " + autoEcole.getNom(), contentFont));
-        document.add(new Paragraph("Téléphone: " + autoEcole.getNumtel(), contentFont));
-        document.add(new Paragraph("Email: " + autoEcole.getEmail(), contentFont));
-        document.add(new Paragraph("Adresse: " + autoEcole.getAdresse(), contentFont));
+        document.add(headerTable);
         document.add(Chunk.NEWLINE);
 
-        // Section Horaires
-        Paragraph scheduleSection = new Paragraph("Horaires d'ouverture", sectionFont);
-        scheduleSection.setSpacingAfter(10);
-        document.add(scheduleSection);
+        // === TITLE ===
+        Paragraph title = new Paragraph("Informations de l'Auto-École", TITLE_FONT);
+        title.setAlignment(Element.ALIGN_CENTER);
+        title.setSpacingAfter(10);
+        document.add(title);
 
-        // Tableau pour les horaires
+        PdfPTable underline = new PdfPTable(1);
+        underline.setWidthPercentage(30);
+        PdfPCell lineCell = new PdfPCell();
+        lineCell.setBorderWidthBottom(3f);
+        lineCell.setBorderColorBottom(ACCENT_COLOR);
+        lineCell.setBorder(Rectangle.NO_BORDER);
+        lineCell.setPaddingBottom(10);
+        underline.addCell(lineCell);
+        document.add(underline);
+
+        // === INFOS GÉNÉRALES ===
+        Paragraph section1 = new Paragraph("Informations Générales", SECTION_FONT);
+        section1.setSpacingBefore(20);
+        section1.setSpacingAfter(10);
+        document.add(section1);
+
+        document.add(new Paragraph("📛 Nom : " + autoEcole.getNom(), CONTENT_FONT));
+        document.add(new Paragraph("📞 Téléphone : " + autoEcole.getNumtel(), CONTENT_FONT));
+        document.add(new Paragraph("✉️ Email : " + autoEcole.getEmail(), CONTENT_FONT));
+        document.add(new Paragraph("📍 Adresse : " + autoEcole.getAdresse(), CONTENT_FONT));
+        document.add(Chunk.NEWLINE);
+
+        // === HORAIRES ===
+        Paragraph section2 = new Paragraph("Horaires d'ouverture", SECTION_FONT);
+        section2.setSpacingBefore(10);
+        section2.setSpacingAfter(10);
+        document.add(section2);
+
         PdfPTable table = new PdfPTable(3);
         table.setWidthPercentage(100);
         table.setSpacingBefore(10f);
-        table.setSpacingAfter(10f);
+        table.setWidths(new float[]{3f, 3f, 3f});
 
-        // En-têtes du tableau
-        PdfPCell cell1 = new PdfPCell(new Paragraph("Jour", contentFont));
-        PdfPCell cell2 = new PdfPCell(new Paragraph("Heure d'ouverture", contentFont));
-        PdfPCell cell3 = new PdfPCell(new Paragraph("Heure de fermeture", contentFont));
+        String[] headers = {"Jour", "Heure d'ouverture", "Heure de fermeture"};
+        for (String header : headers) {
+            PdfPCell cell = new PdfPCell(new Phrase(header, HEADER_FONT));
+            cell.setBackgroundColor(PRIMARY_COLOR);
+            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            cell.setPadding(8);
+            table.addCell(cell);
+        }
 
-        cell1.setHorizontalAlignment(Element.ALIGN_CENTER);
-        cell2.setHorizontalAlignment(Element.ALIGN_CENTER);
-        cell3.setHorizontalAlignment(Element.ALIGN_CENTER);
-
-        table.addCell(cell1);
-        table.addCell(cell2);
-        table.addCell(cell3);
-
-        // Ajouter les horaires
         Map<DayOfWeek, Hours> schedule = autoEcole.getHoraire().getDaysOfWeek();
+        boolean alternate = true;
         for (DayOfWeek day : DayOfWeek.values()) {
-            String dayName = day.getDisplayName(TextStyle.FULL, Locale.FRANCE);
-            if (schedule.containsKey(day)) {
-                Hours hours = schedule.get(day);
-                table.addCell(new PdfPCell(new Paragraph(dayName, contentFont)));
-                table.addCell(new PdfPCell(new Paragraph(hours.getStarthour() + "h00", contentFont)));
-                table.addCell(new PdfPCell(new Paragraph(hours.getEndhour() + "h00", contentFont)));
-            } else {
-                table.addCell(new PdfPCell(new Paragraph(dayName, contentFont)));
-                table.addCell(new PdfPCell(new Paragraph("Fermé", contentFont)));
-                table.addCell(new PdfPCell(new Paragraph("Fermé", contentFont)));
-            }
+            Hours hours = schedule.get(day);
+            String jour = day.getDisplayName(TextStyle.FULL, Locale.FRANCE);
+            String ouverture = (hours != null) ? hours.getStarthour() + "h00" : "Fermé";
+            String fermeture = (hours != null) ? hours.getEndhour() + "h00" : "Fermé";
+
+            Color bgColor = alternate ? LIGHT_GRAY : Color.WHITE;
+
+            addScheduleCell(table, jour, bgColor);
+            addScheduleCell(table, ouverture, bgColor);
+            addScheduleCell(table, fermeture, bgColor);
+
+            alternate = !alternate;
         }
 
         document.add(table);
 
-        // Pied de page
-        Paragraph footer = new Paragraph("Document généré le " + java.time.LocalDate.now(), contentFont);
+        // === FOOTER ===
+        Paragraph footer = new Paragraph("Document généré le " + java.time.LocalDate.now(), FOOTER_FONT);
         footer.setAlignment(Element.ALIGN_CENTER);
+        footer.setSpacingBefore(20);
         document.add(footer);
 
         document.close();
-
-        // Ouvrir le PDF après génération
         openPDF(filePath);
     }
 
-    // Méthode pour ouvrir le fichier PDF généré
+    private static void addScheduleCell(PdfPTable table, String content, Color bgColor) {
+        PdfPCell cell = new PdfPCell(new Phrase(content, CONTENT_FONT));
+        cell.setBackgroundColor(bgColor);
+        cell.setPadding(6);
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.addCell(cell);
+    }
+
     private static void openPDF(String filePath) {
         try {
             File pdfFile = new File(filePath);
-            if (pdfFile.exists()) {
-                if (Desktop.isDesktopSupported()) {
-                    Desktop.getDesktop().open(pdfFile);
-                } else {
-                    System.out.println("L'ouverture automatique du PDF n'est pas supportée sur ce système.");
-                }
-            } else {
-                System.out.println("Le fichier PDF n'a pas été trouvé: " + filePath);
+            if (pdfFile.exists() && Desktop.isDesktopSupported()) {
+                Desktop.getDesktop().open(pdfFile);
             }
         } catch (IOException e) {
-            System.err.println("Erreur lors de l'ouverture du PDF: " + e.getMessage());
+            System.err.println("Erreur ouverture PDF : " + e.getMessage());
         }
     }
 }

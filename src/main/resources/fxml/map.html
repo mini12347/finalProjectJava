@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OpenStreetMap</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <style>
+        #map {
+            height: 100%;
+            width: 100%;
+        }
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        /* Style du champ de recherche et du bouton */
+        #searchBar {
+            position: absolute;
+            top: 10px;
+            left: 57%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.7); /* Fond semi-transparent */
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+        }
+
+        #searchInput {
+            padding: 5px;
+            width: 140px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: transparent; /* Arrière-plan transparent */
+            color: #333;
+        }
+
+        #searchButton {
+            padding: 5px 10px;
+            margin-left: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #searchButton:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<div id="searchBar">
+    <input type="text" id="searchInput" placeholder="Search location" />
+    <button onclick="searchLocation()">Search</button>
+</div>
+<div id="map"></div>
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+<script>
+    // Initialisation de la carte avec la position de départ
+    var map = L.map('map').setView([36.8065, 10.1815], 13); // Latitude, Longitude pour Tunis (exemple)
+
+    // Chargement des tuiles OSM
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    var marker;
+
+    // Fonction de recherche d'adresse
+    function searchLocation() {
+        var address = document.getElementById("searchInput").value;
+
+        // Utiliser l'API Nominatim d'OpenStreetMap pour géocoder l'adresse
+        var geocodeUrl = `https://nominatim.openstreetmap.org/search?q=${address}&format=json&limit=1`;
+
+
+        fetch(geocodeUrl)
+            .then(response => response.json())
+            .then(data => {
+                if (data && data.length > 0) {
+                    var lat = data[0].lat;
+                    var lng = data[0].lon;
+                    var displayName = data[0].display_name;
+
+                    // Afficher la localisation sur la carte
+                    var latLng = L.latLng(lat, lng);
+                    map.setView(latLng, 13); // Centrer la carte sur la nouvelle position
+
+                    // Si un marqueur existe déjà, le supprimer
+                    if (marker) {
+                        marker.remove();
+                    }
+
+                    // Ajouter un nouveau marqueur à la position recherchée
+                    marker = L.marker(latLng).addTo(map).bindPopup(displayName).openPopup();
+
+                    // Envoi de la localisation au Java Connector
+                    if (window.javaConnector && typeof window.javaConnector.setLocation === 'function') {
+                        window.javaConnector.setLocation(lat, lng, displayName);
+                    } else {
+                        console.error("Java Connector is not available.");
+                    }
+                } else {
+                    alert("Location not found");
+                }
+            })
+            .catch(error => {
+                console.error("Error with geocoding:", error);
+            });
+    }
+
+    // Ajouter un événement de clic pour récupérer la latitude et la longitude
+    let clickMarker; // Un seul marqueur global
+
+    map.on('click', function(e) {
+        var lat = e.latlng.lat;
+        var lng = e.latlng.lng;
+
+        // Supprimer le marqueur précédent s'il existe
+        if (clickMarker) {
+            map.removeLayer(clickMarker);
+        }
+
+        // Créer un nouveau marqueur à l'endroit cliqué
+        clickMarker = L.marker([lat, lng]).addTo(map);
+
+        // Appel à l'API Nominatim pour obtenir l'adresse
+        let https;
+        var geocodeUrl = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`;
+
+
+        fetch(geocodeUrl)
+            .then(response => response.json())
+            .then(data => {
+                var address = data.display_name || "Adresse non disponible";
+
+                // Ajouter un popup avec l'adresse au marqueur
+                clickMarker.bindPopup(address).openPopup();
+
+                // Envoi vers Java
+                if (window.javaConnector && typeof window.javaConnector.setLocation === 'function') {
+                    window.javaConnector.setLocation(lat, lng, address);
+                } else {
+                    console.error("Java Connector is not available.");
+                }
+            })
+            .catch(error => {
+                console.error("Erreur de géocodage inverse :", error);
+            });
+    });
+</script>
+</body>
+</html>

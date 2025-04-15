@@ -1,0 +1,100 @@
+/* === Global Styles === */
+.root {
+    -fx-font-family: 'Segoe UI', sans-serif;
+    -fx-background-color: #f5f7fa;
+}
+
+/* === Card Container === */
+.card {
+    -fx-background-color: #ffffff;
+    -fx-padding: 20;
+    -fx-border-radius: 12;
+    -fx-background-radius: 12;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0.1, 0, 2);
+}
+
+/* === Titles === */
+.title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1e2d50;
+}
+
+/* === Labels === */
+.label {
+    -fx-text-fill: #2c3e50;
+    -fx-font-size: 13px;
+}
+
+/* === Location Info Label === */
+.location-info {
+    -fx-font-style: italic;
+    -fx-text-fill: #888;
+    -fx-font-size: 12px;
+}
+
+/* === ComboBoxes & DatePicker === */
+.combo-box, .date-picker {
+    -fx-pref-height: 35;
+    -fx-background-radius: 6;
+    -fx-border-radius: 6;
+    -fx-border-color: #ced4da;
+    -fx-background-color: #ffffff;
+}
+
+/* === TableView === */
+.table-view {
+    -fx-border-color: transparent;
+    -fx-background-color: #ffffff;
+    -fx-table-cell-border-color: transparent;
+    -fx-padding: 10;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: #1e2d50;
+    -fx-background-radius: 8 8 0 0;
+}
+
+.table-view .column-header, .table-view .label {
+    -fx-text-fill: #1d344e;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+}
+
+.table-row-cell {
+    -fx-border-color: #f0f0f0;
+}
+
+.table-cell {
+    -fx-font-size: 12px;
+    -fx-text-fill: #333;
+}
+
+/* === Buttons === */
+.primary-btn {
+    -fx-background-color: #1e2d50;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 6;
+    -fx-padding: 8 20;
+    -fx-cursor: hand;
+}
+
+.primary-btn:hover {
+    -fx-background-color: rgba(29, 52, 78, 0.59);
+}
+
+.primary-btn2 {
+    -fx-background-color: #6d1616;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 6;
+    -fx-padding: 8 20;
+    -fx-cursor: hand;
+}
+
+.primary-btn2:hover {
+    -fx-background-color: rgba(109, 22, 22, 0.46);
+}

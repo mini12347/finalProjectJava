@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefHeight="600" prefWidth="1000" stylesheets="@../css/Seance.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.SeanceController">
+
+    <center>
+        <VBox alignment="TOP_CENTER" prefHeight="600.0" prefWidth="285.0" spacing="15" styleClass="card">
+            <Label styleClass="title" text="Planifier une Séance" />
+
+            <VBox spacing="8">
+                <VBox spacing="4">
+                    <Label styleClass="label" text="Candidat" />
+                    <ComboBox fx:id="CandidatComboBox" promptText="Choisir un candidat" />
+                </VBox>
+
+                <VBox spacing="4">
+                    <Label styleClass="label" text="Moniteur" />
+                    <ComboBox fx:id="moniteurComboBox" promptText="Choisir un moniteur" />
+                </VBox>
+
+                <VBox spacing="4">
+                    <Label styleClass="label" text="Type de séance" />
+                    <ComboBox fx:id="typeSeanceBox" promptText="Conduite / Code" />
+                </VBox>
+
+                <VBox spacing="4">
+                    <Label styleClass="label" text="Date" />
+                    <DatePicker fx:id="datePicker" />
+                </VBox>
+
+                <VBox spacing="4">
+                    <Label styleClass="label" text="Heure" />
+                    <Button fx:id="timeButton" onAction="#showTimePicker" styleClass="primary-btn" text="⏰ Choisir l'heure" />
+                </VBox>
+
+                <VBox fx:id="salleSelectionBox" spacing="4" visible="false">
+                    <Label styleClass="label" text="Numéro de Salle" />
+                    <ComboBox fx:id="salleComboBox" promptText="Salle n°" />
+                </VBox>
+
+                <VBox spacing="4">
+                    <Label styleClass="label" text="Localisation" />
+                    <Label styleClass="label" text="(pour la conduite)" />
+                    <Button fx:id="chooseLocationBtn" onAction="#handleChooseLocation" styleClass="primary-btn2" text="📍 Choisir un lieu" />
+                    <Label fx:id="locationLabel" styleClass="location-info" text="Aucune localisation choisie" />
+                </VBox>
+            </VBox>
+            <HBox alignment="CENTER" spacing="30">
+                <Button fx:id="btnAdd" onAction="#addSession" prefHeight="31.0" prefWidth="53.0" styleClass="primary-btn" text="➕">
+               <font>
+                  <Font size="10.0" />
+               </font></Button>
+                <Button fx:id="btnCancel" onAction="#clearFields" styleClass="primary-btn2" text="✖">
+               <font>
+                  <Font size="10.0" />
+               </font></Button>
+            </HBox>
+         <BorderPane.margin>
+            <Insets right="50.0" />
+         </BorderPane.margin>
+        </VBox>
+    </center>
+
+    <right>
+        <VBox prefHeight="600.0" prefWidth="654.0" spacing="10" styleClass="card">
+            <Label styleClass="title" text="Liste des séances" />
+            <HBox>
+                <Button onAction="#displayAllSessions" styleClass="primary-btn" text="voir toutes les seances" />
+                <Button onAction="#displayThisWeekSessions" styleClass="primary-btn" text="voir les seances de cette semaine">
+               <HBox.margin>
+                  <Insets left="190.0" />
+               </HBox.margin></Button>
+            </HBox>
+                     <TableView fx:id="tableSeances" prefHeight="480" prefWidth="600">
+                <columns>
+                    <TableColumn fx:id="colId" text="ID" />
+                    <TableColumn fx:id="colType" text="Type" />
+                    <TableColumn fx:id="colDate" text="Date" />
+                    <TableColumn fx:id="colHeure" text="Heure" />
+                    <TableColumn fx:id="ColCandidat" text="Candidat" />
+                    <TableColumn fx:id="ColMoniteur" text="Moniteur" />
+                    <TableColumn fx:id="colTypeP" text="Permis" />
+                    <TableColumn fx:id="colLieu" text="Lieu/Salle" />
+                    <TableColumn fx:id="colAction" text="Actions" />
+                </columns>
+            </TableView>
+        </VBox>
+    </right>
+</BorderPane>

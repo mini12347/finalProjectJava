@@ -76,4 +76,17 @@ public class Disponibility {
     public int hashCode() {
         return id;
     }
+    public String serialize() {
+        StringBuilder sb = new StringBuilder();
+        for (Map.Entry<DayOfWeek, Hours> entry : daysOfWeek.entrySet()) {
+            sb.append(entry.getKey().name())
+                    .append(":")
+                    .append(entry.getValue().getStarthour())
+                    .append("-")
+                    .append(entry.getValue().getEndhour())
+                    .append(";");
+        }
+        return sb.toString();
+    }
+
 }

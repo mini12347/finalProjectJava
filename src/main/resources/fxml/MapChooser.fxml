@@ -1,0 +1,14 @@
+
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import com.sothawo.mapjfx.MapView?>
+
+<AnchorPane fx:id="mapContainer" xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="Controllers.MapChooserController">
+    <children>
+        <MapView fx:id="mapView" prefWidth="600" prefHeight="400" layoutX="0" layoutY="0"/>
+        <Button fx:id="confirmButton" text="Confirmer" layoutX="20" layoutY="420"/>
+    </children>
+</AnchorPane>

@@ -1,11 +1,12 @@
 package Controllers;
 import java.time.LocalDate;
 import java.time.Period;
+
+import DAO.VehiculesDAO;
 import Entities.Moniteur;
 import Entities.Vehicule;
 import Entities.Disponibility;
 import DAO.MoniteurDAO;
-import DAO.VehiculeDAO;
 import DAO.DisponibilityDAO;
 import Connection.ConxDB;
 import Service.MoniteurPDFGenerator;
@@ -24,7 +25,6 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Map;
 import java.util.ArrayList;
 import java.io.File;
 import java.io.IOException;
@@ -36,7 +36,7 @@ import com.lowagie.text.DocumentException;
 public class MoniteurController {
 
     private MoniteurDAO moniteurDAO;
-    private VehiculeDAO vehiculeDAO;
+    private VehiculesDAO vehiculeDAO;
     private DisponibilityDAO disponibilityDAO;
     private MoniteurPDFGenerator pdfGenerator;
 
@@ -65,10 +65,9 @@ public class MoniteurController {
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^[A-Za-z0-9+_.-]+@(.+)$");
 
     public MoniteurController() throws SQLException {
-        Connection connection = ConxDB.getInstance();
-        this.moniteurDAO = new MoniteurDAO(connection);
-        this.vehiculeDAO = new VehiculeDAO();
-        this.disponibilityDAO = new DisponibilityDAO(connection);
+        this.moniteurDAO = new MoniteurDAO();
+        this.vehiculeDAO = new VehiculesDAO();
+        this.disponibilityDAO = new DisponibilityDAO();
         this.pdfGenerator = new MoniteurPDFGenerator();
     }
 
@@ -242,13 +241,9 @@ public class MoniteurController {
 
     // Méthode pour charger les véhicules dans le ComboBox
     private void loadVehicules() {
-        try {
-            List<Vehicule> vehicules = vehiculeDAO.getAllVehicules();
-            vehiculeComboBox.getItems().clear();
-            vehiculeComboBox.getItems().addAll(vehicules);
-        } catch (SQLException e) {
-            showAlert("Erreur", "Erreur lors du chargement des véhicules : " + e.getMessage(), Alert.AlertType.ERROR);
-        }
+        List<Vehicule> vehicules = vehiculeDAO.getAllVehicules();
+        vehiculeComboBox.getItems().clear();
+        vehiculeComboBox.getItems().addAll(vehicules);
     }
 
     // Méthode pour charger les disponibilités dans le ComboBox

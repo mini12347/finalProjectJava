@@ -9,17 +9,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+import Connection.ConxDB;
 public class DisponibilityDAO {
-    private Connection conn;
 
-    public DisponibilityDAO(Connection conn) {
-        this.conn = conn;
-    }
 
     // Ajouter les disponibilités d'un moniteur dans la base de données
     public void ajouterDisponibility(int cin, Disponibility disponibilite) throws SQLException {
         String sql = "INSERT INTO disponibility (cin, jour, start_hour, end_hour) VALUES (?, ?, ?, ?)";
+        Connection conn = ConxDB.getInstance();
         PreparedStatement ps = conn.prepareStatement(sql);
 
         for (Map.Entry<DayOfWeek, Hours> entry : disponibilite.getDaysOfWeek().entrySet()) {
@@ -37,6 +34,7 @@ public class DisponibilityDAO {
     // Chercher les disponibilités d'un moniteur par CIN
     public Disponibility chercherDisponibility(int cin) throws SQLException {
         String sql = "SELECT jour, start_hour, end_hour FROM disponibility WHERE cin = ?";
+        Connection conn = ConxDB.getInstance();
         PreparedStatement ps = conn.prepareStatement(sql);
         ps.setInt(1, cin);
         ResultSet rs = ps.executeQuery();
@@ -58,6 +56,7 @@ public class DisponibilityDAO {
     // Supprimer les disponibilités d'un moniteur par CIN
     public void supprimerDisponibility(int cin) throws SQLException {
         String sql = "DELETE FROM disponibility WHERE cin = ?";
+        Connection conn = ConxDB.getInstance();
         PreparedStatement ps = conn.prepareStatement(sql);
         ps.setInt(1, cin);
         ps.executeUpdate();
@@ -69,7 +68,8 @@ public class DisponibilityDAO {
 
         // Modified query to group by CIN for distinct moniteur disponibilities
         String sql = "SELECT DISTINCT cin FROM disponibility ORDER BY cin";
-        try (PreparedStatement psDistinct = conn.prepareStatement(sql);
+        try (Connection conn = ConxDB.getInstance();
+                PreparedStatement psDistinct = conn.prepareStatement(sql);
              ResultSet rsDistinct = psDistinct.executeQuery()) {
 
             while (rsDistinct.next()) {
